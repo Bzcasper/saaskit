@@ -1,3 +1,5 @@
+> ⚠️ SaaSKit is no longer actively maintained. ⚠️
+
 # Deno SaaSKit
 
 [![Discord Chat](https://img.shields.io/discord/684898665143206084?logo=discord&style=social)](https://discord.gg/deno)
