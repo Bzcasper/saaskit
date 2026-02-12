@@ -1,7 +1,7 @@
 // Copyright 2023-2025 the Deno authors. All rights reserved. MIT license.
 import { Feed } from "npm:feed@4.2.2";
 import { getPosts } from "@/utils/posts.ts";
-import { SITE_NAME } from "@/utils/constants.ts";
+import { SITE_NAME, SITE_DESCRIPTION } from "@/utils/constants.ts";
 import { defineRoute } from "$fresh/server.ts";
 
 const copyright = `Copyright ${new Date().getFullYear()} ${SITE_NAME}`;
@@ -10,14 +10,14 @@ const copyright = `Copyright ${new Date().getFullYear()} ${SITE_NAME}`;
 export default defineRoute(async (_req, ctx) => {
   const { origin } = ctx.url;
   const feed = new Feed({
-    title: "Deno",
-    description: `The latest news from ${SITE_NAME}`,
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
     id: `${origin}/blog`,
     link: `${origin}/blog`,
     language: "en",
     favicon: `${origin}/favicon.ico`,
     copyright,
-    generator: "Feed (https://github.com/jpmonette/feed) for Deno",
+    generator: `Feed (https://github.com/jpmonette/feed) for ${SITE_NAME}`,
     feedLinks: {
       atom: `${origin}/feed`,
     },
@@ -31,7 +31,7 @@ export default defineRoute(async (_req, ctx) => {
       description: post.summary,
       date: post.publishedAt,
       link: `${origin}/blog/${post.slug}`,
-      author: [{ name: "The Deno Authors" }],
+      author: [{ name: SITE_NAME }],
       copyright,
       published: new Date(post.publishedAt),
     });

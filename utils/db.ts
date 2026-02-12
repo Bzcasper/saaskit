@@ -1,8 +1,6 @@
 // Copyright 2023-2025 the Deno authors. All rights reserved. MIT license.
 
-/// <reference lib="deno.unstable" />
-
-import { ulid } from "@std/ulid/ulid";
+import { ulid } from "jsr:@std/ulid@^1.0.0";
 
 const DENO_KV_PATH_KEY = "DENO_KV_PATH";
 let path = undefined;

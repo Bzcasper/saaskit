@@ -8,9 +8,46 @@ import * as $_app from "./routes/_app.tsx";
 import * as $account_index from "./routes/account/index.tsx";
 import * as $account_manage from "./routes/account/manage.ts";
 import * as $account_upgrade from "./routes/account/upgrade.ts";
+import * as $api_health from "./routes/api/health.ts";
 import * as $api_items_id_ from "./routes/api/items/[id].ts";
 import * as $api_items_index from "./routes/api/items/index.ts";
 import * as $api_me_votes from "./routes/api/me/votes.ts";
+import * as $api_music_ai_analysis from "./routes/api/music/ai/analysis.ts";
+import * as $api_music_ai_context from "./routes/api/music/ai/context.ts";
+import * as $api_music_ai_index from "./routes/api/music/ai/index.ts";
+import * as $api_music_ai_playlists from "./routes/api/music/ai/playlists.ts";
+import * as $api_music_ai_recommendations from "./routes/api/music/ai/recommendations.ts";
+import * as $api_music_ai_search from "./routes/api/music/ai/search.ts";
+import * as $api_music_albums_browseId_ from "./routes/api/music/albums/[browseId].ts";
+import * as $api_music_albums_complete from "./routes/api/music/albums/complete.ts";
+import * as $api_music_artists_complete from "./routes/api/music/artists/complete.ts";
+import * as $api_music_artists_info from "./routes/api/music/artists/info.ts";
+import * as $api_music_cluster_index from "./routes/api/music/cluster/index.ts";
+import * as $api_music_download_jobId_ from "./routes/api/music/download/[jobId].ts";
+import * as $api_music_download_index from "./routes/api/music/download/index.ts";
+import * as $api_music_download_stats from "./routes/api/music/download/stats.ts";
+import * as $api_music_index_index from "./routes/api/music/index/index.ts";
+import * as $api_music_lyrics from "./routes/api/music/lyrics.ts";
+import * as $api_music_playlists_playlistId_ from "./routes/api/music/playlists/[playlistId].ts";
+import * as $api_music_playlists_public_playlistId_ from "./routes/api/music/playlists/public/[playlistId].ts";
+import * as $api_music_proxy_status from "./routes/api/music/proxy/status.ts";
+import * as $api_music_proxy_test from "./routes/api/music/proxy/test.ts";
+import * as $api_music_radio from "./routes/api/music/radio.ts";
+import * as $api_music_search from "./routes/api/music/search.ts";
+import * as $api_music_search_suggestions from "./routes/api/music/search/suggestions.ts";
+import * as $api_music_search_vector from "./routes/api/music/search/vector.ts";
+import * as $api_music_stream from "./routes/api/music/stream.ts";
+import * as $api_music_top_artists from "./routes/api/music/top/artists.ts";
+import * as $api_music_top_tracks from "./routes/api/music/top/tracks.ts";
+import * as $api_music_tracks_trackId_similar from "./routes/api/music/tracks/[trackId]/similar.ts";
+import * as $api_music_tracks_videoId_ from "./routes/api/music/tracks/[videoId].ts";
+import * as $api_music_tracks_videoId_related from "./routes/api/music/tracks/[videoId]/related.ts";
+import * as $api_music_tracks_info from "./routes/api/music/tracks/info.ts";
+import * as $api_music_trending from "./routes/api/music/trending.ts";
+import * as $api_music_user_playlists from "./routes/api/music/user/playlists.ts";
+import * as $api_music_user_playlists_playlistId_ from "./routes/api/music/user/playlists/[playlistId].ts";
+import * as $api_music_user_tracks from "./routes/api/music/user/tracks.ts";
+import * as $api_music_yt_search from "./routes/api/music/yt_search.ts";
 import * as $api_stripe_webhooks from "./routes/api/stripe-webhooks.ts";
 import * as $api_users_login_index from "./routes/api/users/[login]/index.ts";
 import * as $api_users_login_items from "./routes/api/users/[login]/items.ts";
@@ -18,6 +55,8 @@ import * as $api_users_index from "./routes/api/users/index.ts";
 import * as $api_vote from "./routes/api/vote.ts";
 import * as $blog_slug_ from "./routes/blog/[slug].tsx";
 import * as $blog_index from "./routes/blog/index.tsx";
+import * as $brand from "./routes/brand.tsx";
+import * as $brand_improved from "./routes/brand_improved.tsx";
 import * as $dashboard_index from "./routes/dashboard/index.tsx";
 import * as $dashboard_stats from "./routes/dashboard/stats.tsx";
 import * as $dashboard_users from "./routes/dashboard/users.tsx";
@@ -40,9 +79,51 @@ const manifest = {
     "./routes/account/index.tsx": $account_index,
     "./routes/account/manage.ts": $account_manage,
     "./routes/account/upgrade.ts": $account_upgrade,
+    "./routes/api/health.ts": $api_health,
     "./routes/api/items/[id].ts": $api_items_id_,
     "./routes/api/items/index.ts": $api_items_index,
     "./routes/api/me/votes.ts": $api_me_votes,
+    "./routes/api/music/ai/analysis.ts": $api_music_ai_analysis,
+    "./routes/api/music/ai/context.ts": $api_music_ai_context,
+    "./routes/api/music/ai/index.ts": $api_music_ai_index,
+    "./routes/api/music/ai/playlists.ts": $api_music_ai_playlists,
+    "./routes/api/music/ai/recommendations.ts": $api_music_ai_recommendations,
+    "./routes/api/music/ai/search.ts": $api_music_ai_search,
+    "./routes/api/music/albums/[browseId].ts": $api_music_albums_browseId_,
+    "./routes/api/music/albums/complete.ts": $api_music_albums_complete,
+    "./routes/api/music/artists/complete.ts": $api_music_artists_complete,
+    "./routes/api/music/artists/info.ts": $api_music_artists_info,
+    "./routes/api/music/cluster/index.ts": $api_music_cluster_index,
+    "./routes/api/music/download/[jobId].ts": $api_music_download_jobId_,
+    "./routes/api/music/download/index.ts": $api_music_download_index,
+    "./routes/api/music/download/stats.ts": $api_music_download_stats,
+    "./routes/api/music/index/index.ts": $api_music_index_index,
+    "./routes/api/music/lyrics.ts": $api_music_lyrics,
+    "./routes/api/music/playlists/[playlistId].ts":
+      $api_music_playlists_playlistId_,
+    "./routes/api/music/playlists/public/[playlistId].ts":
+      $api_music_playlists_public_playlistId_,
+    "./routes/api/music/proxy/status.ts": $api_music_proxy_status,
+    "./routes/api/music/proxy/test.ts": $api_music_proxy_test,
+    "./routes/api/music/radio.ts": $api_music_radio,
+    "./routes/api/music/search.ts": $api_music_search,
+    "./routes/api/music/search/suggestions.ts": $api_music_search_suggestions,
+    "./routes/api/music/search/vector.ts": $api_music_search_vector,
+    "./routes/api/music/stream.ts": $api_music_stream,
+    "./routes/api/music/top/artists.ts": $api_music_top_artists,
+    "./routes/api/music/top/tracks.ts": $api_music_top_tracks,
+    "./routes/api/music/tracks/[trackId]/similar.ts":
+      $api_music_tracks_trackId_similar,
+    "./routes/api/music/tracks/[videoId].ts": $api_music_tracks_videoId_,
+    "./routes/api/music/tracks/[videoId]/related.ts":
+      $api_music_tracks_videoId_related,
+    "./routes/api/music/tracks/info.ts": $api_music_tracks_info,
+    "./routes/api/music/trending.ts": $api_music_trending,
+    "./routes/api/music/user/playlists.ts": $api_music_user_playlists,
+    "./routes/api/music/user/playlists/[playlistId].ts":
+      $api_music_user_playlists_playlistId_,
+    "./routes/api/music/user/tracks.ts": $api_music_user_tracks,
+    "./routes/api/music/yt_search.ts": $api_music_yt_search,
     "./routes/api/stripe-webhooks.ts": $api_stripe_webhooks,
     "./routes/api/users/[login]/index.ts": $api_users_login_index,
     "./routes/api/users/[login]/items.ts": $api_users_login_items,
@@ -50,6 +131,8 @@ const manifest = {
     "./routes/api/vote.ts": $api_vote,
     "./routes/blog/[slug].tsx": $blog_slug_,
     "./routes/blog/index.tsx": $blog_index,
+    "./routes/brand.tsx": $brand,
+    "./routes/brand_improved.tsx": $brand_improved,
     "./routes/dashboard/index.tsx": $dashboard_index,
     "./routes/dashboard/stats.tsx": $dashboard_stats,
     "./routes/dashboard/users.tsx": $dashboard_users,

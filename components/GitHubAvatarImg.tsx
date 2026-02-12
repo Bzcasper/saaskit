@@ -18,9 +18,10 @@ export default function GitHubAvatarImg(props: GitHubAvatarImgProps) {
         props.size * 2
       }`}
       alt={`GitHub avatar of ${props.login}`}
-      class={`rounded-full inline-block aspect-square size-[${props.size}px] ${
+      class={`rounded-full inline-block aspect-square ring-2 ring-border hover:ring-primary transition-all duration-fast ${
         props.class ?? ""
       }`}
+      style={{ width: `${props.size}px`, height: `${props.size}px` }}
       crossOrigin="anonymous"
       loading="lazy"
     />

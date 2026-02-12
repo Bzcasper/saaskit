@@ -13,11 +13,11 @@ export function TabItem(props: TabItemProps) {
   return (
     <a
       href={props.path}
-      class={`px-4 py-2 rounded-lg ${
+      class={`px-16 py-8 rounded-sm font-ui font-medium transition-all duration-fast ${
         props.active
-          ? "bg-gray-100 text-black dark:bg-gray-800 dark:text-white"
-          : ""
-      } link-styles`}
+          ? "bg-primary/20 text-primary border border-primary/30"
+          : "text-foreground-muted hover:text-foreground hover:bg-background-elevated"
+      }`}
     >
       {props.children}
     </a>
@@ -34,7 +34,7 @@ export interface TabsBarProps {
 
 export default function TabsBar(props: TabsBarProps) {
   return (
-    <div class="flex flex-row w-full mb-8">
+    <div class="flex flex-row w-full mb-32 gap-8">
       {props.links.map((link) => (
         <TabItem path={link.path} active={link.path === props.currentPath}>
           {link.innerText}

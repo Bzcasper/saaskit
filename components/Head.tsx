@@ -14,6 +14,9 @@ export type HeadProps =
 export default function Head(props: HeadProps) {
   return (
     <_Head>
+      <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+      <link rel="icon" href="/favicon.ico" sizes="any" />
+      <link rel="apple-touch-icon" href="/logo.webp" />
       <Meta
         title={props?.title ? `${props.title} ▲ ${SITE_NAME}` : SITE_NAME}
         description={props?.description ?? SITE_DESCRIPTION}

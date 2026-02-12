@@ -3,6 +3,7 @@ import { Signal, useComputed, useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 import { type Item } from "@/utils/db.ts";
 import IconInfo from "@preact-icons/tb/TbInfoCircle";
+import IconTrendingUp from "@preact-icons/tb/TbTrendingUp";
 import { fetchValues } from "@/utils/http.ts";
 import { decodeTime } from "@std/ulid/decode-time";
 import { timeAgo } from "@/utils/display.ts";
@@ -17,11 +18,13 @@ async function fetchVotedItems() {
 
 function EmptyItemsList() {
   return (
-    <div class="flex flex-col justify-center items-center gap-2 pt-16">
-      <IconInfo class="size-10 text-gray-400 dark:text-gray-600" />
-      <p>No items found</p>
-      <a href="/submit" class="text-primary hover:underline">
-        Submit your project &#8250;
+    <div class="flex flex-col justify-center items-center gap-16 pt-64 pb-32">
+      <div class="w-80 h-80 rounded-full bg-gradient-subtle flex items-center justify-center">
+        <IconInfo class="size-40 text-foreground-muted" />
+      </div>
+      <p class="text-foreground-muted text-body-lg">No items found</p>
+      <a href="/submit" class="btn-primary">
+        Submit your discovery →
       </a>
     </div>
   );
@@ -45,8 +48,14 @@ function VoteButton(props: VoteButtonProps) {
   }
 
   return (
-    <button onClick={onClick} class="hover:text-primary" type="button">
-      ▲
+    <button 
+      onClick={onClick} 
+      class="group flex flex-col items-center gap-4 transition-colors duration-fast"
+      type="button"
+    >
+      <div class="w-40 h-40 rounded-full bg-background-elevated group-hover:bg-primary/20 flex items-center justify-center transition-colors duration-fast">
+        <IconTrendingUp class="size-24 text-foreground-muted group-hover:text-primary transition-colors duration-fast" />
+      </div>
     </button>
   );
 }
@@ -64,18 +73,21 @@ function ItemSummary(props: ItemSummaryProps) {
   const isVotedSig = useSignal(props.isVoted);
 
   return (
-    <div class="py-2 flex gap-4">
+    <div class="py-16 flex gap-16 border-b border-border last:border-b-0">
       <div
-        class={`pr-2 text-center flex flex-col justify-center ${
-          isVotedSig.value ? "text-primary" : "hover:text-primary"
+        class={`flex flex-col items-center gap-4 min-w-[60px] ${
+          isVotedSig.value ? "text-primary" : "text-foreground-muted"
         }`}
       >
         {!props.isSignedIn && (
           <a
             title="Sign in to vote"
             href="/signin"
+            class="group flex flex-col items-center gap-4"
           >
-            ▲
+            <div class="w-40 h-40 rounded-full bg-background-elevated group-hover:bg-primary/20 flex items-center justify-center transition-colors duration-fast">
+              <IconTrendingUp class="size-24 text-foreground-muted group-hover:text-primary transition-colors duration-fast" />
+            </div>
           </a>
         )}
         {props.isSignedIn && !isVotedSig.value && (
@@ -85,36 +97,51 @@ function ItemSummary(props: ItemSummaryProps) {
             isVotedSig={isVotedSig}
           />
         )}
-        <p>{scoreSig}</p>
+        {props.isSignedIn && isVotedSig.value && (
+          <div class="flex flex-col items-center gap-4">
+            <div class="w-40 h-40 rounded-full bg-primary/20 flex items-center justify-center">
+              <IconTrendingUp class="size-24 text-primary" />
+            </div>
+          </div>
+        )}
+        <span class="font-heading font-bold text-h5">{scoreSig}</span>
       </div>
-      <div class="space-y-1">
-        <p>
+      <div class="flex-1 space-y-8 min-w-0">
+        <h3 class="font-heading font-bold text-h5 leading-tight">
           <a
-            class="visited:text-[purple] visited:dark:text-[lightpink] hover:underline mr-4"
-            href={props.item.url}
-          >
-            {props.item.title}
-          </a>
-          <a
-            class="hover:underline text-gray-500 after:content-['_↗']"
+            class="text-foreground hover:text-primary transition-colors duration-fast"
             href={props.item.url}
             target="_blank"
             rel="noopener noreferrer"
           >
+            {props.item.title}
+          </a>
+        </h3>
+        <div class="flex items-center gap-12 text-foreground-muted text-body-sm flex-wrap">
+          <a 
+            href={props.item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-primary transition-colors duration-fast truncate max-w-[200px]"
+          >
             {new URL(props.item.url).host}
           </a>
-        </p>
-        <p class="text-gray-500">
-          <GitHubAvatarImg
-            login={props.item.userLogin}
-            size={24}
-            class="mr-2"
-          />
-          <a class="hover:underline" href={`/users/${props.item.userLogin}`}>
-            {props.item.userLogin}
-          </a>{" "}
-          {timeAgo(new Date(decodeTime(props.item.id)))}
-        </p>
+          <span>•</span>
+          <div class="flex items-center gap-8">
+            <GitHubAvatarImg
+              login={props.item.userLogin}
+              size={20}
+            />
+            <a 
+              class="hover:text-primary transition-colors duration-fast" 
+              href={`/users/${props.item.userLogin}`}
+            >
+              {props.item.userLogin}
+            </a>
+          </div>
+          <span>•</span>
+          <span>{timeAgo(new Date(decodeTime(props.item.id)))}</span>
+        </div>
       </div>
     </div>
   );
@@ -167,27 +194,43 @@ export default function ItemsList(props: ItemsListProps) {
   }, []);
 
   if (isLoadingSig.value === undefined) {
-    return <p class="link-styles">Loading...</p>;
+    return (
+      <div class="flex justify-center py-64">
+        <div class="animate-pulse flex items-center gap-12 text-foreground-muted">
+          <div class="w-24 h-24 rounded-full bg-gradient-logo"></div>
+          <span class="text-body">Loading...</span>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div>
       {itemsSig.value.length
-        ? itemsSig.value.map((item, id) => {
-          return (
-            <ItemSummary
-              key={item.id}
-              item={item}
-              isVoted={itemsAreVotedSig.value[id]}
-              isSignedIn={props.isSignedIn}
-            />
-          );
-        })
+        ? (
+          <div class="divide-y divide-border">
+            {itemsSig.value.map((item, id) => (
+              <ItemSummary
+                key={item.id}
+                item={item}
+                isVoted={itemsAreVotedSig.value[id]}
+                isSignedIn={props.isSignedIn}
+              />
+            ))}
+          </div>
+        )
         : <EmptyItemsList />}
       {cursorSig.value !== "" && (
-        <button onClick={loadMoreItems} class="link-styles" type="button">
-          {isLoadingSig.value ? "Loading..." : "Load more"}
-        </button>
+        <div class="flex justify-center mt-32">
+          <button 
+            onClick={loadMoreItems} 
+            class="btn-ghost" 
+            type="button"
+            disabled={isLoadingSig.value}
+          >
+            {isLoadingSig.value ? "Loading..." : "Load more"}
+          </button>
+        </div>
       )}
     </div>
   );

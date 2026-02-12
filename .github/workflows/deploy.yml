@@ -1,22 +1,17 @@
-name: Deploy
+name: Deploy to Production
 on:
   push:
     branches: [main]
   pull_request:
     branches: main
 
+env:
+  DENO_DEPLOY_PROJECT: trendradar-api
+
 jobs:
-  deploy:
-    name: Deploy
+  test:
+    name: Run Tests
     runs-on: ubuntu-latest
-    env:
-      GITHUB_CLIENT_ID: ${{ secrets.GITHUB_CLIENT_ID }}
-      GITHUB_CLIENT_SECRET: ${{ secrets.GITHUB_CLIENT_SECRET }}
-
-    permissions:
-      id-token: write # Needed for auth with Deno Deploy
-      contents: read # Needed to clone the repository
-
     steps:
       - name: Clone repository
         uses: actions/checkout@v5
@@ -24,11 +19,111 @@ jobs:
       - name: Install Deno
         uses: denoland/setup-deno@v2
 
-      - name: Build step
-        run: deno task build # 📝 Update the build command(s) if necessary
+      - name: Cache dependencies
+        run: deno cache --lock=deno.lock main.ts
 
-      - name: Upload to Deno Deploy
+      - name: Run linter
+        run: deno lint
+
+      - name: Run type check
+        run: deno check main.ts
+
+      - name: Run tests
+        run: deno test --allow-all
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v5
+
+      - name: Install Deno
+        uses: denoland/setup-deno@v2
+
+      - name: Run security audit
+        run: deno info --json | jq '.modules[] | select(.permissions.run == true or .permissions.read == true)'
+
+      - name: Check for vulnerabilities
+        run: |
+          # Check for common security issues
+          if grep -r "eval(" --include="*.ts" --include="*.js" .; then
+            echo "Warning: eval() usage found"
+          fi
+
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+    needs: [test, security]
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v5
+
+      - name: Install Deno
+        uses: denoland/setup-deno@v2
+
+      - name: Build application
+        run: deno task build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            ./
+            !.git/
+            !node_modules/
+
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment: staging
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v5
+
+      - name: Install Deno
+        uses: denoland/setup-deno@v2
+
+      - name: Deploy to staging
         uses: denoland/deployctl@v1
         with:
-          project: saaskit # 📝 Update the deploy project name if necessary
-          entrypoint: ./main.ts # 📝 Update the entrypoint if necessary
+          project: trendradar-staging
+          entrypoint: ./main.ts
+          token: ${{ secrets.DENO_DEPLOY_TOKEN }}
+
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: deploy-staging
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment: production
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v5
+
+      - name: Install Deno
+        uses: denoland/setup-deno@v2
+
+      - name: Health check staging
+        run: |
+          sleep 30
+          curl -f https://trendradar-staging.deno.dev/api/health || exit 1
+
+      - name: Deploy to production
+        uses: denoland/deployctl@v1
+        with:
+          project: ${{ env.DENO_DEPLOY_PROJECT }}
+          entrypoint: ./main.ts
+          token: ${{ secrets.DENO_DEPLOY_TOKEN }}
+
+      - name: Health check production
+        run: |
+          sleep 30
+          curl -f https://trendradar-api.deno.dev/api/health || exit 1
+
+      - name: Notify deployment success
+        run: |
+          echo "Deployment successful to production"

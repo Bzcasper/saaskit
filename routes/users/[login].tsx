@@ -2,11 +2,14 @@
 import type { State } from "@/plugins/session.ts";
 import { getUser } from "@/utils/db.ts";
 import IconBrandGithub from "@preact-icons/tb/TbBrandGithub";
+import IconMusic from "@preact-icons/tb/TbMusic";
+import IconRadar from "@preact-icons/tb/TbRadar";
 import Head from "@/components/Head.tsx";
 import GitHubAvatarImg from "@/components/GitHubAvatarImg.tsx";
 import ItemsList from "@/islands/ItemsList.tsx";
 import { defineRoute } from "$fresh/server.ts";
 import { PremiumBadge } from "@/components/PremiumBadge.tsx";
+import { SITE_NAME, SITE_TAGLINE } from "@/utils/constants.ts";
 
 interface UserProfileProps {
   login: string;
@@ -15,23 +18,36 @@ interface UserProfileProps {
 
 function UserProfile(props: UserProfileProps) {
   return (
-    <div class="flex flex-col items-center w-[16rem]">
-      <GitHubAvatarImg login={props.login} size={200} />
-      <div class="flex gap-x-2 px-4 mt-4 items-center">
-        <div class="font-semibold text-xl">
+    <div class="card p-32 flex flex-col items-center w-full max-w-[280px]">
+      <GitHubAvatarImg 
+        login={props.login} 
+        size={140} 
+        class="ring-4 ring-primary/20 mb-24"
+      />
+      <div class="flex items-center gap-8 mb-8">
+        <h1 class="font-heading font-bold text-h4 text-foreground">
           {props.login}
-        </div>
-        {props.isSubscribed && <PremiumBadge class="size-6 inline" />}
-        <a
-          href={`https://github.com/${props.login}`}
-          aria-label={`${props.login}'s GitHub profile`}
-          class="link-styles"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <IconBrandGithub class="w-6" />
-        </a>
+        </h1>
+        {props.isSubscribed && <PremiumBadge class="size-24" />}
       </div>
+      <a
+        href={`https://github.com/${props.login}`}
+        aria-label={`${props.login}'s GitHub profile`}
+        class="text-foreground-muted hover:text-primary transition-colors duration-fast flex items-center gap-8 text-body-sm"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <IconBrandGithub class="size-18" />
+        View on GitHub
+      </a>
+      {props.isSubscribed && (
+        <div class="mt-24 pt-24 border-t border-border w-full">
+          <span class="inline-flex items-center gap-8 text-success font-medium text-body-sm">
+            <IconMusic class="size-16" />
+            Premium Member
+          </span>
+        </div>
+      )}
     </div>
   );
 }
@@ -63,14 +79,30 @@ export default defineRoute<State>(
             />
           )}
         </Head>
-        <main class="flex-1 p-4 flex flex-col md:flex-row gap-8">
-          <div class="flex justify-center p-4">
+        <main class="flex-1 p-16 lg:p-24 flex flex-col lg:flex-row gap-32">
+          {/* Brand Header */}
+          <div class="lg:hidden text-center mb-24">
+            <div class="inline-flex items-center gap-12">
+              <div class="w-48 h-48 rounded-lg bg-gradient-logo flex items-center justify-center shadow-glow">
+                <IconRadar class="size-24 text-background-dark" />
+              </div>
+              <span class="font-heading font-black text-h3 gradient-text lowercase">{SITE_NAME}</span>
+            </div>
+          </div>
+
+          <div class="flex justify-center lg:justify-start">
             <UserProfile {...user} />
           </div>
-          <ItemsList
-            endpoint={endpoint}
-            isSignedIn={isSignedIn}
-          />
+          
+          <div class="flex-1">
+            <h2 class="font-heading font-bold text-h4 text-foreground mb-24">
+              Submissions
+            </h2>
+            <ItemsList
+              endpoint={endpoint}
+              isSignedIn={isSignedIn}
+            />
+          </div>
         </main>
       </>
     );

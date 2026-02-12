@@ -1,4 +1,6 @@
 // Copyright 2023-2025 the Deno authors. All rights reserved. MIT license.
+import { SITE_NAME } from "@/utils/constants.ts";
+
 export interface MetaProps {
   /** Title of the current page */
   title: string;
@@ -16,6 +18,8 @@ export default function Meta(props: MetaProps) {
       {/* HTML Meta Tags */}
       <title>{props.title}</title>
       <meta name="description" content={props.description} />
+      <meta name="author" content="trendradar Design Team" />
+      <meta name="keywords" content="music, trends, API, intelligence, data, analytics, forecasting" />
 
       {/* Google / Search Engine Tags */}
       <meta itemProp="name" content={props.title} />
@@ -24,7 +28,7 @@ export default function Meta(props: MetaProps) {
 
       {/* Facebook Meta Tags */}
       <meta property="og:type" content="website" />
-      <meta property="og:site_name" content={props.title} />
+      <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:locale" content="en" />
       <meta property="og:title" content={props.title} />
       <meta property="og:description" content={props.description} />

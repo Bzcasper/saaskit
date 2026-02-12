@@ -4,6 +4,8 @@ import TabsBar from "@/components/TabsBar.tsx";
 import UsersTable from "@/islands/UsersTable.tsx";
 import { defineRoute } from "$fresh/server.ts";
 import { Partial } from "$fresh/runtime.ts";
+import IconRadar from "@preact-icons/tb/TbRadar";
+import { SITE_NAME, SITE_TAGLINE } from "@/utils/constants.ts";
 
 export default defineRoute((_req, ctx) => {
   const endpoint = "/api/users";
@@ -18,8 +20,22 @@ export default defineRoute((_req, ctx) => {
           rel="preload"
         />
       </Head>
-      <main class="flex-1 p-4 f-client-nav">
-        <h1 class="heading-with-margin-styles">Dashboard</h1>
+      <main class="flex-1 p-16 lg:p-24 f-client-nav">
+        {/* Brand Header */}
+        <div class="flex items-center gap-16 mb-24">
+          <div class="w-48 h-48 rounded-lg bg-gradient-logo flex items-center justify-center shadow-glow">
+            <IconRadar class="size-24 text-background-dark" />
+          </div>
+          <div>
+            <h1 class="font-heading font-black text-h2 gradient-text">
+              Dashboard
+            </h1>
+            <p class="text-h5 font-heading text-primary-300 mt-8">
+              "Real-time music trend intelligence"
+            </p>
+          </div>
+        </div>
+
         <TabsBar
           links={[{
             path: "/dashboard/stats",
@@ -30,6 +46,7 @@ export default defineRoute((_req, ctx) => {
           }]}
           currentPath={ctx.url.pathname}
         />
+        
         <Partial name="users">
           <UsersTable endpoint={endpoint} />
         </Partial>

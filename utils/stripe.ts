@@ -14,10 +14,33 @@ export function getStripePremiumPlanPriceId() {
   );
 }
 
-export const stripe = new Stripe(STRIPE_SECRET_KEY!, {
-  apiVersion: "2023-08-16",
-  // Use the Fetch API instead of Node's HTTP client.
-  httpClient: Stripe.createFetchHttpClient(),
+// Lazy initialization - only create stripe client when needed
+let _stripe: Stripe | null = null;
+
+export function getStripe(): Stripe {
+  if (!_stripe) {
+    if (!STRIPE_SECRET_KEY) {
+      throw new Error("STRIPE_SECRET_KEY is not set");
+    }
+    _stripe = new Stripe(STRIPE_SECRET_KEY, {
+      apiVersion: "2023-08-16",
+      // Use the Fetch API instead of Node's HTTP client.
+      httpClient: Stripe.createFetchHttpClient(),
+    });
+  }
+  return _stripe;
+}
+
+// Export stripe for backwards compatibility, but it will throw if accessed before checking isStripeEnabled()
+export const stripe = new Proxy({} as Stripe, {
+  get(_target, prop) {
+    const client = getStripe();
+    const value = client[prop as keyof Stripe];
+    if (typeof value === 'function') {
+      return value.bind(client);
+    }
+    return value;
+  }
 });
 
 /**

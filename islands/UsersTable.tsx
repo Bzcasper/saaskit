@@ -5,33 +5,41 @@ import type { User } from "@/utils/db.ts";
 import GitHubAvatarImg from "@/components/GitHubAvatarImg.tsx";
 import { fetchValues } from "@/utils/http.ts";
 import { PremiumBadge } from "@/components/PremiumBadge.tsx";
+import IconUsers from "@preact-icons/tb/TbUsers";
 
-const TH_STYLES = "p-4 text-left";
-const TD_STYLES = "p-4";
+const TH_STYLES = "p-16 text-left font-ui font-semibold text-foreground-muted text-body-sm";
+const TD_STYLES = "p-16";
 
 function UserTableRow(props: User) {
   return (
-    <tr class="hover:bg-gray-50 hover:dark:bg-gray-900 border-b border-gray-200">
-      <td scope="col" class={TD_STYLES}>
-        <GitHubAvatarImg login={props.login} size={32} />
-        <a
-          class="hover:underline ml-4 align-middle"
-          href={"/users/" + props.login}
-        >
-          {props.login}
-        </a>
+    <tr class="hover:bg-background-elevated border-b border-border transition-colors duration-fast">
+      <td class={TD_STYLES}>
+        <div class="flex items-center gap-12">
+          <GitHubAvatarImg login={props.login} size={36} />
+          <a
+            class="text-foreground hover:text-primary transition-colors duration-fast font-medium"
+            href={"/users/" + props.login}
+          >
+            {props.login}
+          </a>
+        </div>
       </td>
-      <td scope="col" class={TD_STYLES + " text-gray-500"}>
+      <td class={TD_STYLES}>
         {props.isSubscribed
           ? (
-            <>
-              Premium <PremiumBadge class="size-5 inline" />
-            </>
+            <span class="inline-flex items-center gap-8 text-success font-medium">
+              <PremiumBadge class="size-20" />
+              Premium
+            </span>
           )
-          : "Basic"}
+          : (
+            <span class="text-foreground-muted">Free</span>
+          )}
       </td>
-      <td scope="col" class={TD_STYLES + " text-gray-500"}>
-        ${(Math.random() * 100).toFixed(2)}
+      <td class={TD_STYLES}>
+        <span class="font-mono text-foreground">
+          ${(Math.random() * 100).toFixed(2)}
+        </span>
       </td>
     </tr>
   );
@@ -68,30 +76,46 @@ export default function UsersTable(props: UsersTableProps) {
     loadMoreUsers();
   }, []);
 
+  if (usersSig.value.length === 0 && !isLoadingSig.value) {
+    return (
+      <div class="card p-48 text-center">
+        <div class="w-64 h-64 rounded-full bg-gradient-subtle flex items-center justify-center mx-auto mb-16">
+          <IconUsers class="size-32 text-foreground-muted" />
+        </div>
+        <p class="text-foreground-muted text-body">No users found</p>
+      </div>
+    );
+  }
+
   return (
-    <div class="w-full rounded-lg shadow border-1 border-gray-300 overflow-x-auto">
-      <table class="table-auto border-collapse w-full">
-        <thead class="border-b border-gray-300">
-          <tr>
-            <th scope="col" class={TH_STYLES}>User</th>
-            <th scope="col" class={TH_STYLES}>Subscription</th>
-            <th scope="col" class={TH_STYLES}>Revenue</th>
-          </tr>
-        </thead>
-        <tbody>
-          {usersSig.value.map((user) => (
-            <UserTableRow key={user.login} {...user} />
-          ))}
-        </tbody>
-      </table>
+    <div class="card overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead class="bg-background-dark border-b border-border">
+            <tr>
+              <th class={TH_STYLES}>User</th>
+              <th class={TH_STYLES}>Subscription</th>
+              <th class={TH_STYLES}>Revenue</th>
+            </tr>
+          </thead>
+          <tbody>
+            {usersSig.value.map((user) => (
+              <UserTableRow key={user.login} {...user} />
+            ))}
+          </tbody>
+        </table>
+      </div>
       {cursorSig.value !== "" && (
-        <button
-          type="button"
-          onClick={loadMoreUsers}
-          class="link-styles p-4"
-        >
-          {isLoadingSig.value ? "Loading..." : "Load more"}
-        </button>
+        <div class="p-16 border-t border-border">
+          <button
+            type="button"
+            onClick={loadMoreUsers}
+            class="btn-ghost w-full"
+            disabled={isLoadingSig.value}
+          >
+            {isLoadingSig.value ? "Loading..." : "Load more"}
+          </button>
+        </div>
       )}
     </div>
   );
