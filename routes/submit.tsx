@@ -21,7 +21,7 @@ import {
   Logo,
   LogoVariations,
   TurntableAnimation,
-} from "@/components/branding";
+} from "@/components/branding/index.ts";
 
 export const handler: Handlers<undefined, SignedInState> = {
   async POST(req, ctx) {

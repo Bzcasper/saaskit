@@ -334,7 +334,7 @@ export async function handleDELETE(req: Request, ctx: RouteContext) {
 
     const deleted = await deleteAIPlaylist(
       playlistId,
-      (ctx.state.user as any).login,
+      (ctx.state.user as { login: string }).login,
     );
 
     if (!deleted) {

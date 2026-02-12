@@ -22,7 +22,7 @@ import {
   SoundWaveLogo,
   TurntableAnimation,
   VUMeter,
-} from "@/components/branding";
+} from "@/components/branding/index.ts";
 import { SITE_NAME } from "@/utils/constants.ts";
 
 // Error boundary component for handling component failures

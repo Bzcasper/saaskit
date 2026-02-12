@@ -19,7 +19,7 @@ import {
   NarrativeStep,
   TurntableAnimation,
   VUMeter,
-} from "@/components/branding";
+} from "@/components/branding/index.ts";
 
 export default defineRoute<State>((_req, ctx) => {
   if (!isGitHubSetup() && ctx.url.pathname !== "/welcome") {

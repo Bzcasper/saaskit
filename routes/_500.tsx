@@ -2,7 +2,7 @@
 import { PageProps } from "$fresh/server.ts";
 import { SITE_NAME } from "@/utils/constants.ts";
 import IconRadar from "@preact-icons/tb/TbRadar";
-import { BrandSlogan } from "@/components/branding";
+import { BrandSlogan } from "@/components/branding/index.ts";
 
 export default function Error500Page(props: PageProps) {
   return (

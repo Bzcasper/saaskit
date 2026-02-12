@@ -21,7 +21,7 @@ import {
   RadarLogo,
   SoundWaveLogo,
   TurntableAnimation,
-} from "@/components/branding";
+} from "@/components/branding/index.ts";
 
 export default defineRoute<SignedInState>((_req, ctx) => {
   const { sessionUser } = ctx.state;

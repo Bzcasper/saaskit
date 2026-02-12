@@ -12,14 +12,20 @@ import {
 import type { Handlers, RouteContext } from "$fresh/server.ts";
 
 // Import all AI endpoint handlers
-import * as recommendations from "./recommendations.ts";
-import * as playlists from "./playlists.ts";
-import * as analysis from "./analysis.ts";
-import * as search from "./search.ts";
-import * as context from "./context.ts";
+import { handler as recommendationsHandler } from "./recommendations.ts";
+import { handler as playlistsHandler } from "./playlists.ts";
+import { handler as analysisHandler } from "./analysis.ts";
+import { handler as searchHandler } from "./search.ts";
+import { handler as contextHandler } from "./context.ts";
 
 // Re-export all handlers for direct imports
-export { analysis, context, playlists, recommendations, search };
+export {
+  analysisHandler as analysis,
+  contextHandler as context,
+  playlistsHandler as playlists,
+  recommendationsHandler as recommendations,
+  searchHandler as search
+};
 
 /**
  * GET /api/music/ai
@@ -48,7 +54,7 @@ export async function DELETE(req: Request, ctx: RouteContext) {
   }
 
   if (path.startsWith("playlists")) {
-    return await playlists.handler.DELETE(req, ctx);
+    return await playlistsHandler.DELETE(req, ctx);
   }
 
   const response = errorResponse(
@@ -58,7 +64,7 @@ export async function DELETE(req: Request, ctx: RouteContext) {
   return toJson(response, 405);
 }
 export const handler: Handlers = {
-  async GET(req, ctx) {
+  async GET(req: Request, ctx: RouteContext) {
     const url = new URL(req.url);
 
     // If accessing a specific AI endpoint, route to the appropriate handler
@@ -66,23 +72,23 @@ export const handler: Handlers = {
 
     if (path) {
       if (path.startsWith("recommendations")) {
-        return await recommendations.handler.GET(req, ctx);
+        return await recommendationsHandler.GET(req, ctx);
       }
 
       if (path.startsWith("playlists")) {
-        return await playlists.handler.GET(req, ctx);
+        return await playlistsHandler.GET(req, ctx);
       }
 
       if (path.startsWith("analysis")) {
-        return await analysis.handler.GET(req, ctx);
+        return await analysisHandler.GET(req, ctx);
       }
 
       if (path.startsWith("search")) {
-        return await search.handler.GET(req, ctx);
+        return await searchHandler.GET(req, ctx);
       }
 
       if (path.startsWith("context")) {
-        return await context.handler.GET(req, ctx);
+        return await contextHandler.GET(req, ctx);
       }
 
       // If path doesn't match any known endpoint
@@ -141,7 +147,7 @@ export const handler: Handlers = {
 
     return toJson(response);
   },
-  async POST(req, ctx) {
+  async POST(req: Request, ctx: RouteContext) {
     const url = new URL(req.url);
     const path = url.pathname.split("/ai/")[1];
 
@@ -154,11 +160,11 @@ export const handler: Handlers = {
     }
 
     if (path.startsWith("recommendations")) {
-      return await recommendations.handler.POST(req, ctx);
+      return await recommendationsHandler.POST(req, ctx);
     }
 
     if (path.startsWith("playlists")) {
-      return await playlists.handler.POST(req, ctx);
+      return await playlistsHandler.POST(req, ctx);
     }
 
     const response = errorResponse(

@@ -19,7 +19,7 @@ import {
   LogoVariations,
   RadarLogo,
   SoundWaveLogo,
-} from "@/components/branding";
+} from "@/components/branding/index.ts";
 
 function SetupInstruction() {
   return (

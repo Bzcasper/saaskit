@@ -14,7 +14,7 @@ import {
   Logo,
   LogoVariations,
   TurntableAnimation,
-} from "@/components/branding";
+} from "@/components/branding/index.ts";
 
 const CARD_STYLES =
   "card p-8 flex flex-col transition-all duration-normal hover-lift";
