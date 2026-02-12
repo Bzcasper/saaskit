@@ -1,21 +1,21 @@
 // Copyright 2023-2025 Deno authors. All rights reserved. MIT license.
 
 import {
-  createDownloadJob,
-  getDownloadJob,
-  getUserDownloadJobs,
   cancelDownloadJob,
-  deleteDownloadJob,
-  getDownloadStats,
-  processDownloadJob,
   cleanupOldDownloadJobs,
+  createDownloadJob,
+  deleteDownloadJob,
+  getDownloadJob,
   getDownloadJobByVideoId,
+  getDownloadStats,
+  getUserDownloadJobs,
+  processDownloadJob,
 } from "@/utils/download.ts";
 import {
-  successResponse,
   errorResponse,
-  toJson,
   handleApiError,
+  successResponse,
+  toJson,
 } from "@/utils/api_response.ts";
 import type { Handlers } from "$fresh/server.ts";
 
@@ -40,7 +40,10 @@ export const handler: Handlers = {
 
       // Check for existing job
       const existingJob = await getDownloadJobByVideoId(videoId);
-      if (existingJob && existingJob.status !== "failed" && existingJob.status !== "cancelled") {
+      if (
+        existingJob && existingJob.status !== "failed" &&
+        existingJob.status !== "cancelled"
+      ) {
         const response = successResponse({
           jobId: existingJob.id,
           status: existingJob.status,

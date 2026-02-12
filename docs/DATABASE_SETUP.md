@@ -2,7 +2,8 @@
 
 ## Overview
 
-This guide walks you through setting up the Deno KV database and Stripe payment integration for trendradar.
+This guide walks you through setting up the Deno KV database and Stripe payment
+integration for trendradar.
 
 ---
 
@@ -103,6 +104,7 @@ deno task init:stripe
 ```
 
 This will:
+
 - Create a "Premium" product ($5/month)
 - Set up customer portal configuration
 - Output the `STRIPE_PREMIUM_PLAN_PRICE_ID` to add to `.env`
@@ -189,26 +191,31 @@ For production, Deno KV uses [Deno Deploy KV](https://deno.com/kv):
 ### Database Issues
 
 **Error: "Deno.openKv is not a function"**
+
 - Make sure you're using Deno 1.40 or later
 - Run with `--unstable-kv` flag (already configured in deno.json)
 
 **Error: "Permission denied"**
+
 - Check file permissions for KV database file
 - Ensure DENO_KV_PATH is accessible
 
 ### Stripe Issues
 
 **Error: "Stripe is disabled"**
+
 - Check that `STRIPE_SECRET_KEY` is set in `.env`
 - Ensure key starts with `sk_test_` (test) or `sk_live_` (production)
 - Restart the server after updating .env
 
 **Error: "No such price"**
+
 - Run `deno task init:stripe` to create the product
 - Copy the price ID to `.env`
 - Restart server
 
 **Webhooks not working**
+
 - Ensure Stripe CLI is running with `stripe listen`
 - Check webhook secret is correct in `.env`
 - Verify webhook URL matches your local server
@@ -266,6 +273,7 @@ deno task ok
 7. 🚀 Deploy to production
 
 For help, see:
+
 - [Deno KV Documentation](https://deno.com/kv)
 - [Stripe Documentation](https://stripe.com/docs)
 - [Fresh Documentation](https://fresh.deno.dev/)

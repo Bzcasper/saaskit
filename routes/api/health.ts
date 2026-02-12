@@ -24,7 +24,7 @@ export const handler: Handlers = {
 
     // Determine overall status
     const hasUnhealthyService = Object.values(health.services).some(
-      (service: any) => service.status !== "healthy"
+      (service: any) => service.status !== "healthy",
     );
 
     if (hasUnhealthyService) {
@@ -35,7 +35,9 @@ export const handler: Handlers = {
   },
 };
 
-async function checkDatabaseHealth(): Promise<{ status: string; latency?: number }> {
+async function checkDatabaseHealth(): Promise<
+  { status: string; latency?: number }
+> {
   try {
     const start = Date.now();
     const kv = await Deno.openKv();
@@ -48,7 +50,9 @@ async function checkDatabaseHealth(): Promise<{ status: string; latency?: number
   }
 }
 
-async function checkAIProvidersHealth(): Promise<{ status: string; providers?: Record<string, string> }> {
+async function checkAIProvidersHealth(): Promise<
+  { status: string; providers?: Record<string, string> }
+> {
   const providers = {
     cerebras: "unknown",
     groq: "unknown",
@@ -68,17 +72,21 @@ async function checkAIProvidersHealth(): Promise<{ status: string; providers?: R
     const openaiKey = Deno.env.get("OPENAI_API_KEY");
     providers.openai = openaiKey ? "configured" : "missing_key";
 
-    const allConfigured = Object.values(providers).every(status => status === "configured");
+    const allConfigured = Object.values(providers).every((status) =>
+      status === "configured"
+    );
     return {
       status: allConfigured ? "healthy" : "degraded",
-      providers
+      providers,
     };
   } catch (error) {
     return { status: "unhealthy", error: error.message };
   }
 }
 
-async function checkExternalAPIsHealth(): Promise<{ status: string; checks?: Record<string, any> }> {
+async function checkExternalAPIsHealth(): Promise<
+  { status: string; checks?: Record<string, any> }
+> {
   const checks = {
     youtube_api: "unknown",
     stripe_api: "unknown",
@@ -86,13 +94,19 @@ async function checkExternalAPIsHealth(): Promise<{ status: string; checks?: Rec
 
   try {
     // Check if required environment variables are set
-    checks.youtube_api = Deno.env.get("YOUTUBE_API_KEY") ? "configured" : "missing_key";
-    checks.stripe_api = Deno.env.get("STRIPE_SECRET_KEY") ? "configured" : "missing_key";
+    checks.youtube_api = Deno.env.get("YOUTUBE_API_KEY")
+      ? "configured"
+      : "missing_key";
+    checks.stripe_api = Deno.env.get("STRIPE_SECRET_KEY")
+      ? "configured"
+      : "missing_key";
 
-    const allConfigured = Object.values(checks).every(status => status === "configured");
+    const allConfigured = Object.values(checks).every((status) =>
+      status === "configured"
+    );
     return {
       status: allConfigured ? "healthy" : "degraded",
-      checks
+      checks,
     };
   } catch (error) {
     return { status: "unhealthy", error: error.message };

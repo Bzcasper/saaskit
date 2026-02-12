@@ -7,7 +7,8 @@ import { fetchValues } from "@/utils/http.ts";
 import { PremiumBadge } from "@/components/PremiumBadge.tsx";
 import IconUsers from "@preact-icons/tb/TbUsers";
 
-const TH_STYLES = "p-16 text-left font-ui font-semibold text-foreground-muted text-body-sm";
+const TH_STYLES =
+  "p-16 text-left font-ui font-semibold text-foreground-muted text-body-sm";
 const TD_STYLES = "p-16";
 
 function UserTableRow(props: User) {
@@ -32,9 +33,7 @@ function UserTableRow(props: User) {
               Premium
             </span>
           )
-          : (
-            <span class="text-foreground-muted">Free</span>
-          )}
+          : <span class="text-foreground-muted">Free</span>}
       </td>
       <td class={TD_STYLES}>
         <span class="font-mono text-foreground">

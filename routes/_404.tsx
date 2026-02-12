@@ -4,8 +4,8 @@ import IconRadar from "@preact-icons/tb/TbRadar";
 import {
   BrandSlogan,
   Logo,
+  type LogoProps,
   LogoVariations,
-  type LogoProps
 } from "@/components/branding/index.ts";
 
 export default function NotFoundPage() {
@@ -18,7 +18,7 @@ export default function NotFoundPage() {
             <IconRadar class="size-10 text-black" />
           </div>
         </div>
-        
+
         <h1 class="font-heading font-black text-6xl gradient-text mb-4">
           404
         </h1>
@@ -26,11 +26,15 @@ export default function NotFoundPage() {
           Signal Lost
         </h2>
         <p class="text-foreground-muted mb-8">
-          We couldn't detect that trend. The page you're looking for doesn't exist.
+          We couldn't detect that trend. The page you're looking for doesn't
+          exist.
         </p>
         <BrandSlogan variant="primary" className="mb-8" />
         <Logo size="lg" className="mb-8" />
-        <a href="/" class="inline-flex items-center py-3 px-6 bg-gradient-logo text-black font-heading font-bold rounded-xl hover:scale-105 hover:shadow-glow transition-all">
+        <a
+          href="/"
+          class="inline-flex items-center py-3 px-6 bg-gradient-logo text-black font-heading font-bold rounded-xl hover:scale-105 hover:shadow-glow transition-all"
+        >
           Return to {SITE_NAME}
           <span class="ml-2">→</span>
         </a>

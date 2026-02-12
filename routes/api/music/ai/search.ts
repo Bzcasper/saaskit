@@ -7,22 +7,22 @@
 import { cerebrasClient } from "@/utils/cerebras_client.ts";
 import { YTMusic } from "@/utils/music_client.ts";
 import {
+  getAllTrackEmbeddings,
   logSearch,
   saveTrackEmbedding,
-  getAllTrackEmbeddings,
 } from "@/utils/music_models.ts";
 import {
-  successResponse,
   errorResponse,
-  toJson,
   handleApiError,
+  successResponse,
+  toJson,
 } from "@/utils/api_response.ts";
 import type { Handlers, RouteContext } from "$fresh/server.ts";
 
 const ytmusic = new YTMusic();
 
 /**
- 
+
 export const handler: Handlers = {
   async GET(req, ctx) {
     const url = new URL(req.url);
@@ -183,13 +183,15 @@ export const handler: Handlers = {
  * Query params: q (required), limit (optional, default: 20)
  */
 
-
 /**
  * GET /api/music/ai/search/natural
  * Natural language search for music
  * Query params: q (required)
  */
-export async function handleNaturalLanguageSearch(req: Request, ctx: RouteContext) {
+export async function handleNaturalLanguageSearch(
+  req: Request,
+  ctx: RouteContext,
+) {
   try {
     const url = new URL(req.url);
     const query = url.searchParams.get("q");
@@ -205,11 +207,11 @@ export async function handleNaturalLanguageSearch(req: Request, ctx: RouteContex
 
     // Process natural language query
     const expandedQuery = await cerebrasClient.expandSearchQuery(query);
-    
+
     // Determine search strategy based on intent
     let results = [];
     let explanation = "";
-    
+
     switch (expandedQuery.intent) {
       case "artist":
         // Search for the artist
@@ -218,65 +220,69 @@ export async function handleNaturalLanguageSearch(req: Request, ctx: RouteContex
           "artists",
         );
         results = artistResults.results || [];
-        explanation = `Searched for artist: ${expandedQuery.relatedArtists[0] || query}`;
+        explanation = `Searched for artist: ${
+          expandedQuery.relatedArtists[0] || query
+        }`;
         break;
-        
+
       case "song":
         // Search for the specific song
         const songResults = await ytmusic.search(query, "songs");
         results = songResults.results || [];
         explanation = `Searched for song: ${query}`;
         break;
-        
+
       case "album":
         // Search for the album
         const albumResults = await ytmusic.search(query, "albums");
         results = albumResults.results || [];
         explanation = `Searched for album: ${query}`;
         break;
-        
+
       case "genre":
         // Search for the genre with expanded terms
-        const genreQuery = expandedQuery.relatedGenres[0] || 
-                          expandedQuery.expanded[0] || 
-                          query;
+        const genreQuery = expandedQuery.relatedGenres[0] ||
+          expandedQuery.expanded[0] ||
+          query;
         const genreResults = await ytmusic.search(genreQuery);
         results = genreResults.results || [];
         explanation = `Searched for genre: ${genreQuery}`;
         break;
-        
+
       case "mood":
         // Search for the mood with expanded terms
-        const moodQuery = expandedQuery.relatedMoods[0] || 
-                         expandedQuery.expanded[0] || 
-                         query;
+        const moodQuery = expandedQuery.relatedMoods[0] ||
+          expandedQuery.expanded[0] ||
+          query;
         const moodResults = await ytmusic.search(moodQuery);
         results = moodResults.results || [];
         explanation = `Searched for mood: ${moodQuery}`;
         break;
-        
+
       case "discovery":
       default:
         // Use multiple search terms for discovery
         let discoveryResults: any[] = [];
-        
+
         for (const term of [query, ...expandedQuery.expanded.slice(0, 2)]) {
           const termResults = await ytmusic.search(term);
-          
+
           // Add unique results
           for (const result of termResults.results || []) {
-            if (!discoveryResults.some(r => r.videoId === result.videoId)) {
+            if (!discoveryResults.some((r) => r.videoId === result.videoId)) {
               discoveryResults.push(result);
             }
-            
+
             if (discoveryResults.length >= 20) break;
           }
-          
+
           if (discoveryResults.length >= 20) break;
         }
-        
+
         results = discoveryResults;
-        explanation = `Searched with multiple terms for discovery: ${[query, ...expandedQuery.expanded.slice(0, 2)].join(", ")}`;
+        explanation = `Searched with multiple terms for discovery: ${
+          [query, ...expandedQuery.expanded.slice(0, 2)].join(", ")
+        }`;
         break;
     }
 
@@ -302,4 +308,3 @@ export async function handleNaturalLanguageSearch(req: Request, ctx: RouteContex
 }
 
 // Route handlers
-

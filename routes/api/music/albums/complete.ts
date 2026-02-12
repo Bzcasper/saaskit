@@ -2,10 +2,10 @@
 
 import { getAlbumComplete } from "@/utils/music_client.ts";
 import {
-  successResponse,
   errorResponse,
-  toJson,
   handleApiError,
+  successResponse,
+  toJson,
 } from "@/utils/api_response.ts";
 import { generateCacheKey, getOrSetCache } from "@/utils/cache.ts";
 import type { RouteContext } from "$fresh/server.ts";
@@ -37,7 +37,10 @@ export default async function handler(req: Request, ctx: RouteContext) {
     );
 
     if (!albumData.success) {
-      const response = errorResponse("NOT_FOUND", albumData.error || "Album not found");
+      const response = errorResponse(
+        "NOT_FOUND",
+        albumData.error || "Album not found",
+      );
       return toJson(response, 404);
     }
 

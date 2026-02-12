@@ -2,10 +2,10 @@
 
 import { YTMusic } from "@/utils/music_client.ts";
 import {
-  successResponse,
   errorResponse,
-  toJson,
   handleApiError,
+  successResponse,
+  toJson,
 } from "@/utils/api_response.ts";
 import { generateCacheKey, getOrSetCache } from "@/utils/cache.ts";
 import type { Handlers, RouteContext } from "$fresh/server.ts";
@@ -30,7 +30,9 @@ export const handler: Handlers = {
         return toJson(response, 400);
       }
 
-      const cacheKey = generateCacheKey("top-tracks", { limit: limit.toString() });
+      const cacheKey = generateCacheKey("top-tracks", {
+        limit: limit.toString(),
+      });
 
       const tracks = await getOrSetCache(
         cacheKey,

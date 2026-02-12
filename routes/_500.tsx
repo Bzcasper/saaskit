@@ -14,7 +14,7 @@ export default function Error500Page(props: PageProps) {
             <IconRadar class="size-10 text-black" />
           </div>
         </div>
-        
+
         <h1 class="font-heading font-black text-6xl text-error mb-4">
           500
         </h1>
@@ -29,7 +29,10 @@ export default function Error500Page(props: PageProps) {
         </p>
         <BrandSlogan variant="primary" />
         <Logo size="lg" class="mb-8" />
-        <a href="/" class="inline-flex items-center py-3 px-6 bg-gradient-logo text-black font-heading font-bold rounded-xl hover:scale-105 hover:shadow-glow transition-all">
+        <a
+          href="/"
+          class="inline-flex items-center py-3 px-6 bg-gradient-logo text-black font-heading font-bold rounded-xl hover:scale-105 hover:shadow-glow transition-all"
+        >
           Return to {SITE_NAME}
           <span class="ml-2">→</span>
         </a>

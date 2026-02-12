@@ -2,18 +2,23 @@
 import { defineRoute } from "$fresh/src/server/defines.ts";
 import Head from "@/components/Head.tsx";
 import { isGitHubSetup } from "@/utils/github.ts";
-import { SITE_NAME, SITE_DESCRIPTION, SITE_TAGLINE, SITE_MISSION } from "@/utils/constants.ts";
+import {
+  SITE_DESCRIPTION,
+  SITE_MISSION,
+  SITE_NAME,
+  SITE_TAGLINE,
+} from "@/utils/constants.ts";
 import IconTrendingUp from "@preact-icons/tb/TbTrendingUp";
 import IconRadar from "@preact-icons/tb/TbRadar";
 import IconMusic from "@preact-icons/tb/TbMusic";
 import {
-  BrandSlogan,
-  LogoHolographic,
-  RadarLogo,
-  SoundWaveLogo,
   Banner,
   BrandButton,
-  LogoVariations
+  BrandSlogan,
+  LogoHolographic,
+  LogoVariations,
+  RadarLogo,
+  SoundWaveLogo,
 } from "@/components/branding";
 
 function SetupInstruction() {
@@ -133,7 +138,8 @@ export default defineRoute((_req, ctx) => {
                 Setup Complete!
               </h2>
               <p class="text-foreground-muted text-lg max-w-2xl mx-auto">
-                Your {SITE_NAME} brand is now configured and ready to detect music trends.
+                Your {SITE_NAME}{" "}
+                brand is now configured and ready to detect music trends.
               </p>
               <div class="mt-6">
                 <BrandButton href="/" variant="primary" class="text-lg">
@@ -148,24 +154,38 @@ export default defineRoute((_req, ctx) => {
                 <div class="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-logo flex items-center justify-center shadow-glow">
                   <span class="font-heading font-black text-xl">TR</span>
                 </div>
-                <h3 class="font-heading font-bold text-h4 text-white mb-2">Logo Mark</h3>
-                <p class="text-body text-foreground-muted">Icon for favicons and app icons</p>
+                <h3 class="font-heading font-bold text-h4 text-white mb-2">
+                  Logo Mark
+                </h3>
+                <p class="text-body text-foreground-muted">
+                  Icon for favicons and app icons
+                </p>
               </div>
 
               <div class="bg-background-card/60 border border-primary/20 rounded-2xl p-8 text-center hover:-translate-y-1 transition-all">
                 <div class="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-logo flex items-center justify-center shadow-glow">
                   <span class="font-heading font-black text-xl">♪</span>
                 </div>
-                <h3 class="font-heading font-bold text-h4 text-white mb-2">Audio Identity</h3>
-                <p class="text-body text-foreground-muted">Music detection radar system</p>
+                <h3 class="font-heading font-bold text-h4 text-white mb-2">
+                  Audio Identity
+                </h3>
+                <p class="text-body text-foreground-muted">
+                  Music detection radar system
+                </p>
               </div>
 
               <div class="bg-background-card/60 border border-primary/20 rounded-2xl p-8 text-center hover:-translate-y-1 transition-all">
                 <div class="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-logo flex items-center justify-center shadow-glow">
-                  <span class="font-heading font-black text-xl text-2xl gradient-text">TR</span>
+                  <span class="font-heading font-black text-xl text-2xl gradient-text">
+                    TR
+                  </span>
                 </div>
-                <h3 class="font-heading font-bold text-h4 text-white mb-2">Wordmark</h3>
-                <p class="text-body text-foreground-muted">Full brand name with gradient</p>
+                <h3 class="font-heading font-bold text-h4 text-white mb-2">
+                  Wordmark
+                </h3>
+                <p class="text-body text-foreground-muted">
+                  Full brand name with gradient
+                </p>
               </div>
             </div>
 
@@ -180,7 +200,11 @@ export default defineRoute((_req, ctx) => {
             </div>
 
             <div class="text-center">
-              <BrandButton href="/brand" variant="secondary" class="text-lg px-8 py-4">
+              <BrandButton
+                href="/brand"
+                variant="secondary"
+                class="text-lg px-8 py-4"
+              >
                 View Brand Assets →
               </BrandButton>
             </div>

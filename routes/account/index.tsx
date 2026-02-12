@@ -12,15 +12,15 @@ import IconExternalLink from "@preact-icons/tb/TbExternalLink";
 import IconRadar from "@preact-icons/tb/TbRadar";
 import { SITE_NAME, SITE_TAGLINE } from "@/utils/constants.ts";
 import {
-  Logo,
-  BrandSlogan,
+  Banner,
   BrandButton,
+  BrandProvider,
+  BrandSlogan,
+  Logo,
   LogoHolographic,
   RadarLogo,
   SoundWaveLogo,
-  Banner,
-  BrandProvider,
-  TurntableAnimation
+  TurntableAnimation,
 } from "@/components/branding";
 
 export default defineRoute<SignedInState>((_req, ctx) => {
@@ -89,9 +89,7 @@ export default defineRoute<SignedInState>((_req, ctx) => {
                       <PremiumBadge class="size-5" />
                     </span>
                   )
-                  : (
-                    <span class="text-foreground-muted">Free</span>
-                  )}
+                  : <span class="text-foreground-muted">Free</span>}
                 {isStripeEnabled() && (
                   <a
                     class="link-styles text-body-sm"

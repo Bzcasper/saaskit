@@ -1,7 +1,7 @@
 // Copyright 2023-2025 the Deno authors. All rights reserved. MIT license.
 /**
  * Database Setup Script for trendradar
- * 
+ *
  * This script initializes the Deno KV database with sample data
  * and verifies the database is working correctly.
  */
@@ -83,13 +83,14 @@ async function seedDatabase() {
         id: ulid(),
       };
       await createItem(item);
-      console.log(`  ✓ ${item.title.substring(0, 50)}... (${item.score} votes)`);
+      console.log(
+        `  ✓ ${item.title.substring(0, 50)}... (${item.score} votes)`,
+      );
     }
 
     console.log("\n✅ Database seeded successfully!");
     console.log(`   📊 ${SAMPLE_ITEMS.length} music discoveries added`);
     console.log(`   👥 ${SAMPLE_USERS.length} users created`);
-
   } catch (error) {
     console.error("\n❌ Error seeding database:", error);
     throw error;
@@ -133,7 +134,7 @@ async function main() {
     await seedDatabase();
 
     // Verify the data
-    const { users, items } = await verifyDatabase();
+    const { users: _users, items: _items } = await verifyDatabase();
 
     console.log("\n╔════════════════════════════════════════╗");
     console.log("║   ✅ Database Setup Complete!          ║");
@@ -146,7 +147,6 @@ async function main() {
     console.log("  • deno task db:dump > backup.json");
     console.log("  • deno task db:restore backup.json");
     console.log("  • deno task db:reset  # ⚠️ Destructive");
-
   } catch (error) {
     console.error("\n❌ Setup failed:", error);
     Deno.exit(1);

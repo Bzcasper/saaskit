@@ -8,7 +8,8 @@ export function TurntableAnimation() {
   return (
     <div class="relative w-[400px] h-[400px] mx-auto my-12">
       {/* Base */}
-      <div class="absolute inset-0 rounded-full bg-gradient-to-br from-[#1a1a2e] to-[#0a0a0a] shadow-2xl"></div>
+      <div class="absolute inset-0 rounded-full bg-gradient-to-br from-[#1a1a2e] to-[#0a0a0a] shadow-2xl">
+      </div>
 
       {/* Vinyl */}
       <div
@@ -17,8 +18,8 @@ export function TurntableAnimation() {
           background: `repeating-radial-gradient(circle at center,
             #000 0%, #1a1a2e 20%, #000 20%, #0a0a0a 40%,
             #000 40%, #1a1a2e 60%, #000 60%, #0a0a0a 80%, #000 80%)`,
-          transform: 'translate(-50%, -50%)',
-          animation: 'vinyl-spin 3s linear infinite'
+          transform: "translate(-50%, -50%)",
+          animation: "vinyl-spin 3s linear infinite",
         }}
       >
         {/* Label */}
@@ -30,13 +31,16 @@ export function TurntableAnimation() {
       {/* Tonearm */}
       <div
         class="absolute top-[10%] right-[10%] w-40 h-2 bg-gradient-to-r from-[#333] via-[#666] to-[#333] origin-right"
-        style={{ animation: 'tonearm-play 8s ease-in-out infinite' }}
+        style={{ animation: "tonearm-play 8s ease-in-out infinite" }}
       >
-        <div class="absolute -left-5 -top-1.5 w-10 h-5 bg-[#444] rounded-l"></div>
-        <div class="absolute -right-5 -top-4 w-10 h-10 rounded-full bg-gradient-radial from-[#444] to-[#222]"></div>
+        <div class="absolute -left-5 -top-1.5 w-10 h-5 bg-[#444] rounded-l">
+        </div>
+        <div class="absolute -right-5 -top-4 w-10 h-10 rounded-full bg-gradient-radial from-[#444] to-[#222]">
+        </div>
       </div>
 
-      <style>{`
+      <style>
+        {`
         @keyframes vinyl-spin {
           from { transform: translate(-50%, -50%) rotate(0deg); }
           to { transform: translate(-50%, -50%) rotate(360deg); }
@@ -45,7 +49,8 @@ export function TurntableAnimation() {
           0%, 100% { transform: rotate(-30deg); }
           50% { transform: rotate(-10deg); }
         }
-      `}</style>
+      `}
+      </style>
     </div>
   );
 }

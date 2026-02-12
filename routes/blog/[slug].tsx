@@ -25,19 +25,21 @@ export default defineRoute(async (_req, ctx) => {
             <div class="w-48 h-48 rounded-lg bg-gradient-logo flex items-center justify-center shadow-glow group-hover:scale-105 transition-transform duration-fast">
               <IconRadar class="size-24 text-background-dark" />
             </div>
-            <span class="font-heading font-bold text-h4 gradient-text lowercase">{SITE_NAME}</span>
+            <span class="font-heading font-bold text-h4 gradient-text lowercase">
+              {SITE_NAME}
+            </span>
           </a>
         </div>
 
         {/* Back Link */}
-        <a 
-          href="/blog" 
+        <a
+          href="/blog"
           class="inline-flex items-center gap-8 text-foreground-muted hover:text-primary transition-colors duration-fast mb-32"
         >
           <IconArrowLeft class="size-18" />
           Back to blog
         </a>
-        
+
         {/* Article Header */}
         <article>
           <header class="mb-32">
@@ -47,7 +49,7 @@ export default defineRoute(async (_req, ctx) => {
             {post.publishedAt.toString() !== "Invalid Date" && (
               <div class="flex items-center gap-12 text-foreground-muted">
                 <IconCalendar class="size-20" />
-                <time 
+                <time
                   dateTime={post.publishedAt.toISOString()}
                   class="text-body"
                 >
@@ -58,9 +60,9 @@ export default defineRoute(async (_req, ctx) => {
               </div>
             )}
           </header>
-          
+
           <Share url={ctx.url} title={post.title} />
-          
+
           {/* Article Content */}
           <div
             class="mt-32 prose prose-invert prose-lg max-w-none

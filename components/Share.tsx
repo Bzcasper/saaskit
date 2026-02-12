@@ -18,7 +18,9 @@ interface ShareProps {
 export default function Share(props: ShareProps) {
   return (
     <div class="flex flex-row gap-16 my-32 items-center">
-      <span class="align-middle text-foreground-muted font-ui font-medium">Share</span>
+      <span class="align-middle text-foreground-muted font-ui font-medium">
+        Share
+      </span>
       <div class="flex gap-12">
         <a
           href={`https://www.facebook.com/sharer/sharer.php?u=${

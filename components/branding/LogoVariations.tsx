@@ -15,13 +15,13 @@ interface LogoVariationsProps {
 const sizes = {
   sm: { icon: "w-10 h-10", iconText: "text-xl", text: "text-2xl" },
   md: { icon: "w-15 h-15", iconText: "text-2xl", text: "text-3xl" },
-  lg: { icon: "w-20 h-20", iconText: "text-4xl", text: "text-5xl" }
+  lg: { icon: "w-20 h-20", iconText: "text-4xl", text: "text-5xl" },
 };
 
 export function LogoVariations({
   variant = "horizontal",
   size = "md",
-  href = "/"
+  href = "/",
 }: LogoVariationsProps) {
   const sizeClasses = sizes[size];
   const iconSize = size === "sm" ? 28 : size === "md" ? 32 : 56;
@@ -33,13 +33,16 @@ export function LogoVariations({
         <div
           class={`${sizeClasses.icon} rounded-xl bg-gradient-logo flex items-center justify-center shadow-glow`}
         >
-          <span class="font-heading font-black" style={{ fontSize: `${iconSize / 4}rem`, color: '#050508' }}>
+          <span
+            class="font-heading font-black"
+            style={{ fontSize: `${iconSize / 4}rem`, color: "#050508" }}
+          >
             TR
           </span>
         </div>
         <div
           class={`font-heading font-black gradient-text lowercase ${sizeClasses.text}`}
-          style={{ letterSpacing: '2px' }}
+          style={{ letterSpacing: "2px" }}
         >
           trendradar
         </div>
@@ -51,13 +54,16 @@ export function LogoVariations({
         <div
           class={`${sizeClasses.icon} rounded-xl bg-gradient-logo flex items-center justify-center shadow-glow`}
         >
-          <span class="font-heading font-black" style={{ fontSize: `${iconSize / 4}rem`, color: '#050508' }}>
+          <span
+            class="font-heading font-black"
+            style={{ fontSize: `${iconSize / 4}rem`, color: "#050508" }}
+          >
             TR
           </span>
         </div>
         <div
           class={`font-heading font-black gradient-text lowercase ${sizeClasses.text}`}
-          style={{ letterSpacing: '2px' }}
+          style={{ letterSpacing: "2px" }}
         >
           trendradar
         </div>
@@ -68,15 +74,18 @@ export function LogoVariations({
       <div class="flex items-center justify-center gap-4 bg-white rounded-xl p-6 border border-gray-200">
         <div
           class={`${sizeClasses.icon} rounded-xl flex items-center justify-center`}
-          style={{ background: '#8B5CF6' }}
+          style={{ background: "#8B5CF6" }}
         >
-          <span class="font-heading font-black" style={{ fontSize: `${iconSize / 4}rem`, color: '#F8FAFC' }}>
+          <span
+            class="font-heading font-black"
+            style={{ fontSize: `${iconSize / 4}rem`, color: "#F8FAFC" }}
+          >
             TR
           </span>
         </div>
         <div
           class={`font-heading font-black ${sizeClasses.text}`}
-          style={{ letterSpacing: '2px', color: '#8B5CF6' }}
+          style={{ letterSpacing: "2px", color: "#8B5CF6" }}
         >
           trendradar
         </div>
@@ -88,12 +97,15 @@ export function LogoVariations({
         <div
           class={`${sizeClasses.icon} rounded-xl bg-gradient-logo flex items-center justify-center shadow-glow`}
         >
-          <span class="font-heading font-black" style={{ fontSize: `${iconSize / 4}rem`, color: '#050508' }}>
+          <span
+            class="font-heading font-black"
+            style={{ fontSize: `${iconSize / 4}rem`, color: "#050508" }}
+          >
             TR
           </span>
         </div>
       </div>
-    )
+    ),
   };
 
   const content = variants[variant];

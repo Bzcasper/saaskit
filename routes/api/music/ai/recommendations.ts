@@ -7,19 +7,19 @@
 import { groqClient } from "@/utils/groq_client.ts";
 import { cerebrasClient } from "@/utils/cerebras_client.ts";
 import {
+  getAllTrackEmbeddings,
   getListeningHistory,
   getListeningStats,
   getUserTasteProfile,
-  saveUserTasteProfile,
-  getAllTrackEmbeddings,
-  saveTrackEmbedding,
   type ListeningHistory,
+  saveTrackEmbedding,
+  saveUserTasteProfile,
 } from "@/utils/music_models.ts";
 import {
-  successResponse,
   errorResponse,
-  toJson,
   handleApiError,
+  successResponse,
+  toJson,
 } from "@/utils/api_response.ts";
 import type { Handlers } from "$fresh/server.ts";
 
@@ -32,7 +32,10 @@ export const handler: Handlers = {
   async GET(req, ctx) {
     try {
       if (!ctx.state.user) {
-        const response = errorResponse("UNAUTHORIZED", "Authentication required");
+        const response = errorResponse(
+          "UNAUTHORIZED",
+          "Authentication required",
+        );
         return toJson(response, 401);
       }
 
@@ -89,7 +92,10 @@ export const handler: Handlers = {
           recommendations = await generateTrendingRecommendations(limit);
           break;
         default:
-          const response = errorResponse("INVALID_TYPE", "Invalid recommendation type");
+          const response = errorResponse(
+            "INVALID_TYPE",
+            "Invalid recommendation type",
+          );
           return toJson(response, 400);
       }
 
@@ -146,4 +152,3 @@ async function generateTrendingRecommendations(limit: number): Promise<any[]> {
   // TODO: implement trending recommendations
   return [];
 }
-

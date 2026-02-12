@@ -19,7 +19,10 @@ export default function Meta(props: MetaProps) {
       <title>{props.title}</title>
       <meta name="description" content={props.description} />
       <meta name="author" content="trendradar Design Team" />
-      <meta name="keywords" content="music, trends, API, intelligence, data, analytics, forecasting" />
+      <meta
+        name="keywords"
+        content="music, trends, API, intelligence, data, analytics, forecasting"
+      />
 
       {/* Google / Search Engine Tags */}
       <meta itemProp="name" content={props.title} />

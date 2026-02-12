@@ -5,16 +5,20 @@ import ItemsList from "@/islands/ItemsList.tsx";
 import { defineRoute } from "$fresh/server.ts";
 import { isGitHubSetup } from "@/utils/github.ts";
 import { redirect } from "@/utils/http.ts";
-import { SITE_NAME, SITE_DESCRIPTION, SITE_TAGLINE } from "@/utils/constants.ts";
 import {
-  Logo,
-  BrandSlogan,
-  BrandButton,
-  TurntableAnimation,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_TAGLINE,
+} from "@/utils/constants.ts";
+import {
   AudioReactiveCard,
+  BrandButton,
+  BrandSlogan,
+  GlitchText,
+  Logo,
   NarrativeStep,
+  TurntableAnimation,
   VUMeter,
-  GlitchText
 } from "@/components/branding";
 
 export default defineRoute<State>((_req, ctx) => {
@@ -28,13 +32,28 @@ export default defineRoute<State>((_req, ctx) => {
   return (
     <>
       <Head href={ctx.url.href}>
-        <link as="fetch" crossOrigin="anonymous" href={endpoint} rel="preload" />
-        {isSignedIn && <link as="fetch" crossOrigin="anonymous" href="/api/me/votes" rel="preload" />}
+        <link
+          as="fetch"
+          crossOrigin="anonymous"
+          href={endpoint}
+          rel="preload"
+        />
+        {isSignedIn && (
+          <link
+            as="fetch"
+            crossOrigin="anonymous"
+            href="/api/me/votes"
+            rel="preload"
+          />
+        )}
       </Head>
 
       <main class="flex-1 bg-black overflow-x-hidden">
         {/* HERO: Holographic Logo + Experimental Design */}
-        <section class="section-padding-lg relative overflow-hidden" style="background: linear-gradient(135deg, #000 0%, #0a0011 50%, #000 100%);">
+        <section
+          class="section-padding-lg relative overflow-hidden"
+          style="background: linear-gradient(135deg, #000 0%, #0a0011 50%, #000 100%);"
+        >
           <div class="container-max text-center">
             <LogoHolographic />
 
@@ -67,19 +86,21 @@ export default defineRoute<State>((_req, ctx) => {
                   style={{
                     left: `${10 + i * 20}%`,
                     animation: `particle-float 4s ease-in-out infinite`,
-                    animationDelay: `${i * 0.5}s`
+                    animationDelay: `${i * 0.5}s`,
                   }}
                 />
               ))}
             </div>
           </div>
 
-          <style>{`
+          <style>
+            {`
             @keyframes particle-float {
               0%, 100% { transform: translateY(0) scale(1); opacity: 0; }
               50% { transform: translateY(-100px) scale(1.5); opacity: 1; }
             }
-          `}</style>
+          `}
+          </style>
         </section>
 
         {/* TURNTABLE: Analog meets Digital */}
@@ -99,7 +120,8 @@ export default defineRoute<State>((_req, ctx) => {
                 DETECT MUSIC TRENDS IN REAL-TIME
               </h3>
               <p class="text-body text-foreground-muted max-w-lg mx-auto mb-8">
-                Like a DJ reading the crowd, our AI analyzes millions of data points to predict the next viral hit before it breaks.
+                Like a DJ reading the crowd, our AI analyzes millions of data
+                points to predict the next viral hit before it breaks.
               </p>
               <BrandButton href="/submit" variant="primary">
                 START SPINNING →
@@ -109,7 +131,10 @@ export default defineRoute<State>((_req, ctx) => {
         </section>
 
         {/* AUDIO REACTIVE: Feature Cards */}
-        <section class="section-padding-lg" style="background: linear-gradient(180deg, #000 0%, #0a0011 100%);">
+        <section
+          class="section-padding-lg"
+          style="background: linear-gradient(180deg, #000 0%, #0a0011 100%);"
+        >
           <div class="container-max">
             <div class="text-center mb-16">
               <h2 class="font-heading font-bold text-h2 text-white mb-4">
@@ -156,7 +181,10 @@ export default defineRoute<State>((_req, ctx) => {
         </section>
 
         {/* NARRATIVE: Story Steps */}
-        <section class="section-padding-lg" style="background: linear-gradient(180deg, #000, #0a0011, #000);">
+        <section
+          class="section-padding-lg"
+          style="background: linear-gradient(180deg, #000, #0a0011, #000);"
+        >
           <div class="container-narrow">
             <div class="text-center mb-16">
               <h2 class="font-heading font-bold text-h2 text-white mb-4">
@@ -187,36 +215,51 @@ export default defineRoute<State>((_req, ctx) => {
 
         {/* MIXED MEDIA: Analog Display */}
         <section class="section-padding-lg bg-black relative">
-          <div class="absolute inset-0 pointer-events-none" style={{
-            background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px)'
-          }}></div>
+          <div
+            class="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px)",
+            }}
+          >
+          </div>
 
           <div class="container-narrow relative z-10">
-            <div class="bg-gradient-to-br from-[#1a1a2e] to-[#16213e] rounded-2xl p-8 border-2 border-[#0f3460]" style={{
-              boxShadow: 'inset 0 0 60px rgba(0,0,0,0.8), 0 20px 60px rgba(0,0,0,0.5)'
-            }}>
+            <div
+              class="bg-gradient-to-br from-[#1a1a2e] to-[#16213e] rounded-2xl p-8 border-2 border-[#0f3460]"
+              style={{
+                boxShadow:
+                  "inset 0 0 60px rgba(0,0,0,0.8), 0 20px 60px rgba(0,0,0,0.5)",
+              }}
+            >
               <VUMeter bars={10} />
-              <p class="font-heading text-h5 text-success text-center mt-8 uppercase tracking-widest" style={{
-                textShadow: '0 0 10px rgba(16, 185, 129, 0.5)',
-                animation: 'text-flicker 4s infinite'
-              }}>
+              <p
+                class="font-heading text-h5 text-success text-center mt-8 uppercase tracking-widest"
+                style={{
+                  textShadow: "0 0 10px rgba(16, 185, 129, 0.5)",
+                  animation: "text-flicker 4s infinite",
+                }}
+              >
                 TREND DETECTION ACTIVE • MONITORING 50M+ DATA POINTS
               </p>
             </div>
           </div>
 
           <p class="text-body-sm text-foreground-muted text-center mt-8 relative z-10">
-            Retro VU meters + CRT scanlines = Analog warmth meets digital precision
+            Retro VU meters + CRT scanlines = Analog warmth meets digital
+            precision
           </p>
 
-          <style>{`
+          <style>
+            {`
             @keyframes text-flicker {
               0%, 100% { opacity: 1; }
               92% { opacity: 1; }
               93% { opacity: 0.8; }
               94% { opacity: 1; }
             }
-          `}</style>
+          `}
+          </style>
         </section>
 
         {/* ITEMS LIST: Latest Discoveries */}

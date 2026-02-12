@@ -1,1107 +1,1275 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>trendradar - Experimental & Unique Design</title>
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Space Mono', monospace;
-  background: #000000;
-  color: #FFFFFF;
-  line-height: 1.6;
-  overflow-x: hidden;
-}
-
-.container {
-  width: 720px;
-  margin: 0 auto;
-  background: #000;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   HOLOGRAPHIC LOGO
-   ═══════════════════════════════════════════════════════════ */
-
-.holographic-section {
-  padding: 80px 40px;
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(135deg, #000 0%, #0a0011 50%, #000 100%);
-}
-
-.holographic-logo {
-  position: relative;
-  width: 400px;
-  height: 400px;
-  margin: 0 auto 60px;
-  perspective: 1000px;
-}
-
-.hologram-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  animation: hologram-rotate 20s linear infinite;
-}
-
-@keyframes hologram-rotate {
-  0% { transform: rotateY(0deg); }
-  100% { transform: rotateY(360deg); }
-}
-
-.hologram-ring {
-  position: absolute;
-  border: 3px solid;
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.hologram-ring-1 {
-  width: 100%;
-  height: 100%;
-  border-color: rgba(139, 92, 246, 0.6);
-  animation: pulse-ring 3s ease-in-out infinite;
-}
-
-.hologram-ring-2 {
-  width: 75%;
-  height: 75%;
-  border-color: rgba(6, 182, 212, 0.6);
-  animation: pulse-ring 3s ease-in-out infinite 0.5s;
-}
-
-.hologram-ring-3 {
-  width: 50%;
-  height: 50%;
-  border-color: rgba(236, 72, 153, 0.6);
-  animation: pulse-ring 3s ease-in-out infinite 1s;
-}
-
-@keyframes pulse-ring {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
-  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
-}
-
-.hologram-center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 120px;
-  height: 120px;
-  background: linear-gradient(135deg, 
-    rgba(139, 92, 246, 0.8),
-    rgba(6, 182, 212, 0.8),
-    rgba(236, 72, 153, 0.8)
-  );
-  border-radius: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 
-    0 0 60px rgba(139, 92, 246, 0.5),
-    0 0 100px rgba(6, 182, 212, 0.3),
-    inset 0 0 60px rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-}
-
-.hologram-text {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 64px;
-  font-weight: 400;
-  color: #000;
-  text-shadow: 
-    2px 2px 0px rgba(255, 255, 255, 0.8),
-    -2px -2px 0px rgba(139, 92, 246, 0.5);
-  letter-spacing: 8px;
-}
-
-.hologram-particles {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.particle {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  background: #8B5CF6;
-  border-radius: 50%;
-  animation: particle-float 4s ease-in-out infinite;
-}
-
-@keyframes particle-float {
-  0%, 100% { transform: translateY(0) scale(1); opacity: 0; }
-  50% { transform: translateY(-100px) scale(1.5); opacity: 1; }
-}
-
-/* ═══════════════════════════════════════════════════════════
-   TURNTABLE LANDING PAGE
-   ═══════════════════════════════════════════════════════════ */
-
-.turntable-section {
-  background: #000;
-  padding: 80px 0;
-  position: relative;
-}
-
-.turntable-container {
-  position: relative;
-  width: 500px;
-  height: 500px;
-  margin: 0 auto;
-}
-
-.turntable-base {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
-  border-radius: 50%;
-  box-shadow: 
-    0 20px 60px rgba(0, 0, 0, 0.8),
-    inset 0 0 80px rgba(255, 255, 255, 0.02);
-}
-
-.vinyl-record {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 85%;
-  height: 85%;
-  background: radial-gradient(circle at center,
-    #000 0%,
-    #1a1a1a 20%,
-    #000 20%,
-    #0a0a0a 40%,
-    #000 40%,
-    #1a1a1a 60%,
-    #000 60%,
-    #0a0a0a 80%,
-    #000 80%
-  );
-  border-radius: 50%;
-  animation: vinyl-spin 3s linear infinite;
-  box-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
-}
-
-@keyframes vinyl-spin {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-.vinyl-grooves {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: repeating-radial-gradient(
-    circle at center,
-    transparent 0px,
-    transparent 1px,
-    rgba(50, 50, 50, 0.3) 2px,
-    transparent 3px
-  );
-}
-
-.vinyl-label {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 30%;
-  height: 30%;
-  background: linear-gradient(135deg, #8B5CF6, #06B6D4, #EC4899);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
-}
-
-.vinyl-label-text {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 32px;
-  font-weight: 400;
-  color: #000;
-  text-align: center;
-  line-height: 1;
-}
-
-.vinyl-hole {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20px;
-  height: 20px;
-  background: #000;
-  border-radius: 50%;
-}
-
-.tonearm {
-  position: absolute;
-  top: 10%;
-  right: 10%;
-  width: 180px;
-  height: 8px;
-  background: linear-gradient(90deg, #333, #666, #333);
-  transform-origin: right center;
-  transform: rotate(-30deg);
-  animation: tonearm-play 8s ease-in-out infinite;
-}
-
-.tonearm-head {
-  position: absolute;
-  left: -20px;
-  top: -6px;
-  width: 40px;
-  height: 20px;
-  background: #444;
-  border-radius: 4px 0 0 4px;
-}
-
-.tonearm-base {
-  position: absolute;
-  right: -20px;
-  top: -16px;
-  width: 40px;
-  height: 40px;
-  background: radial-gradient(circle, #444, #222);
-  border-radius: 50%;
-}
-
-@keyframes tonearm-play {
-  0%, 100% { transform: rotate(-30deg); }
-  50% { transform: rotate(-10deg); }
-}
-
-.frequency-bars {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  gap: 3px;
-  opacity: 0.7;
-}
-
-.freq-bar {
-  width: 4px;
-  background: linear-gradient(180deg, #8B5CF6, #06B6D4);
-  border-radius: 2px;
-  animation: freq-pulse 0.5s ease-in-out infinite;
-}
-
-@keyframes freq-pulse {
-  0%, 100% { height: 20px; }
-  50% { height: 60px; }
-}
-
-/* ═══════════════════════════════════════════════════════════
-   NEO-BRUTALIST EMAIL TEMPLATE
-   ═══════════════════════════════════════════════════════════ */
-
-.brutalist-email {
-  background: #FFFF00;
-  margin: 60px 40px;
-  padding: 0;
-  border: 8px solid #000;
-  box-shadow: 12px 12px 0 #8B5CF6;
-}
-
-.brutalist-header {
-  background: #000;
-  padding: 40px;
-  border-bottom: 8px solid #000;
-  position: relative;
-  overflow: hidden;
-}
-
-.brutalist-logo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 72px;
-  color: #FFFF00;
-  letter-spacing: 4px;
-  position: relative;
-  z-index: 2;
-}
-
-.brutalist-waveform {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  opacity: 0.3;
-  z-index: 1;
-}
-
-.waveform-bar {
-  width: 6px;
-  background: #FFFF00;
-  animation: wave-brutal 0.8s ease-in-out infinite;
-}
-
-@keyframes wave-brutal {
-  0%, 100% { height: 30px; }
-  50% { height: 80px; }
-}
-
-.brutalist-body {
-  padding: 40px;
-  background: #FFFF00;
-}
-
-.brutalist-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 48px;
-  color: #000;
-  margin-bottom: 24px;
-  line-height: 1;
-  background: #8B5CF6;
-  padding: 8px 16px;
-  display: inline-block;
-}
-
-.brutalist-text {
-  font-family: 'Space Mono', monospace;
-  font-size: 16px;
-  color: #000;
-  line-height: 1.8;
-  margin-bottom: 24px;
-}
-
-.brutalist-box {
-  background: #000;
-  color: #FFFF00;
-  padding: 24px;
-  margin: 24px 0;
-  border: 4px solid #8B5CF6;
-  font-family: 'Space Mono', monospace;
-  font-size: 14px;
-  position: relative;
-}
-
-.brutalist-label {
-  position: absolute;
-  top: -12px;
-  left: 20px;
-  background: #8B5CF6;
-  color: #000;
-  padding: 4px 12px;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.brutalist-cta {
-  display: inline-block;
-  background: #000;
-  color: #FFFF00;
-  padding: 20px 40px;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 24px;
-  text-decoration: none;
-  border: 4px solid #000;
-  margin-top: 24px;
-  transition: all 0.2s;
-}
-
-.brutalist-cta:hover {
-  background: #8B5CF6;
-  transform: translate(-4px, -4px);
-  box-shadow: 8px 8px 0 #000;
-}
-
-.brutalist-footer {
-  background: #000;
-  padding: 32px;
-  border-top: 8px solid #8B5CF6;
-}
-
-.brutalist-footer-text {
-  font-family: 'Space Mono', monospace;
-  font-size: 12px;
-  color: #FFFF00;
-  text-align: center;
-  opacity: 0.8;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   AUDIO REACTIVE ANIMATIONS
-   ═══════════════════════════════════════════════════════════ */
-
-.audio-reactive-section {
-  padding: 80px 40px;
-  background: linear-gradient(180deg, #000 0%, #0a0011 100%);
-}
-
-.reactive-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 40px;
-  margin-top: 40px;
-}
-
-.reactive-card {
-  background: rgba(15, 23, 42, 0.4);
-  border: 2px solid rgba(139, 92, 246, 0.3);
-  border-radius: 20px;
-  padding: 40px;
-  position: relative;
-  overflow: hidden;
-}
-
-.reactive-visual {
-  height: 200px;
-  position: relative;
-  margin-bottom: 20px;
-}
-
-.circular-visualizer {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 150px;
-  height: 150px;
-}
-
-.cv-ring {
-  position: absolute;
-  border: 2px solid #8B5CF6;
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: cv-expand 2s ease-out infinite;
-}
-
-@keyframes cv-expand {
-  0% {
-    width: 20px;
-    height: 20px;
-    opacity: 1;
-  }
-  100% {
-    width: 150px;
-    height: 150px;
-    opacity: 0;
-  }
-}
-
-.spectrum-visualizer {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 4px;
-  height: 100%;
-  padding: 20px;
-}
-
-.spectrum-bar {
-  width: 12px;
-  background: linear-gradient(180deg, #EC4899, #8B5CF6, #06B6D4);
-  border-radius: 6px 6px 0 0;
-  animation: spectrum-dance 0.6s ease-in-out infinite;
-}
-
-@keyframes spectrum-dance {
-  0%, 100% { height: 30%; }
-  50% { height: 80%; }
-}
-
-.waveform-visualizer {
-  position: relative;
-  height: 100%;
-  overflow: hidden;
-}
-
-.wave-line {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 200%;
-  height: 2px;
-  background: linear-gradient(90deg, 
-    transparent,
-    #8B5CF6 10%,
-    #06B6D4 50%,
-    #EC4899 90%,
-    transparent
-  );
-  animation: wave-flow 2s linear infinite;
-}
-
-@keyframes wave-flow {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-.particle-visualizer {
-  position: relative;
-  height: 100%;
-}
-
-.particle-dot {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background: #8B5CF6;
-  border-radius: 50%;
-  animation: particle-orbit 4s linear infinite;
-}
-
-@keyframes particle-orbit {
-  0% {
-    top: 50%;
-    left: 10%;
-    transform: scale(1);
-  }
-  25% {
-    top: 10%;
-    left: 50%;
-    transform: scale(1.5);
-  }
-  50% {
-    top: 50%;
-    left: 90%;
-    transform: scale(1);
-  }
-  75% {
-    top: 90%;
-    left: 50%;
-    transform: scale(0.5);
-  }
-  100% {
-    top: 50%;
-    left: 10%;
-    transform: scale(1);
-  }
-}
-
-.reactive-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 24px;
-  color: #FFFFFF;
-  margin-bottom: 8px;
-}
-
-.reactive-description {
-  font-family: 'Space Mono', monospace;
-  font-size: 13px;
-  color: #94A3B8;
-  line-height: 1.6;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   GLITCH EFFECTS
-   ═══════════════════════════════════════════════════════════ */
-
-.glitch-section {
-  padding: 80px 40px;
-  background: #000;
-}
-
-.glitch-text {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 96px;
-  color: #FFFFFF;
-  text-align: center;
-  position: relative;
-  animation: glitch 2s infinite;
-  letter-spacing: 8px;
-}
-
-.glitch-text::before,
-.glitch-text::after {
-  content: 'TREND';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.glitch-text::before {
-  color: #8B5CF6;
-  animation: glitch-1 0.3s infinite;
-  clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
-  transform: translate(-2px, -2px);
-}
-
-.glitch-text::after {
-  color: #06B6D4;
-  animation: glitch-2 0.3s infinite;
-  clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
-  transform: translate(2px, 2px);
-}
-
-@keyframes glitch {
-  0%, 90%, 100% { transform: translate(0); }
-  92% { transform: translate(-5px, 0); }
-  94% { transform: translate(5px, 0); }
-  96% { transform: translate(-5px, 0); }
-  98% { transform: translate(5px, 0); }
-}
-
-@keyframes glitch-1 {
-  0%, 100% { transform: translate(0); }
-  20% { transform: translate(-3px, 3px); }
-  40% { transform: translate(-3px, -3px); }
-  60% { transform: translate(3px, 3px); }
-  80% { transform: translate(3px, -3px); }
-}
-
-@keyframes glitch-2 {
-  0%, 100% { transform: translate(0); }
-  20% { transform: translate(3px, -3px); }
-  40% { transform: translate(3px, 3px); }
-  60% { transform: translate(-3px, -3px); }
-  80% { transform: translate(-3px, 3px); }
-}
-
-/* ═══════════════════════════════════════════════════════════
-   SCROLL NARRATIVE
-   ═══════════════════════════════════════════════════════════ */
-
-.narrative-section {
-  padding: 80px 40px;
-  background: linear-gradient(180deg, #000, #0a0011, #000);
-}
-
-.narrative-step {
-  margin-bottom: 80px;
-  opacity: 0.3;
-  transition: opacity 0.5s;
-  position: relative;
-}
-
-.narrative-step:hover {
-  opacity: 1;
-}
-
-.narrative-number {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 120px;
-  color: rgba(139, 92, 246, 0.2);
-  position: absolute;
-  top: -40px;
-  left: -20px;
-  z-index: 0;
-  line-height: 1;
-}
-
-.narrative-content {
-  position: relative;
-  z-index: 1;
-  padding-left: 80px;
-}
-
-.narrative-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 48px;
-  color: #FFFFFF;
-  margin-bottom: 16px;
-}
-
-.narrative-text {
-  font-family: 'Space Mono', monospace;
-  font-size: 16px;
-  color: #94A3B8;
-  line-height: 1.8;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   MIXED MEDIA SECTION
-   ═══════════════════════════════════════════════════════════ */
-
-.mixed-media {
-  padding: 80px 40px;
-  background: #000;
-  position: relative;
-}
-
-.scanlines {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0, 0, 0, 0.1) 2px,
-    rgba(0, 0, 0, 0.1) 4px
-  );
-  pointer-events: none;
-  z-index: 10;
-}
-
-.analog-display {
-  background: linear-gradient(135deg, #1a1a2e, #16213e);
-  border-radius: 20px;
-  padding: 40px;
-  position: relative;
-  border: 3px solid #0f3460;
-  box-shadow: 
-    inset 0 0 60px rgba(0, 0, 0, 0.8),
-    0 20px 60px rgba(0, 0, 0, 0.5);
-}
-
-.vu-meter {
-  display: flex;
-  gap: 4px;
-  margin-bottom: 40px;
-}
-
-.vu-bar {
-  flex: 1;
-  height: 120px;
-  background: #000;
-  border-radius: 4px;
-  position: relative;
-  overflow: hidden;
-}
-
-.vu-fill {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  background: linear-gradient(180deg, #ef4444, #f59e0b, #10b981);
-  animation: vu-dance 0.8s ease-in-out infinite;
-}
-
-@keyframes vu-dance {
-  0%, 100% { height: 30%; }
-  50% { height: 70%; }
-}
-
-.analog-text {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 18px;
-  color: #10b981;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
-  animation: text-flicker 4s infinite;
-}
-
-@keyframes text-flicker {
-  0%, 100% { opacity: 1; }
-  92% { opacity: 1; }
-  93% { opacity: 0.8; }
-  94% { opacity: 1; }
-}
-
-/* Footer */
-.footer-section {
-  padding: 60px 40px;
-  background: #000;
-  border-top: 2px solid #8B5CF6;
-  text-align: center;
-}
-
-.footer-text {
-  font-family: 'Space Mono', monospace;
-  font-size: 14px;
-  color: #64748B;
-}
-</style>
-</head>
-<body>
-
-<div class="container">
-  
-  <!-- HOLOGRAPHIC LOGO -->
-  <section class="holographic-section">
-    <div class="holographic-logo">
-      <div class="hologram-container">
-        <div class="hologram-ring hologram-ring-1"></div>
-        <div class="hologram-ring hologram-ring-2"></div>
-        <div class="hologram-ring hologram-ring-3"></div>
-        <div class="hologram-center">
-          <div class="hologram-text">TR</div>
-        </div>
-      </div>
-      <div class="hologram-particles">
-        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
-        <div class="particle" style="left: 30%; animation-delay: 0.5s;"></div>
-        <div class="particle" style="left: 50%; animation-delay: 1s;"></div>
-        <div class="particle" style="left: 70%; animation-delay: 1.5s;"></div>
-        <div class="particle" style="left: 90%; animation-delay: 2s;"></div>
-      </div>
-    </div>
-    
-    <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: #FFF; text-align: center; margin-bottom: 16px;">
-      3D HOLOGRAPHIC IDENTITY
-    </h2>
-    <p style="font-family: 'Space Mono', monospace; font-size: 14px; color: #94A3B8; text-align: center;">
-      Rotating hologram with pulsing rings • Particle effects • 3D perspective
-    </p>
-  </section>
-
-  <!-- TURNTABLE LANDING PAGE -->
-  <section class="turntable-section">
-    <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: #FFF; text-align: center; margin-bottom: 12px;">
-      ANALOG MEETS DIGITAL
-    </h2>
-    <p style="font-family: 'Space Mono', monospace; font-size: 14px; color: #94A3B8; text-align: center; margin-bottom: 40px;">
-      Interactive turntable visualization with real-time audio spectrum
-    </p>
-    
-    <div class="turntable-container">
-      <div class="turntable-base"></div>
-      
-      <div class="vinyl-record">
-        <div class="vinyl-grooves"></div>
-        <div class="vinyl-label">
-          <div class="vinyl-label-text">TR</div>
-        </div>
-        <div class="vinyl-hole"></div>
-      </div>
-      
-      <div class="tonearm">
-        <div class="tonearm-head"></div>
-        <div class="tonearm-base"></div>
-      </div>
-      
-      <div class="frequency-bars">
-        <div class="freq-bar" style="animation-delay: 0s;"></div>
-        <div class="freq-bar" style="animation-delay: 0.05s;"></div>
-        <div class="freq-bar" style="animation-delay: 0.1s;"></div>
-        <div class="freq-bar" style="animation-delay: 0.15s;"></div>
-        <div class="freq-bar" style="animation-delay: 0.2s;"></div>
-        <div class="freq-bar" style="animation-delay: 0.25s;"></div>
-        <div class="freq-bar" style="animation-delay: 0.3s;"></div>
-        <div class="freq-bar" style="animation-delay: 0.35s;"></div>
-      </div>
-    </div>
-    
-    <div style="text-align: center; margin-top: 40px;">
-      <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: #FFF; margin-bottom: 16px;">
-        DETECT MUSIC TRENDS IN REAL-TIME
-      </h3>
-      <p style="font-family: 'Space Mono', monospace; font-size: 14px; color: #94A3B8; max-width: 500px; margin: 0 auto 24px;">
-        Like a DJ reading the crowd, our AI analyzes millions of data points to predict the next viral hit before it breaks.
-      </p>
-      <a href="#" style="display: inline-block; background: linear-gradient(135deg, #8B5CF6, #06B6D4); color: #000; padding: 16px 40px; font-family: 'Bebas Neue', sans-serif; font-size: 20px; text-decoration: none; border-radius: 12px;">
-        START SPINNING →
-      </a>
-    </div>
-  </section>
-
-  <!-- NEO-BRUTALIST EMAIL -->
-  <div class="brutalist-email">
-    <div class="brutalist-header">
-      <div class="brutalist-waveform">
-        <div class="waveform-bar" style="animation-delay: 0s;"></div>
-        <div class="waveform-bar" style="animation-delay: 0.1s;"></div>
-        <div class="waveform-bar" style="animation-delay: 0.2s;"></div>
-        <div class="waveform-bar" style="animation-delay: 0.3s;"></div>
-        <div class="waveform-bar" style="animation-delay: 0.4s;"></div>
-        <div class="waveform-bar" style="animation-delay: 0.5s;"></div>
-        <div class="waveform-bar" style="animation-delay: 0.6s;"></div>
-        <div class="waveform-bar" style="animation-delay: 0.7s;"></div>
-      </div>
-      <div class="brutalist-logo">TREND RADAR</div>
-    </div>
-    
-    <div class="brutalist-body">
-      <h1 class="brutalist-title">WELCOME TO THE FUTURE</h1>
-      
-      <p class="brutalist-text">
-        You've just plugged into the most powerful music trend detection system on the planet. We analyze 50 million data points daily to give you insights that matter.
-      </p>
-      
-      <div class="brutalist-box">
-        <div class="brutalist-label">YOUR API KEY</div>
-        tr_live_sk_xK9mP2nQ4rS7tU0vW3xY6zA1bC8dE5fG
-      </div>
-      
-      <p class="brutalist-text">
-        Your first 10,000 API calls are on us. Start detecting trends in under 5 minutes with our comprehensive documentation.
-      </p>
-      
-      <a href="#" class="brutalist-cta">START BUILDING →</a>
-    </div>
-    
-    <div class="brutalist-footer">
-      <div class="brutalist-footer-text">
-        © 2024 TREND RADAR • MADE FOR DEVELOPERS BY DEVELOPERS
-      </div>
-    </div>
-  </div>
-
-  <!-- AUDIO REACTIVE ANIMATIONS -->
-  <section class="audio-reactive-section">
-    <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: #FFF; text-align: center; margin-bottom: 12px;">
-      AUDIO-REACTIVE VISUALS
-    </h2>
-    <p style="font-family: 'Space Mono', monospace; font-size: 14px; color: #94A3B8; text-align: center; margin-bottom: 40px;">
-      Animations that respond to music data in real-time
-    </p>
-    
-    <div class="reactive-container">
-      <div class="reactive-card">
-        <div class="reactive-visual">
-          <div class="circular-visualizer">
-            <div class="cv-ring" style="animation-delay: 0s;"></div>
-            <div class="cv-ring" style="animation-delay: 0.4s;"></div>
-            <div class="cv-ring" style="animation-delay: 0.8s;"></div>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>trendradar - Experimental & Unique Design</title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    >
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap"
+      rel="stylesheet"
+    >
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"
+    ></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Space Mono", monospace;
+        background: #000000;
+        color: #ffffff;
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      .container {
+        width: 720px;
+        margin: 0 auto;
+        background: #000;
+      }
+
+      /* ═══════════════════════════════════════════════════════════
+         HOLOGRAPHIC LOGO
+         ═══════════════════════════════════════════════════════════ */
+
+      .holographic-section {
+        padding: 80px 40px;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, #000 0%, #0a0011 50%, #000 100%);
+      }
+
+      .holographic-logo {
+        position: relative;
+        width: 400px;
+        height: 400px;
+        margin: 0 auto 60px;
+        perspective: 1000px;
+      }
+
+      .hologram-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        animation: hologram-rotate 20s linear infinite;
+      }
+
+      @keyframes hologram-rotate {
+        0% {
+          transform: rotateY(0deg);
+        }
+        100% {
+          transform: rotateY(360deg);
+        }
+      }
+
+      .hologram-ring {
+        position: absolute;
+        border: 3px solid;
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .hologram-ring-1 {
+        width: 100%;
+        height: 100%;
+        border-color: rgba(139, 92, 246, 0.6);
+        animation: pulse-ring 3s ease-in-out infinite;
+      }
+
+      .hologram-ring-2 {
+        width: 75%;
+        height: 75%;
+        border-color: rgba(6, 182, 212, 0.6);
+        animation: pulse-ring 3s ease-in-out infinite 0.5s;
+      }
+
+      .hologram-ring-3 {
+        width: 50%;
+        height: 50%;
+        border-color: rgba(236, 72, 153, 0.6);
+        animation: pulse-ring 3s ease-in-out infinite 1s;
+      }
+
+      @keyframes pulse-ring {
+        0%, 100% {
+          transform: translate(-50%, -50%) scale(1);
+          opacity: 0.6;
+        }
+        50% {
+          transform: translate(-50%, -50%) scale(1.1);
+          opacity: 1;
+        }
+      }
+
+      .hologram-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(
+          135deg,
+          rgba(139, 92, 246, 0.8),
+          rgba(6, 182, 212, 0.8),
+          rgba(236, 72, 153, 0.8)
+        );
+        border-radius: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow:
+          0 0 60px rgba(139, 92, 246, 0.5),
+          0 0 100px rgba(6, 182, 212, 0.3),
+          inset 0 0 60px rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+      }
+
+      .hologram-text {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 64px;
+        font-weight: 400;
+        color: #000;
+        text-shadow:
+          2px 2px 0px rgba(255, 255, 255, 0.8),
+          -2px -2px 0px rgba(139, 92, 246, 0.5);
+        letter-spacing: 8px;
+      }
+
+      .hologram-particles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      .particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: #8b5cf6;
+        border-radius: 50%;
+        animation: particle-float 4s ease-in-out infinite;
+      }
+
+      @keyframes particle-float {
+        0%, 100% {
+          transform: translateY(0) scale(1);
+          opacity: 0;
+        }
+        50% {
+          transform: translateY(-100px) scale(1.5);
+          opacity: 1;
+        }
+      }
+
+      /* ═══════════════════════════════════════════════════════════
+         TURNTABLE LANDING PAGE
+         ═══════════════════════════════════════════════════════════ */
+
+      .turntable-section {
+        background: #000;
+        padding: 80px 0;
+        position: relative;
+      }
+
+      .turntable-container {
+        position: relative;
+        width: 500px;
+        height: 500px;
+        margin: 0 auto;
+      }
+
+      .turntable-base {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+        border-radius: 50%;
+        box-shadow:
+          0 20px 60px rgba(0, 0, 0, 0.8),
+          inset 0 0 80px rgba(255, 255, 255, 0.02);
+      }
+
+      .vinyl-record {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 85%;
+        height: 85%;
+        background: radial-gradient(
+          circle at center,
+          #000 0%,
+          #1a1a1a 20%,
+          #000 20%,
+          #0a0a0a 40%,
+          #000 40%,
+          #1a1a1a 60%,
+          #000 60%,
+          #0a0a0a 80%,
+          #000 80%
+        );
+        border-radius: 50%;
+        animation: vinyl-spin 3s linear infinite;
+        box-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
+      }
+
+      @keyframes vinyl-spin {
+        from {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        to {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+
+      .vinyl-grooves {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: repeating-radial-gradient(
+          circle at center,
+          transparent 0px,
+          transparent 1px,
+          rgba(50, 50, 50, 0.3) 2px,
+          transparent 3px
+        );
+      }
+
+      .vinyl-label {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 30%;
+        height: 30%;
+        background: linear-gradient(135deg, #8b5cf6, #06b6d4, #ec4899);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+      }
+
+      .vinyl-label-text {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 32px;
+        font-weight: 400;
+        color: #000;
+        text-align: center;
+        line-height: 1;
+      }
+
+      .vinyl-hole {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        background: #000;
+        border-radius: 50%;
+      }
+
+      .tonearm {
+        position: absolute;
+        top: 10%;
+        right: 10%;
+        width: 180px;
+        height: 8px;
+        background: linear-gradient(90deg, #333, #666, #333);
+        transform-origin: right center;
+        transform: rotate(-30deg);
+        animation: tonearm-play 8s ease-in-out infinite;
+      }
+
+      .tonearm-head {
+        position: absolute;
+        left: -20px;
+        top: -6px;
+        width: 40px;
+        height: 20px;
+        background: #444;
+        border-radius: 4px 0 0 4px;
+      }
+
+      .tonearm-base {
+        position: absolute;
+        right: -20px;
+        top: -16px;
+        width: 40px;
+        height: 40px;
+        background: radial-gradient(circle, #444, #222);
+        border-radius: 50%;
+      }
+
+      @keyframes tonearm-play {
+        0%, 100% {
+          transform: rotate(-30deg);
+        }
+        50% {
+          transform: rotate(-10deg);
+        }
+      }
+
+      .frequency-bars {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        gap: 3px;
+        opacity: 0.7;
+      }
+
+      .freq-bar {
+        width: 4px;
+        background: linear-gradient(180deg, #8b5cf6, #06b6d4);
+        border-radius: 2px;
+        animation: freq-pulse 0.5s ease-in-out infinite;
+      }
+
+      @keyframes freq-pulse {
+        0%, 100% {
+          height: 20px;
+        }
+        50% {
+          height: 60px;
+        }
+      }
+
+      /* ═══════════════════════════════════════════════════════════
+         NEO-BRUTALIST EMAIL TEMPLATE
+         ═══════════════════════════════════════════════════════════ */
+
+      .brutalist-email {
+        background: #ffff00;
+        margin: 60px 40px;
+        padding: 0;
+        border: 8px solid #000;
+        box-shadow: 12px 12px 0 #8b5cf6;
+      }
+
+      .brutalist-header {
+        background: #000;
+        padding: 40px;
+        border-bottom: 8px solid #000;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .brutalist-logo {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 72px;
+        color: #ffff00;
+        letter-spacing: 4px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .brutalist-waveform {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        opacity: 0.3;
+        z-index: 1;
+      }
+
+      .waveform-bar {
+        width: 6px;
+        background: #ffff00;
+        animation: wave-brutal 0.8s ease-in-out infinite;
+      }
+
+      @keyframes wave-brutal {
+        0%, 100% {
+          height: 30px;
+        }
+        50% {
+          height: 80px;
+        }
+      }
+
+      .brutalist-body {
+        padding: 40px;
+        background: #ffff00;
+      }
+
+      .brutalist-title {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 48px;
+        color: #000;
+        margin-bottom: 24px;
+        line-height: 1;
+        background: #8b5cf6;
+        padding: 8px 16px;
+        display: inline-block;
+      }
+
+      .brutalist-text {
+        font-family: "Space Mono", monospace;
+        font-size: 16px;
+        color: #000;
+        line-height: 1.8;
+        margin-bottom: 24px;
+      }
+
+      .brutalist-box {
+        background: #000;
+        color: #ffff00;
+        padding: 24px;
+        margin: 24px 0;
+        border: 4px solid #8b5cf6;
+        font-family: "Space Mono", monospace;
+        font-size: 14px;
+        position: relative;
+      }
+
+      .brutalist-label {
+        position: absolute;
+        top: -12px;
+        left: 20px;
+        background: #8b5cf6;
+        color: #000;
+        padding: 4px 12px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .brutalist-cta {
+        display: inline-block;
+        background: #000;
+        color: #ffff00;
+        padding: 20px 40px;
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 24px;
+        text-decoration: none;
+        border: 4px solid #000;
+        margin-top: 24px;
+        transition: all 0.2s;
+      }
+
+      .brutalist-cta:hover {
+        background: #8b5cf6;
+        transform: translate(-4px, -4px);
+        box-shadow: 8px 8px 0 #000;
+      }
+
+      .brutalist-footer {
+        background: #000;
+        padding: 32px;
+        border-top: 8px solid #8b5cf6;
+      }
+
+      .brutalist-footer-text {
+        font-family: "Space Mono", monospace;
+        font-size: 12px;
+        color: #ffff00;
+        text-align: center;
+        opacity: 0.8;
+      }
+
+      /* ═══════════════════════════════════════════════════════════
+         AUDIO REACTIVE ANIMATIONS
+         ═══════════════════════════════════════════════════════════ */
+
+      .audio-reactive-section {
+        padding: 80px 40px;
+        background: linear-gradient(180deg, #000 0%, #0a0011 100%);
+      }
+
+      .reactive-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px;
+        margin-top: 40px;
+      }
+
+      .reactive-card {
+        background: rgba(15, 23, 42, 0.4);
+        border: 2px solid rgba(139, 92, 246, 0.3);
+        border-radius: 20px;
+        padding: 40px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .reactive-visual {
+        height: 200px;
+        position: relative;
+        margin-bottom: 20px;
+      }
+
+      .circular-visualizer {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 150px;
+        height: 150px;
+      }
+
+      .cv-ring {
+        position: absolute;
+        border: 2px solid #8b5cf6;
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation: cv-expand 2s ease-out infinite;
+      }
+
+      @keyframes cv-expand {
+        0% {
+          width: 20px;
+          height: 20px;
+          opacity: 1;
+        }
+        100% {
+          width: 150px;
+          height: 150px;
+          opacity: 0;
+        }
+      }
+
+      .spectrum-visualizer {
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        gap: 4px;
+        height: 100%;
+        padding: 20px;
+      }
+
+      .spectrum-bar {
+        width: 12px;
+        background: linear-gradient(180deg, #ec4899, #8b5cf6, #06b6d4);
+        border-radius: 6px 6px 0 0;
+        animation: spectrum-dance 0.6s ease-in-out infinite;
+      }
+
+      @keyframes spectrum-dance {
+        0%, 100% {
+          height: 30%;
+        }
+        50% {
+          height: 80%;
+        }
+      }
+
+      .waveform-visualizer {
+        position: relative;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .wave-line {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 200%;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          #8b5cf6 10%,
+          #06b6d4 50%,
+          #ec4899 90%,
+          transparent
+        );
+        animation: wave-flow 2s linear infinite;
+      }
+
+      @keyframes wave-flow {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      .particle-visualizer {
+        position: relative;
+        height: 100%;
+      }
+
+      .particle-dot {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: #8b5cf6;
+        border-radius: 50%;
+        animation: particle-orbit 4s linear infinite;
+      }
+
+      @keyframes particle-orbit {
+        0% {
+          top: 50%;
+          left: 10%;
+          transform: scale(1);
+        }
+        25% {
+          top: 10%;
+          left: 50%;
+          transform: scale(1.5);
+        }
+        50% {
+          top: 50%;
+          left: 90%;
+          transform: scale(1);
+        }
+        75% {
+          top: 90%;
+          left: 50%;
+          transform: scale(0.5);
+        }
+        100% {
+          top: 50%;
+          left: 10%;
+          transform: scale(1);
+        }
+      }
+
+      .reactive-title {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 24px;
+        color: #ffffff;
+        margin-bottom: 8px;
+      }
+
+      .reactive-description {
+        font-family: "Space Mono", monospace;
+        font-size: 13px;
+        color: #94a3b8;
+        line-height: 1.6;
+      }
+
+      /* ═══════════════════════════════════════════════════════════
+         GLITCH EFFECTS
+         ═══════════════════════════════════════════════════════════ */
+
+      .glitch-section {
+        padding: 80px 40px;
+        background: #000;
+      }
+
+      .glitch-text {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 96px;
+        color: #ffffff;
+        text-align: center;
+        position: relative;
+        animation: glitch 2s infinite;
+        letter-spacing: 8px;
+      }
+
+      .glitch-text::before,
+      .glitch-text::after {
+        content: "TREND";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .glitch-text::before {
+        color: #8b5cf6;
+        animation: glitch-1 0.3s infinite;
+        clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+        transform: translate(-2px, -2px);
+      }
+
+      .glitch-text::after {
+        color: #06b6d4;
+        animation: glitch-2 0.3s infinite;
+        clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+        transform: translate(2px, 2px);
+      }
+
+      @keyframes glitch {
+        0%, 90%, 100% {
+          transform: translate(0);
+        }
+        92% {
+          transform: translate(-5px, 0);
+        }
+        94% {
+          transform: translate(5px, 0);
+        }
+        96% {
+          transform: translate(-5px, 0);
+        }
+        98% {
+          transform: translate(5px, 0);
+        }
+      }
+
+      @keyframes glitch-1 {
+        0%, 100% {
+          transform: translate(0);
+        }
+        20% {
+          transform: translate(-3px, 3px);
+        }
+        40% {
+          transform: translate(-3px, -3px);
+        }
+        60% {
+          transform: translate(3px, 3px);
+        }
+        80% {
+          transform: translate(3px, -3px);
+        }
+      }
+
+      @keyframes glitch-2 {
+        0%, 100% {
+          transform: translate(0);
+        }
+        20% {
+          transform: translate(3px, -3px);
+        }
+        40% {
+          transform: translate(3px, 3px);
+        }
+        60% {
+          transform: translate(-3px, -3px);
+        }
+        80% {
+          transform: translate(-3px, 3px);
+        }
+      }
+
+      /* ═══════════════════════════════════════════════════════════
+         SCROLL NARRATIVE
+         ═══════════════════════════════════════════════════════════ */
+
+      .narrative-section {
+        padding: 80px 40px;
+        background: linear-gradient(180deg, #000, #0a0011, #000);
+      }
+
+      .narrative-step {
+        margin-bottom: 80px;
+        opacity: 0.3;
+        transition: opacity 0.5s;
+        position: relative;
+      }
+
+      .narrative-step:hover {
+        opacity: 1;
+      }
+
+      .narrative-number {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 120px;
+        color: rgba(139, 92, 246, 0.2);
+        position: absolute;
+        top: -40px;
+        left: -20px;
+        z-index: 0;
+        line-height: 1;
+      }
+
+      .narrative-content {
+        position: relative;
+        z-index: 1;
+        padding-left: 80px;
+      }
+
+      .narrative-title {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 48px;
+        color: #ffffff;
+        margin-bottom: 16px;
+      }
+
+      .narrative-text {
+        font-family: "Space Mono", monospace;
+        font-size: 16px;
+        color: #94a3b8;
+        line-height: 1.8;
+      }
+
+      /* ═══════════════════════════════════════════════════════════
+         MIXED MEDIA SECTION
+         ═══════════════════════════════════════════════════════════ */
+
+      .mixed-media {
+        padding: 80px 40px;
+        background: #000;
+        position: relative;
+      }
+
+      .scanlines {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.1) 2px,
+          rgba(0, 0, 0, 0.1) 4px
+        );
+        pointer-events: none;
+        z-index: 10;
+      }
+
+      .analog-display {
+        background: linear-gradient(135deg, #1a1a2e, #16213e);
+        border-radius: 20px;
+        padding: 40px;
+        position: relative;
+        border: 3px solid #0f3460;
+        box-shadow:
+          inset 0 0 60px rgba(0, 0, 0, 0.8),
+          0 20px 60px rgba(0, 0, 0, 0.5);
+      }
+
+      .vu-meter {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 40px;
+      }
+
+      .vu-bar {
+        flex: 1;
+        height: 120px;
+        background: #000;
+        border-radius: 4px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .vu-fill {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        background: linear-gradient(180deg, #ef4444, #f59e0b, #10b981);
+        animation: vu-dance 0.8s ease-in-out infinite;
+      }
+
+      @keyframes vu-dance {
+        0%, 100% {
+          height: 30%;
+        }
+        50% {
+          height: 70%;
+        }
+      }
+
+      .analog-text {
+        font-family: "Orbitron", sans-serif;
+        font-size: 18px;
+        color: #10b981;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        animation: text-flicker 4s infinite;
+      }
+
+      @keyframes text-flicker {
+        0%, 100% {
+          opacity: 1;
+        }
+        92% {
+          opacity: 1;
+        }
+        93% {
+          opacity: 0.8;
+        }
+        94% {
+          opacity: 1;
+        }
+      }
+
+      /* Footer */
+      .footer-section {
+        padding: 60px 40px;
+        background: #000;
+        border-top: 2px solid #8b5cf6;
+        text-align: center;
+      }
+
+      .footer-text {
+        font-family: "Space Mono", monospace;
+        font-size: 14px;
+        color: #64748b;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- HOLOGRAPHIC LOGO -->
+      <section class="holographic-section">
+        <div class="holographic-logo">
+          <div class="hologram-container">
+            <div class="hologram-ring hologram-ring-1"></div>
+            <div class="hologram-ring hologram-ring-2"></div>
+            <div class="hologram-ring hologram-ring-3"></div>
+            <div class="hologram-center">
+              <div class="hologram-text">TR</div>
+            </div>
+          </div>
+          <div class="hologram-particles">
+            <div class="particle" style="left: 10%; animation-delay: 0s"></div>
+            <div class="particle" style="left: 30%; animation-delay: 0.5s">
+            </div>
+            <div class="particle" style="left: 50%; animation-delay: 1s"></div>
+            <div class="particle" style="left: 70%; animation-delay: 1.5s">
+            </div>
+            <div class="particle" style="left: 90%; animation-delay: 2s"></div>
           </div>
         </div>
-        <h3 class="reactive-title">PULSE DETECTION</h3>
-        <p class="reactive-description">Concentric rings expand based on beat detection. Intensity matches music energy.</p>
-      </div>
-      
-      <div class="reactive-card">
-        <div class="reactive-visual">
-          <div class="spectrum-visualizer">
-            <div class="spectrum-bar" style="animation-delay: 0s;"></div>
-            <div class="spectrum-bar" style="animation-delay: 0.05s;"></div>
-            <div class="spectrum-bar" style="animation-delay: 0.1s;"></div>
-            <div class="spectrum-bar" style="animation-delay: 0.15s;"></div>
-            <div class="spectrum-bar" style="animation-delay: 0.2s;"></div>
-            <div class="spectrum-bar" style="animation-delay: 0.25s;"></div>
-            <div class="spectrum-bar" style="animation-delay: 0.3s;"></div>
-            <div class="spectrum-bar" style="animation-delay: 0.35s;"></div>
-            <div class="spectrum-bar" style="animation-delay: 0.4s;"></div>
-            <div class="spectrum-bar" style="animation-delay: 0.45s;"></div>
+
+        <h2
+          style="font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: #fff; text-align: center; margin-bottom: 16px"
+        >
+          3D HOLOGRAPHIC IDENTITY
+        </h2>
+        <p
+          style="font-family: 'Space Mono', monospace; font-size: 14px; color: #94a3b8; text-align: center"
+        >
+          Rotating hologram with pulsing rings • Particle effects • 3D
+          perspective
+        </p>
+      </section>
+
+      <!-- TURNTABLE LANDING PAGE -->
+      <section class="turntable-section">
+        <h2
+          style="font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: #fff; text-align: center; margin-bottom: 12px"
+        >
+          ANALOG MEETS DIGITAL
+        </h2>
+        <p
+          style="font-family: 'Space Mono', monospace; font-size: 14px; color: #94a3b8; text-align: center; margin-bottom: 40px"
+        >
+          Interactive turntable visualization with real-time audio spectrum
+        </p>
+
+        <div class="turntable-container">
+          <div class="turntable-base"></div>
+
+          <div class="vinyl-record">
+            <div class="vinyl-grooves"></div>
+            <div class="vinyl-label">
+              <div class="vinyl-label-text">TR</div>
+            </div>
+            <div class="vinyl-hole"></div>
+          </div>
+
+          <div class="tonearm">
+            <div class="tonearm-head"></div>
+            <div class="tonearm-base"></div>
+          </div>
+
+          <div class="frequency-bars">
+            <div class="freq-bar" style="animation-delay: 0s"></div>
+            <div class="freq-bar" style="animation-delay: 0.05s"></div>
+            <div class="freq-bar" style="animation-delay: 0.1s"></div>
+            <div class="freq-bar" style="animation-delay: 0.15s"></div>
+            <div class="freq-bar" style="animation-delay: 0.2s"></div>
+            <div class="freq-bar" style="animation-delay: 0.25s"></div>
+            <div class="freq-bar" style="animation-delay: 0.3s"></div>
+            <div class="freq-bar" style="animation-delay: 0.35s"></div>
           </div>
         </div>
-        <h3 class="reactive-title">FREQUENCY ANALYZER</h3>
-        <p class="reactive-description">Real-time spectrum visualization. Each bar represents a frequency band.</p>
-      </div>
-      
-      <div class="reactive-card">
-        <div class="reactive-visual">
-          <div class="waveform-visualizer">
-            <div class="wave-line"></div>
+
+        <div style="text-align: center; margin-top: 40px">
+          <h3
+            style="font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: #fff; margin-bottom: 16px"
+          >
+            DETECT MUSIC TRENDS IN REAL-TIME
+          </h3>
+          <p
+            style="font-family: 'Space Mono', monospace; font-size: 14px; color: #94a3b8; max-width: 500px; margin: 0 auto 24px"
+          >
+            Like a DJ reading the crowd, our AI analyzes millions of data points
+            to predict the next viral hit before it breaks.
+          </p>
+          <a
+            href="#"
+            style="display: inline-block; background: linear-gradient(135deg, #8b5cf6, #06b6d4); color: #000; padding: 16px 40px; font-family: 'Bebas Neue', sans-serif; font-size: 20px; text-decoration: none; border-radius: 12px"
+          >
+            START SPINNING →
+          </a>
+        </div>
+      </section>
+
+      <!-- NEO-BRUTALIST EMAIL -->
+      <div class="brutalist-email">
+        <div class="brutalist-header">
+          <div class="brutalist-waveform">
+            <div class="waveform-bar" style="animation-delay: 0s"></div>
+            <div class="waveform-bar" style="animation-delay: 0.1s"></div>
+            <div class="waveform-bar" style="animation-delay: 0.2s"></div>
+            <div class="waveform-bar" style="animation-delay: 0.3s"></div>
+            <div class="waveform-bar" style="animation-delay: 0.4s"></div>
+            <div class="waveform-bar" style="animation-delay: 0.5s"></div>
+            <div class="waveform-bar" style="animation-delay: 0.6s"></div>
+            <div class="waveform-bar" style="animation-delay: 0.7s"></div>
+          </div>
+          <div class="brutalist-logo">TREND RADAR</div>
+        </div>
+
+        <div class="brutalist-body">
+          <h1 class="brutalist-title">WELCOME TO THE FUTURE</h1>
+
+          <p class="brutalist-text">
+            You've just plugged into the most powerful music trend detection
+            system on the planet. We analyze 50 million data points daily to
+            give you insights that matter.
+          </p>
+
+          <div class="brutalist-box">
+            <div class="brutalist-label">YOUR API KEY</div>
+            tr_live_sk_xK9mP2nQ4rS7tU0vW3xY6zA1bC8dE5fG
+          </div>
+
+          <p class="brutalist-text">
+            Your first 10,000 API calls are on us. Start detecting trends in
+            under 5 minutes with our comprehensive documentation.
+          </p>
+
+          <a href="#" class="brutalist-cta">START BUILDING →</a>
+        </div>
+
+        <div class="brutalist-footer">
+          <div class="brutalist-footer-text">
+            © 2024 TREND RADAR • MADE FOR DEVELOPERS BY DEVELOPERS
           </div>
         </div>
-        <h3 class="reactive-title">WAVEFORM STREAM</h3>
-        <p class="reactive-description">Flowing audio waveform represents continuous music data stream.</p>
       </div>
-      
-      <div class="reactive-card">
-        <div class="reactive-visual">
-          <div class="particle-visualizer">
-            <div class="particle-dot" style="animation-delay: 0s;"></div>
-            <div class="particle-dot" style="animation-delay: 1s;"></div>
-            <div class="particle-dot" style="animation-delay: 2s;"></div>
+
+      <!-- AUDIO REACTIVE ANIMATIONS -->
+      <section class="audio-reactive-section">
+        <h2
+          style="font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: #fff; text-align: center; margin-bottom: 12px"
+        >
+          AUDIO-REACTIVE VISUALS
+        </h2>
+        <p
+          style="font-family: 'Space Mono', monospace; font-size: 14px; color: #94a3b8; text-align: center; margin-bottom: 40px"
+        >
+          Animations that respond to music data in real-time
+        </p>
+
+        <div class="reactive-container">
+          <div class="reactive-card">
+            <div class="reactive-visual">
+              <div class="circular-visualizer">
+                <div class="cv-ring" style="animation-delay: 0s"></div>
+                <div class="cv-ring" style="animation-delay: 0.4s"></div>
+                <div class="cv-ring" style="animation-delay: 0.8s"></div>
+              </div>
+            </div>
+            <h3 class="reactive-title">PULSE DETECTION</h3>
+            <p class="reactive-description">
+              Concentric rings expand based on beat detection. Intensity matches
+              music energy.
+            </p>
+          </div>
+
+          <div class="reactive-card">
+            <div class="reactive-visual">
+              <div class="spectrum-visualizer">
+                <div class="spectrum-bar" style="animation-delay: 0s"></div>
+                <div class="spectrum-bar" style="animation-delay: 0.05s"></div>
+                <div class="spectrum-bar" style="animation-delay: 0.1s"></div>
+                <div class="spectrum-bar" style="animation-delay: 0.15s"></div>
+                <div class="spectrum-bar" style="animation-delay: 0.2s"></div>
+                <div class="spectrum-bar" style="animation-delay: 0.25s"></div>
+                <div class="spectrum-bar" style="animation-delay: 0.3s"></div>
+                <div class="spectrum-bar" style="animation-delay: 0.35s"></div>
+                <div class="spectrum-bar" style="animation-delay: 0.4s"></div>
+                <div class="spectrum-bar" style="animation-delay: 0.45s"></div>
+              </div>
+            </div>
+            <h3 class="reactive-title">FREQUENCY ANALYZER</h3>
+            <p class="reactive-description">
+              Real-time spectrum visualization. Each bar represents a frequency
+              band.
+            </p>
+          </div>
+
+          <div class="reactive-card">
+            <div class="reactive-visual">
+              <div class="waveform-visualizer">
+                <div class="wave-line"></div>
+              </div>
+            </div>
+            <h3 class="reactive-title">WAVEFORM STREAM</h3>
+            <p class="reactive-description">
+              Flowing audio waveform represents continuous music data stream.
+            </p>
+          </div>
+
+          <div class="reactive-card">
+            <div class="reactive-visual">
+              <div class="particle-visualizer">
+                <div class="particle-dot" style="animation-delay: 0s"></div>
+                <div class="particle-dot" style="animation-delay: 1s"></div>
+                <div class="particle-dot" style="animation-delay: 2s"></div>
+              </div>
+            </div>
+            <h3 class="reactive-title">TREND PARTICLES</h3>
+            <p class="reactive-description">
+              Particles orbit based on trend momentum. Speed indicates viral
+              potential.
+            </p>
           </div>
         </div>
-        <h3 class="reactive-title">TREND PARTICLES</h3>
-        <p class="reactive-description">Particles orbit based on trend momentum. Speed indicates viral potential.</p>
-      </div>
-    </div>
-  </section>
+      </section>
 
-  <!-- GLITCH EFFECTS -->
-  <section class="glitch-section">
-    <div class="glitch-text">TREND</div>
-    <p style="font-family: 'Space Mono', monospace; font-size: 14px; color: #94A3B8; text-align: center; margin-top: 24px;">
-      Glitch effect for error states, loading screens, or edgy branding moments
-    </p>
-  </section>
+      <!-- GLITCH EFFECTS -->
+      <section class="glitch-section">
+        <div class="glitch-text">TREND</div>
+        <p
+          style="font-family: 'Space Mono', monospace; font-size: 14px; color: #94a3b8; text-align: center; margin-top: 24px"
+        >
+          Glitch effect for error states, loading screens, or edgy branding
+          moments
+        </p>
+      </section>
 
-  <!-- SCROLL NARRATIVE -->
-  <section class="narrative-section">
-    <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: #FFF; text-align: center; margin-bottom: 12px;">
-      IMMERSIVE STORYTELLING
-    </h2>
-    <p style="font-family: 'Space Mono', monospace; font-size: 14px; color: #94A3B8; text-align: center; margin-bottom: 60px;">
-      Hover to reveal each chapter of the trendradar journey
-    </p>
-    
-    <div class="narrative-step">
-      <div class="narrative-number">01</div>
-      <div class="narrative-content">
-        <h3 class="narrative-title">THE PROBLEM</h3>
-        <p class="narrative-text">Music trends emerge faster than ever. By the time you notice a viral hit, it's already peaked. The industry loses billions chasing yesterday's trends.</p>
-      </div>
-    </div>
-    
-    <div class="narrative-step">
-      <div class="narrative-number">02</div>
-      <div class="narrative-content">
-        <h3 class="narrative-title">THE SOLUTION</h3>
-        <p class="narrative-text">trendradar's AI monitors 50 million data points daily across streaming platforms, social media, and live performances. We detect patterns humans miss.</p>
-      </div>
-    </div>
-    
-    <div class="narrative-step">
-      <div class="narrative-number">03</div>
-      <div class="narrative-content">
-        <h3 class="narrative-title">THE RESULT</h3>
-        <p class="narrative-text">Predict viral tracks 2-4 weeks in advance with 85% accuracy. Be first to discover the next big artist. Make data-driven decisions that matter.</p>
-      </div>
-    </div>
-  </section>
+      <!-- SCROLL NARRATIVE -->
+      <section class="narrative-section">
+        <h2
+          style="font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: #fff; text-align: center; margin-bottom: 12px"
+        >
+          IMMERSIVE STORYTELLING
+        </h2>
+        <p
+          style="font-family: 'Space Mono', monospace; font-size: 14px; color: #94a3b8; text-align: center; margin-bottom: 60px"
+        >
+          Hover to reveal each chapter of the trendradar journey
+        </p>
 
-  <!-- MIXED MEDIA -->
-  <section class="mixed-media">
-    <div class="scanlines"></div>
-    
-    <div class="analog-display">
-      <div class="vu-meter">
-        <div class="vu-bar"><div class="vu-fill" style="animation-delay: 0s;"></div></div>
-        <div class="vu-bar"><div class="vu-fill" style="animation-delay: 0.1s;"></div></div>
-        <div class="vu-bar"><div class="vu-fill" style="animation-delay: 0.2s;"></div></div>
-        <div class="vu-bar"><div class="vu-fill" style="animation-delay: 0.3s;"></div></div>
-        <div class="vu-bar"><div class="vu-fill" style="animation-delay: 0.4s;"></div></div>
-        <div class="vu-bar"><div class="vu-fill" style="animation-delay: 0.5s;"></div></div>
-        <div class="vu-bar"><div class="vu-fill" style="animation-delay: 0.6s;"></div></div>
-        <div class="vu-bar"><div class="vu-fill" style="animation-delay: 0.7s;"></div></div>
-        <div class="vu-bar"><div class="vu-fill" style="animation-delay: 0.8s;"></div></div>
-        <div class="vu-bar"><div class="vu-fill" style="animation-delay: 0.9s;"></div></div>
-      </div>
-      
-      <div class="analog-text">
-        TREND DETECTION ACTIVE • MONITORING 50M+ DATA POINTS
-      </div>
+        <div class="narrative-step">
+          <div class="narrative-number">01</div>
+          <div class="narrative-content">
+            <h3 class="narrative-title">THE PROBLEM</h3>
+            <p class="narrative-text">
+              Music trends emerge faster than ever. By the time you notice a
+              viral hit, it's already peaked. The industry loses billions
+              chasing yesterday's trends.
+            </p>
+          </div>
+        </div>
+
+        <div class="narrative-step">
+          <div class="narrative-number">02</div>
+          <div class="narrative-content">
+            <h3 class="narrative-title">THE SOLUTION</h3>
+            <p class="narrative-text">
+              trendradar's AI monitors 50 million data points daily across
+              streaming platforms, social media, and live performances. We
+              detect patterns humans miss.
+            </p>
+          </div>
+        </div>
+
+        <div class="narrative-step">
+          <div class="narrative-number">03</div>
+          <div class="narrative-content">
+            <h3 class="narrative-title">THE RESULT</h3>
+            <p class="narrative-text">
+              Predict viral tracks 2-4 weeks in advance with 85% accuracy. Be
+              first to discover the next big artist. Make data-driven decisions
+              that matter.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- MIXED MEDIA -->
+      <section class="mixed-media">
+        <div class="scanlines"></div>
+
+        <div class="analog-display">
+          <div class="vu-meter">
+            <div class="vu-bar">
+              <div class="vu-fill" style="animation-delay: 0s"></div>
+            </div>
+            <div class="vu-bar">
+              <div class="vu-fill" style="animation-delay: 0.1s"></div>
+            </div>
+            <div class="vu-bar">
+              <div class="vu-fill" style="animation-delay: 0.2s"></div>
+            </div>
+            <div class="vu-bar">
+              <div class="vu-fill" style="animation-delay: 0.3s"></div>
+            </div>
+            <div class="vu-bar">
+              <div class="vu-fill" style="animation-delay: 0.4s"></div>
+            </div>
+            <div class="vu-bar">
+              <div class="vu-fill" style="animation-delay: 0.5s"></div>
+            </div>
+            <div class="vu-bar">
+              <div class="vu-fill" style="animation-delay: 0.6s"></div>
+            </div>
+            <div class="vu-bar">
+              <div class="vu-fill" style="animation-delay: 0.7s"></div>
+            </div>
+            <div class="vu-bar">
+              <div class="vu-fill" style="animation-delay: 0.8s"></div>
+            </div>
+            <div class="vu-bar">
+              <div class="vu-fill" style="animation-delay: 0.9s"></div>
+            </div>
+          </div>
+
+          <div class="analog-text">
+            TREND DETECTION ACTIVE • MONITORING 50M+ DATA POINTS
+          </div>
+        </div>
+
+        <p
+          style="font-family: 'Space Mono', monospace; font-size: 14px; color: #94a3b8; text-align: center; margin-top: 24px; position: relative; z-index: 11"
+        >
+          Retro VU meters + CRT scanlines = Analog warmth meets digital
+          precision
+        </p>
+      </section>
+
+      <footer class="footer-section">
+        <div class="footer-text">
+          EXPERIMENTAL DESIGN SYSTEM • 2024
+        </div>
+      </footer>
     </div>
-    
-    <p style="font-family: 'Space Mono', monospace; font-size: 14px; color: #94A3B8; text-align: center; margin-top: 24px; position: relative; z-index: 11;">
-      Retro VU meters + CRT scanlines = Analog warmth meets digital precision
-    </p>
-  </section>
-
-  <footer class="footer-section">
-    <div class="footer-text">
-      EXPERIMENTAL DESIGN SYSTEM • 2024
-    </div>
-  </footer>
-
-</div>
-
-</body>
+  </body>
 </html>

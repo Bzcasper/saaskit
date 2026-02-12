@@ -117,16 +117,32 @@ export default {
         mono: ["JetBrains Mono", "monospace"],
       },
       fontSize: {
-        "display": ["56px", { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "800" }],
-        "h1": ["56px", { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "800" }],
-        "h2": ["40px", { lineHeight: "1.3", letterSpacing: "-0.01em", fontWeight: "700" }],
+        "display": ["56px", {
+          lineHeight: "1.2",
+          letterSpacing: "-0.02em",
+          fontWeight: "800",
+        }],
+        "h1": ["56px", {
+          lineHeight: "1.2",
+          letterSpacing: "-0.02em",
+          fontWeight: "800",
+        }],
+        "h2": ["40px", {
+          lineHeight: "1.3",
+          letterSpacing: "-0.01em",
+          fontWeight: "700",
+        }],
         "h3": ["28px", { lineHeight: "1.4", fontWeight: "600" }],
         "h4": ["24px", { lineHeight: "1.4", fontWeight: "600" }],
         "h5": ["20px", { lineHeight: "1.5", fontWeight: "600" }],
         "body-lg": ["18px", { lineHeight: "1.7", fontWeight: "400" }],
         "body": ["16px", { lineHeight: "1.6", fontWeight: "400" }],
         "body-sm": ["14px", { lineHeight: "1.6", fontWeight: "400" }],
-        "caption": ["12px", { lineHeight: "1.5", letterSpacing: "0.01em", fontWeight: "400" }],
+        "caption": ["12px", {
+          lineHeight: "1.5",
+          letterSpacing: "0.01em",
+          fontWeight: "400",
+        }],
       },
       spacing: {
         "4": "4px",
@@ -165,10 +181,12 @@ export default {
         "glow": "0 0 40px rgba(139, 92, 246, 0.3)",
       },
       backgroundImage: {
-        "gradient-primary": "linear-gradient(135deg, #8B5CF6 0%, #06B6D4 50%, #EC4899 100%)",
+        "gradient-primary":
+          "linear-gradient(135deg, #8B5CF6 0%, #06B6D4 50%, #EC4899 100%)",
         "gradient-logo": "linear-gradient(135deg, #8B5CF6 0%, #06B6D4 100%)",
         "gradient-radial": "radial-gradient(circle, #8B5CF6 0%, #0F172A 100%)",
-        "gradient-subtle": "linear-gradient(180deg, rgba(139, 92, 246, 0.05) 0%, transparent 100%)",
+        "gradient-subtle":
+          "linear-gradient(180deg, rgba(139, 92, 246, 0.05) 0%, transparent 100%)",
       },
       transitionDuration: {
         "instant": "0ms",

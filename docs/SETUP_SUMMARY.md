@@ -3,12 +3,14 @@
 ## ✅ Current Status
 
 ### Database (Deno KV)
+
 - **Status**: ✅ Ready to use
 - **Type**: Deno KV (built-in, no setup required)
 - **Location**: In-memory (development) or Deno Deploy KV (production)
 - **Features**: Automatic, serverless, zero-config
 
 ### Stripe
+
 - **Status**: ⚠️ Configuration needed
 - **Current**: Placeholder values in `.env`
 - **Action Required**: Add actual Stripe test keys
@@ -95,11 +97,11 @@ Visit http://localhost:8000
 1. **Items** - Music discoveries/trends
    ```typescript
    {
-     id: string (ULID)
-     userLogin: string
-     title: string
-     url: string
-     score: number
+     id: string(ULID);
+     userLogin: string;
+     title: string;
+     url: string;
+     score: number;
    }
    ```
 
@@ -116,8 +118,8 @@ Visit http://localhost:8000
 3. **Votes** - User votes on items
    ```typescript
    {
-     itemId: string
-     userLogin: string
+     itemId: string;
+     userLogin: string;
    }
    ```
 
@@ -148,13 +150,14 @@ deno task ok          # Check everything
 
 Use these for testing payments:
 
-| Card Number | Result |
-|-------------|--------|
-| `4242 4242 4242 4242` | ✅ Success |
-| `4000 0000 0000 0002` | ❌ Declined |
+| Card Number           | Result                |
+| --------------------- | --------------------- |
+| `4242 4242 4242 4242` | ✅ Success            |
+| `4000 0000 0000 0002` | ❌ Declined           |
 | `4000 0000 0000 0341` | ❌ Insufficient funds |
 
 **Use any:**
+
 - Future expiry date (MM/YY)
 - Any 3-digit CVC
 - Any ZIP code
@@ -164,6 +167,7 @@ Use these for testing payments:
 The `init:stripe` script creates:
 
 **Premium Plan**
+
 - Price: $5.00/month
 - Features: Premium badge, priority support, advanced analytics
 - Subscription: Monthly recurring
@@ -171,6 +175,7 @@ The `init:stripe` script creates:
 ### Webhook Events
 
 Stripe CLI forwards these events:
+
 - `customer.subscription.created`
 - `customer.subscription.deleted`
 - `invoice.payment_succeeded`
@@ -183,6 +188,7 @@ Stripe CLI forwards these events:
 ### Database Issues
 
 **Problem**: "Permission denied"
+
 ```bash
 # Solution: Check Deno has KV permissions
 deno --version  # Should be 1.40+
@@ -190,6 +196,7 @@ deno --version  # Should be 1.40+
 ```
 
 **Problem**: "Database is empty"
+
 ```bash
 # Solution: Seed the database
 deno task db:seed
@@ -198,12 +205,14 @@ deno task db:seed
 ### Stripe Issues
 
 **Problem**: "Stripe is disabled"
+
 ```bash
 # Solution: Add STRIPE_SECRET_KEY to .env
 # Make sure it starts with 'sk_test_' for test mode
 ```
 
 **Problem**: "No such price"
+
 ```bash
 # Solution: Run initialization
 deno task init:stripe
@@ -211,6 +220,7 @@ deno task init:stripe
 ```
 
 **Problem**: "Webhook signature verification failed"
+
 ```bash
 # Solution: Ensure Stripe CLI is running
 stripe listen --forward-to localhost:8000/api/stripe-webhooks
@@ -224,6 +234,7 @@ stripe listen --forward-to localhost:8000/api/stripe-webhooks
 ### Database
 
 Deno KV on Deno Deploy is **automatic**:
+
 - No configuration needed
 - Globally distributed
 - Pay only for usage
@@ -297,6 +308,7 @@ GA4_MEASUREMENT_ID=G-...  # Google Analytics
 ---
 
 **Need Help?**
+
 - Check logs: `deno task start` output
 - Test database: `deno task db:dump`
 - Verify Stripe: `stripe logs tail`

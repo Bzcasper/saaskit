@@ -2,16 +2,16 @@
 
 import { assertEquals, assertExists } from "@std/assert";
 import {
-  createDownloadJob,
-  getDownloadJob,
-  getUserDownloadJobs,
-  updateDownloadJob,
-  completeDownloadJob,
-  failDownloadJob,
   cancelDownloadJob,
+  completeDownloadJob,
+  createDownloadJob,
   deleteDownloadJob,
+  failDownloadJob,
+  getDownloadJob,
   getDownloadStats,
+  getUserDownloadJobs,
   selectBestStream,
+  updateDownloadJob,
 } from "./download.ts";
 
 // Mock data for testing
@@ -138,7 +138,12 @@ Deno.test("getDownloadStats - returns correct statistics", async () => {
   const userId = "stats_test_user";
 
   // Create multiple jobs
-  const job1 = await createDownloadJob(mockVideoId, mockTitle, mockArtist, userId);
+  const job1 = await createDownloadJob(
+    mockVideoId,
+    mockTitle,
+    mockArtist,
+    userId,
+  );
   const job2 = await createDownloadJob("vid2", mockTitle, mockArtist, userId);
   const job3 = await createDownloadJob("vid3", mockTitle, mockArtist, userId);
 

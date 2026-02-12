@@ -10,7 +10,9 @@ interface BrandProviderProps {
   variant?: "default" | "experimental" | "minimal";
 }
 
-export function BrandProvider({ children, variant = "default" }: BrandProviderProps) {
+export function BrandProvider(
+  { children, variant = "default" }: BrandProviderProps,
+) {
   return (
     <div class={`brand-root brand-variant-${variant}`}>
       {children}

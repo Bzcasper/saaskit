@@ -9,16 +9,16 @@ import { cerebrasClient } from "@/utils/cerebras_client.ts";
 import { YTMusic } from "@/utils/music_client.ts";
 import {
   createAIPlaylist,
+  deleteAIPlaylist,
   getAIPlaylist,
   getAIPlaylistsByUser,
-  deleteAIPlaylist,
   getUserTasteProfile,
 } from "@/utils/music_models.ts";
 import {
-  successResponse,
   errorResponse,
-  toJson,
   handleApiError,
+  successResponse,
+  toJson,
 } from "@/utils/api_response.ts";
 import type { Handlers, RouteContext } from "$fresh/server.ts";
 
@@ -57,21 +57,24 @@ export async function handleGET(ctx: RouteContext) {
 export async function handleGETById(req: Request, ctx: RouteContext) {
   try {
     const playlistId = ctx.params.id;
-    
+
     if (!playlistId) {
       const response = errorResponse("MISSING_PARAM", "Playlist ID required");
       return toJson(response, 400);
     }
 
     const playlist = await getAIPlaylist(playlistId);
-    
+
     if (!playlist) {
       const response = errorResponse("NOT_FOUND", "Playlist not found");
       return toJson(response, 404);
     }
 
     // Check access permissions
-    if (!playlist.isPublic && (!ctx.state.user || playlist.userLogin !== (ctx.state.user as any).login)) {
+    if (
+      !playlist.isPublic &&
+      (!ctx.state.user || playlist.userLogin !== (ctx.state.user as any).login)
+    ) {
       const response = errorResponse("FORBIDDEN", "Access denied");
       return toJson(response, 403);
     }
@@ -124,21 +127,28 @@ export async function handlePOST(req: Request, ctx: RouteContext) {
 
     // Find video IDs for the first few tracks
     try {
-      const searchPromises = playlistData.tracks.slice(0, 5).map(async (track) => {
-        const query = `${track.title} ${track.artist}`;
-        const results = await ytmusic.search(query, "songs", undefined, false);
-        return {
-          track,
-          videoId: results.results?.[0]?.videoId,
-        };
-      });
+      const searchPromises = playlistData.tracks.slice(0, 5).map(
+        async (track) => {
+          const query = `${track.title} ${track.artist}`;
+          const results = await ytmusic.search(
+            query,
+            "songs",
+            undefined,
+            false,
+          );
+          return {
+            track,
+            videoId: results.results?.[0]?.videoId,
+          };
+        },
+      );
 
       const searchResults = await Promise.all(searchPromises);
-      
+
       // Update tracks with video IDs
       const updatedTracks = playlistData.tracks.map((track, index) => {
         if (index < 5) {
-          const result = searchResults.find(r => 
+          const result = searchResults.find((r) =>
             r.track.title === track.title && r.track.artist === track.artist
           );
           return { ...track, videoId: result?.videoId };
@@ -159,7 +169,10 @@ export async function handlePOST(req: Request, ctx: RouteContext) {
     } catch (err) {
       console.error("Error finding video IDs:", err);
       // Return original playlist if video ID lookup fails
-      const response = successResponse(playlist, "Playlist created (without video IDs)");
+      const response = successResponse(
+        playlist,
+        "Playlist created (without video IDs)",
+      );
       return toJson(response, 201);
     }
   } catch (error) {
@@ -180,7 +193,8 @@ export async function handleMoodPlaylist(req: Request, ctx: RouteContext) {
     }
 
     const body = await req.json();
-    const { mood, activity, timeOfDay, trackCount = 15, isPublic = false } = body;
+    const { mood, activity, timeOfDay, trackCount = 15, isPublic = false } =
+      body;
 
     if (!mood) {
       const response = errorResponse("MISSING_PARAM", "Mood required");
@@ -196,13 +210,19 @@ export async function handleMoodPlaylist(req: Request, ctx: RouteContext) {
     );
 
     // Create playlist in database
-    const prompt = `A ${mood} playlist${activity ? ` for ${activity}` : ""}${timeOfDay ? ` during ${timeOfDay}` : ""}`;
+    const prompt = `A ${mood} playlist${activity ? ` for ${activity}` : ""}${
+      timeOfDay ? ` during ${timeOfDay}` : ""
+    }`;
     const playlist = await createAIPlaylist({
-      name: `${mood.charAt(0).toUpperCase() + mood.slice(1)}${activity ? ` ${activity}` : ""}`,
-      description: `Generated playlist for ${mood} mood${activity ? ` while ${activity}` : ""}${timeOfDay ? ` during ${timeOfDay}` : ""}`,
+      name: `${mood.charAt(0).toUpperCase() + mood.slice(1)}${
+        activity ? ` ${activity}` : ""
+      }`,
+      description: `Generated playlist for ${mood} mood${
+        activity ? ` while ${activity}` : ""
+      }${timeOfDay ? ` during ${timeOfDay}` : ""}`,
       prompt,
       userLogin: (ctx.state.user as any).login,
-      tracks: playlistData.tracks.map(t => ({
+      tracks: playlistData.tracks.map((t) => ({
         title: t.title,
         artist: t.artist,
         mood,
@@ -242,7 +262,7 @@ export async function handleContinuePlaylist(req: Request, ctx: RouteContext) {
 
     // Get the existing playlist
     const playlist = await getAIPlaylist(playlistId);
-    
+
     if (!playlist) {
       const response = errorResponse("NOT_FOUND", "Playlist not found");
       return toJson(response, 404);
@@ -256,7 +276,7 @@ export async function handleContinuePlaylist(req: Request, ctx: RouteContext) {
 
     // Generate continuation using Cerebras
     const continuation = await cerebrasClient.generatePlaylistContinuation(
-      playlist.tracks.map(t => ({
+      playlist.tracks.map((t) => ({
         title: t.title,
         artist: t.artist,
       })),
@@ -266,7 +286,7 @@ export async function handleContinuePlaylist(req: Request, ctx: RouteContext) {
     // Update playlist
     const updatedTracks = [
       ...playlist.tracks,
-      ...continuation.continuation.map(t => ({
+      ...continuation.continuation.map((t) => ({
         title: t.title,
         artist: t.artist,
         mood: playlist.mood,
@@ -286,7 +306,7 @@ export async function handleContinuePlaylist(req: Request, ctx: RouteContext) {
       coherence: continuation.coherence,
       genreProgression: continuation.genreProgression,
     }, "Playlist extended");
-    
+
     return toJson(response, 200);
   } catch (error) {
     const [errorResp, status] = handleApiError(error);
@@ -306,14 +326,17 @@ export async function handleDELETE(req: Request, ctx: RouteContext) {
     }
 
     const playlistId = ctx.params.id;
-    
+
     if (!playlistId) {
       const response = errorResponse("MISSING_PARAM", "Playlist ID required");
       return toJson(response, 400);
     }
 
-    const deleted = await deleteAIPlaylist(playlistId, (ctx.state.user as any).login);
-    
+    const deleted = await deleteAIPlaylist(
+      playlistId,
+      (ctx.state.user as any).login,
+    );
+
     if (!deleted) {
       const response = errorResponse(
         "NOT_FOUND",

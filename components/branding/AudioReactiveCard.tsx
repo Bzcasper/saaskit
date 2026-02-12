@@ -10,7 +10,9 @@ interface CardProps {
   visualType: "circular" | "spectrum" | "waveform" | "particles";
 }
 
-export function AudioReactiveCard({ title, description, visualType }: CardProps) {
+export function AudioReactiveCard(
+  { title, description, visualType }: CardProps,
+) {
   const visuals = {
     circular: (
       <div class="absolute inset-0 flex items-center justify-center">
@@ -20,7 +22,7 @@ export function AudioReactiveCard({ title, description, visualType }: CardProps)
             class="absolute border-2 border-primary rounded-full"
             style={{
               animation: "cv-expand 2s ease-out infinite",
-              animationDelay: `${delay}s`
+              animationDelay: `${delay}s`,
             }}
           />
         ))}
@@ -35,7 +37,7 @@ export function AudioReactiveCard({ title, description, visualType }: CardProps)
             style={{
               height: "30%",
               animation: "spectrum-dance 0.6s ease-in-out infinite",
-              animationDelay: `${i * 0.05}s`
+              animationDelay: `${i * 0.05}s`,
             }}
           />
         ))}
@@ -57,12 +59,12 @@ export function AudioReactiveCard({ title, description, visualType }: CardProps)
             class="absolute w-2 h-2 bg-primary rounded-full shadow-glow"
             style={{
               animation: "particle-orbit 4s linear infinite",
-              animationDelay: `${delay}s`
+              animationDelay: `${delay}s`,
             }}
           />
         ))}
       </div>
-    )
+    ),
   };
 
   return (
@@ -73,7 +75,8 @@ export function AudioReactiveCard({ title, description, visualType }: CardProps)
       <h3 class="font-heading font-bold text-h3 text-white mb-2">{title}</h3>
       <p class="text-foreground-muted text-body">{description}</p>
 
-      <style>{`
+      <style>
+        {`
         @keyframes cv-expand {
           0% { width: 20px; height: 20px; opacity: 1; }
           100% { width: 150px; height: 150px; opacity: 0; }
@@ -93,7 +96,8 @@ export function AudioReactiveCard({ title, description, visualType }: CardProps)
           75% { top: 90%; left: 50%; transform: scale(0.5); }
           100% { top: 50%; left: 10%; transform: scale(1); }
         }
-      `}</style>
+      `}
+      </style>
     </div>
   );
 }

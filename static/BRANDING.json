@@ -1,709 +1,709 @@
 {
-    "meta": {
-        "version": "1.0.0",
-        "lastUpdated": "2024-01-15",
-        "format": "JSON",
-        "description": "Complete branding system for trendradar music API",
-        "authors": [
-            "trendradar Design Team"
+  "meta": {
+    "version": "1.0.0",
+    "lastUpdated": "2024-01-15",
+    "format": "JSON",
+    "description": "Complete branding system for trendradar music API",
+    "authors": [
+      "trendradar Design Team"
+    ],
+    "license": "MIT"
+  },
+  "brand": {
+    "name": "trendradar",
+    "tagline": "Detecting the pulse of music trends",
+    "identity": {
+      "mission": "Empower developers and music platforms with real-time trend intelligence, enabling data-driven decisions that shape the future of music discovery.",
+      "vision": "To become the world's leading music trend intelligence platform, connecting artists, developers, and listeners through the power of data.",
+      "values": [
+        "Innovation",
+        "Data Integrity",
+        "Developer-First",
+        "Musical Passion",
+        "Transparency"
+      ],
+      "positioning": "The only API that combines real-time music analytics with predictive trend forecasting, designed by developers, for developers.",
+      "personality": {
+        "primary": [
+          "Innovative",
+          "Technical",
+          "Data-Driven"
         ],
-        "license": "MIT"
-    },
-    "brand": {
-        "name": "trendradar",
-        "tagline": "Detecting the pulse of music trends",
-        "identity": {
-            "mission": "Empower developers and music platforms with real-time trend intelligence, enabling data-driven decisions that shape the future of music discovery.",
-            "vision": "To become the world's leading music trend intelligence platform, connecting artists, developers, and listeners through the power of data.",
-            "values": [
-                "Innovation",
-                "Data Integrity",
-                "Developer-First",
-                "Musical Passion",
-                "Transparency"
-            ],
-            "positioning": "The only API that combines real-time music analytics with predictive trend forecasting, designed by developers, for developers.",
-            "personality": {
-                "primary": [
-                    "Innovative",
-                    "Technical",
-                    "Data-Driven"
-                ],
-                "secondary": [
-                    "Approachable",
-                    "Rhythmic",
-                    "Confident"
-                ]
-            }
-        }
-    },
-    "logos": {
-        "primary": {
-            "type": "wordmark",
-            "name": "trendradar-gradient",
-            "text": "trendradar",
-            "font": "Orbitron",
-            "weight": 900,
-            "letterSpacing": "2px",
-            "textTransform": "lowercase",
-            "gradient": {
-                "direction": "135deg",
-                "stops": [
-                    {
-                        "color": "#8B5CF6",
-                        "position": 0
-                    },
-                    {
-                        "color": "#06B6D4",
-                        "position": 50
-                    },
-                    {
-                        "color": "#EC4899",
-                        "position": 100
-                    }
-                ]
-            },
-            "formats": [
-                "SVG",
-                "PNG",
-                "PDF"
-            ],
-            "useCase": "Primary logo for all digital applications"
-        },
-        "icon": {
-            "type": "abbreviated-mark",
-            "name": "tr-icon",
-            "text": "TR",
-            "font": "Orbitron",
-            "weight": 900,
-            "fontSize": "40px",
-            "shape": "rounded-square",
-            "borderRadius": "20px",
-            "background": "gradient",
-            "textColor": "#050508",
-            "sizes": [
-                16,
-                32,
-                64,
-                128,
-                256,
-                512
-            ],
-            "useCase": "Favicons, app icons, small spaces"
-        },
-        "variations": [
-            {
-                "name": "horizontal",
-                "layout": "icon-left-text-right",
-                "useCase": "Headers, navigation bars"
-            },
-            {
-                "name": "stacked",
-                "layout": "icon-above-text",
-                "useCase": "Social media, mobile headers"
-            },
-            {
-                "name": "light-version",
-                "background": "light",
-                "color": "#8B5CF6",
-                "useCase": "Light backgrounds, print materials"
-            },
-            {
-                "name": "dark-version",
-                "background": "dark",
-                "color": "gradient",
-                "useCase": "Dark backgrounds, UI headers"
-            }
-        ],
-        "guidelines": {
-            "clearSpace": "1x height of 'T' on all sides",
-            "minimumSize": {
-                "digital": "120px width",
-                "print": "1 inch width",
-                "icon": "32px"
-            },
-            "donts": [
-                "Don't stretch or distort",
-                "Don't rotate",
-                "Don't change colors outside brand palette",
-                "Don't add shadows or effects",
-                "Don't place on busy backgrounds",
-                "Don't use low-contrast color combinations"
-            ]
-        }
-    },
-    "colors": {
-        "primary": {
-            "electricPurple": {
-                "name": "Electric Purple",
-                "hex": "#8B5CF6",
-                "rgb": "rgb(139, 92, 246)",
-                "hsl": "hsl(258, 90%, 66%)",
-                "usage": "Primary brand color, CTAs, highlights",
-                "accessibility": "WCAG AA compliant on dark backgrounds"
-            },
-            "neonCyan": {
-                "name": "Neon Cyan",
-                "hex": "#06B6D4",
-                "rgb": "rgb(6, 182, 212)",
-                "hsl": "hsl(189, 94%, 43%)",
-                "usage": "Secondary brand color, gradients, accents",
-                "accessibility": "WCAG AA compliant on dark backgrounds"
-            },
-            "deepViolet": {
-                "name": "Deep Violet",
-                "hex": "#6D28D9",
-                "rgb": "rgb(109, 40, 217)",
-                "hsl": "hsl(263, 69%, 50%)",
-                "usage": "Gradient endpoint, dark purple accents",
-                "accessibility": "Use with light text only"
-            }
-        },
-        "secondary": {
-            "accentPink": {
-                "name": "Accent Pink",
-                "hex": "#EC4899",
-                "rgb": "rgb(236, 72, 153)",
-                "hsl": "hsl(330, 81%, 60%)",
-                "usage": "Accent color, special highlights, gradient endpoint"
-            },
-            "teal": {
-                "name": "Teal",
-                "hex": "#14B8A6",
-                "rgb": "rgb(20, 184, 166)",
-                "usage": "Alternative accent, data visualization"
-            }
-        },
-        "neutral": {
-            "darkBackground": {
-                "name": "Dark Background",
-                "hex": "#0F172A",
-                "rgb": "rgb(15, 23, 42)",
-                "usage": "Primary background, dark surfaces"
-            },
-            "darkerBackground": {
-                "name": "Darker Background",
-                "hex": "#050508",
-                "usage": "Headers, code blocks, emphasis"
-            },
-            "softWhite": {
-                "name": "Soft White",
-                "hex": "#F8FAFC",
-                "rgb": "rgb(248, 250, 252)",
-                "usage": "Primary text, light surfaces"
-            },
-            "mutedGray": {
-                "name": "Muted Gray",
-                "hex": "#94A3B8",
-                "rgb": "rgb(148, 163, 184)",
-                "usage": "Secondary text, borders, disabled states"
-            },
-            "darkGray": {
-                "name": "Dark Gray",
-                "hex": "#64748B",
-                "rgb": "rgb(100, 116, 139)",
-                "usage": "Captions, helper text, placeholders"
-            }
-        },
-        "semantic": {
-            "success": {
-                "name": "Success",
-                "hex": "#10B981",
-                "rgb": "rgb(16, 185, 129)",
-                "usage": "Success states, confirmations, positive indicators"
-            },
-            "warning": {
-                "name": "Warning",
-                "hex": "#F59E0B",
-                "rgb": "rgb(245, 158, 11)",
-                "usage": "Warning states, cautions, alerts"
-            },
-            "error": {
-                "name": "Error",
-                "hex": "#EF4444",
-                "rgb": "rgb(239, 68, 68)",
-                "usage": "Error states, destructive actions, validation errors"
-            },
-            "info": {
-                "name": "Info",
-                "hex": "#3B82F6",
-                "rgb": "rgb(59, 130, 246)",
-                "usage": "Informational messages, tips, neutral notifications"
-            }
-        },
-        "gradients": {
-            "primary": "linear-gradient(135deg, #8B5CF6 0%, #06B6D4 50%, #EC4899 100%)",
-            "logo": "linear-gradient(135deg, #8B5CF6 0%, #06B6D4 100%)",
-            "radial": "radial-gradient(circle, #8B5CF6 0%, #0F172A 100%)",
-            "subtle": "linear-gradient(180deg, rgba(139, 92, 246, 0.05) 0%, transparent 100%)"
-        },
-        "accessibility": {
-            "contrastRatios": {
-                "normalText": "4.5:1 minimum",
-                "largeText": "3:1 minimum",
-                "uiComponents": "3:1 minimum"
-            },
-            "approvedCombinations": [
-                {
-                    "foreground": "#F8FAFC",
-                    "background": "#0F172A",
-                    "ratio": "15.5:1"
-                },
-                {
-                    "foreground": "#F8FAFC",
-                    "background": "#8B5CF6",
-                    "ratio": "4.6:1"
-                },
-                {
-                    "foreground": "#8B5CF6",
-                    "background": "#F8FAFC",
-                    "ratio": "4.6:1"
-                }
-            ]
-        }
-    },
-    "typography": {
-        "fonts": {
-            "heading": {
-                "name": "Orbitron",
-                "category": "Geometric Sans-Serif",
-                "googleFonts": "https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900",
-                "weights": [
-                    400,
-                    500,
-                    600,
-                    700,
-                    800,
-                    900
-                ],
-                "style": "Futuristic, geometric, tech-forward",
-                "usage": "Headlines, logos, key messaging"
-            },
-            "body": {
-                "name": "Plus Jakarta Sans",
-                "category": "Sans-Serif",
-                "googleFonts": "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800",
-                "weights": [
-                    300,
-                    400,
-                    500,
-                    600,
-                    700,
-                    800
-                ],
-                "style": "Clean, modern, highly readable",
-                "usage": "Body text, paragraphs, long-form content"
-            },
-            "ui": {
-                "name": "DM Sans",
-                "category": "Sans-Serif",
-                "googleFonts": "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700",
-                "weights": [
-                    400,
-                    500,
-                    600,
-                    700
-                ],
-                "style": "Clear, professional, optimized for UI",
-                "usage": "UI elements, buttons, labels, small text"
-            },
-            "code": {
-                "name": "JetBrains Mono",
-                "category": "Monospace",
-                "googleFonts": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700",
-                "weights": [
-                    400,
-                    500,
-                    600,
-                    700
-                ],
-                "style": "Developer-friendly, clear, technical",
-                "usage": "Code blocks, API keys, technical data"
-            }
-        },
-        "scale": {
-            "h1": {
-                "size": "56px",
-                "weight": 800,
-                "lineHeight": "1.2",
-                "letterSpacing": "-0.02em",
-                "usage": "Main page headings, hero sections"
-            },
-            "h2": {
-                "size": "40px",
-                "weight": 700,
-                "lineHeight": "1.3",
-                "letterSpacing": "-0.01em",
-                "usage": "Section headings"
-            },
-            "h3": {
-                "size": "28px",
-                "weight": 600,
-                "lineHeight": "1.4",
-                "letterSpacing": "0",
-                "usage": "Subheadings, card titles"
-            },
-            "h4": {
-                "size": "24px",
-                "weight": 600,
-                "lineHeight": "1.4",
-                "letterSpacing": "0",
-                "usage": "Card headers, component titles"
-            },
-            "h5": {
-                "size": "20px",
-                "weight": 600,
-                "lineHeight": "1.5",
-                "letterSpacing": "0",
-                "usage": "Small headings, sidebar titles"
-            },
-            "bodyLarge": {
-                "size": "18px",
-                "weight": 400,
-                "lineHeight": "1.7",
-                "letterSpacing": "0",
-                "usage": "Lead paragraphs, introductions"
-            },
-            "body": {
-                "size": "16px",
-                "weight": 400,
-                "lineHeight": "1.6",
-                "letterSpacing": "0",
-                "usage": "Body text, paragraphs"
-            },
-            "bodySmall": {
-                "size": "14px",
-                "weight": 400,
-                "lineHeight": "1.6",
-                "letterSpacing": "0",
-                "usage": "Secondary text, helper text"
-            },
-            "caption": {
-                "size": "12px",
-                "weight": 400,
-                "lineHeight": "1.5",
-                "letterSpacing": "0.01em",
-                "usage": "Captions, footnotes, metadata"
-            }
-        }
-    },
-    "layout": {
-        "grid": {
-            "system": "8-point grid",
-            "baseUnit": 8,
-            "columns": 12,
-            "containerMaxWidth": "1280px",
-            "gutterWidth": "24px"
-        },
-        "spacing": {
-            "scale": [
-                4,
-                8,
-                12,
-                16,
-                20,
-                24,
-                28,
-                32,
-                36,
-                40,
-                48,
-                56,
-                64,
-                72,
-                80,
-                96,
-                128
-            ],
-            "unit": "px",
-            "semantic": {
-                "xs": 4,
-                "sm": 8,
-                "md": 16,
-                "lg": 24,
-                "xl": 32,
-                "2xl": 48,
-                "3xl": 64,
-                "4xl": 96
-            }
-        },
-        "breakpoints": {
-            "mobile": {
-                "name": "Mobile",
-                "minWidth": 0,
-                "maxWidth": 767,
-                "columns": 4,
-                "gutter": 16
-            },
-            "tablet": {
-                "name": "Tablet",
-                "minWidth": 768,
-                "maxWidth": 1023,
-                "columns": 8,
-                "gutter": 24
-            },
-            "desktop": {
-                "name": "Desktop",
-                "minWidth": 1024,
-                "maxWidth": 1439,
-                "columns": 12,
-                "gutter": 24
-            },
-            "largeDesktop": {
-                "name": "Large Desktop",
-                "minWidth": 1440,
-                "maxWidth": null,
-                "columns": 12,
-                "gutter": 32
-            }
-        }
-    },
-    "components": {
-        "buttons": {
-            "primary": {
-                "background": "linear-gradient(135deg, #8B5CF6 0%, #06B6D4 100%)",
-                "color": "#050508",
-                "padding": "12px 24px",
-                "borderRadius": "8px",
-                "fontWeight": 600,
-                "fontSize": "14px",
-                "transition": "all 0.2s ease",
-                "states": {
-                    "hover": {
-                        "transform": "translateY(-2px)",
-                        "boxShadow": "0 8px 24px rgba(139, 92, 246, 0.3)"
-                    },
-                    "active": {
-                        "transform": "translateY(0)"
-                    },
-                    "disabled": {
-                        "opacity": 0.5,
-                        "cursor": "not-allowed"
-                    }
-                }
-            },
-            "secondary": {
-                "background": "transparent",
-                "border": "2px solid #8B5CF6",
-                "color": "#8B5CF6",
-                "padding": "10px 22px",
-                "borderRadius": "8px",
-                "fontWeight": 600,
-                "fontSize": "14px"
-            },
-            "ghost": {
-                "background": "rgba(139, 92, 246, 0.1)",
-                "color": "#C4B5FD",
-                "padding": "12px 24px",
-                "borderRadius": "8px",
-                "fontWeight": 600,
-                "fontSize": "14px"
-            },
-            "sizes": {
-                "sm": {
-                    "padding": "8px 16px",
-                    "fontSize": "12px"
-                },
-                "md": {
-                    "padding": "12px 24px",
-                    "fontSize": "14px"
-                },
-                "lg": {
-                    "padding": "16px 32px",
-                    "fontSize": "16px"
-                }
-            }
-        },
-        "inputs": {
-            "default": {
-                "background": "rgba(15, 23, 42, 0.8)",
-                "border": "1px solid rgba(139, 92, 246, 0.2)",
-                "borderRadius": "8px",
-                "padding": "12px 16px",
-                "fontSize": "14px",
-                "color": "#F8FAFC",
-                "transition": "border-color 0.2s ease",
-                "states": {
-                    "focus": {
-                        "borderColor": "#8B5CF6",
-                        "outline": "none"
-                    },
-                    "error": {
-                        "borderColor": "#EF4444"
-                    },
-                    "success": {
-                        "borderColor": "#10B981"
-                    }
-                }
-            },
-            "label": {
-                "fontSize": "13px",
-                "fontWeight": 500,
-                "color": "#CBD5E1",
-                "marginBottom": "8px"
-            }
-        },
-        "cards": {
-            "default": {
-                "background": "rgba(15, 23, 42, 0.6)",
-                "border": "1px solid rgba(139, 92, 246, 0.2)",
-                "borderRadius": "16px",
-                "padding": "24px",
-                "transition": "transform 0.2s ease, box-shadow 0.2s ease"
-            },
-            "elevated": {
-                "boxShadow": "0 4px 24px rgba(139, 92, 246, 0.15)",
-                "hover": {
-                    "transform": "translateY(-4px)",
-                    "boxShadow": "0 8px 32px rgba(139, 92, 246, 0.25)"
-                }
-            }
-        },
-        "alerts": {
-            "success": {
-                "background": "rgba(16, 185, 129, 0.1)",
-                "borderLeft": "4px solid #10B981",
-                "padding": "16px",
-                "borderRadius": "8px"
-            },
-            "error": {
-                "background": "rgba(239, 68, 68, 0.1)",
-                "borderLeft": "4px solid #EF4444",
-                "padding": "16px",
-                "borderRadius": "8px"
-            },
-            "warning": {
-                "background": "rgba(245, 158, 11, 0.1)",
-                "borderLeft": "4px solid #F59E0B",
-                "padding": "16px",
-                "borderRadius": "8px"
-            },
-            "info": {
-                "background": "rgba(59, 130, 246, 0.1)",
-                "borderLeft": "4px solid #3B82F6",
-                "padding": "16px",
-                "borderRadius": "8px"
-            }
-        },
-        "badges": {
-            "default": {
-                "background": "rgba(139, 92, 246, 0.1)",
-                "color": "#C4B5FD",
-                "padding": "4px 12px",
-                "borderRadius": "50px",
-                "fontSize": "11px",
-                "fontWeight": 600,
-                "letterSpacing": "0.5px"
-            }
-        }
-    },
-    "icons": {
-        "library": "Material Design Icons",
-        "provider": "Google",
-        "url": "https://fonts.googleapis.com/icon?family=Material+Icons",
-        "style": "Outlined",
-        "color": "#8B5CF6",
-        "sizes": {
-            "xs": 16,
-            "sm": 20,
-            "md": 24,
-            "lg": 32,
-            "xl": 40,
-            "2xl": 48
-        },
-        "common": [
-            "api",
-            "search",
-            "settings",
-            "code",
-            "music_note",
-            "trending_up",
-            "radar",
-            "graphic_eq"
+        "secondary": [
+          "Approachable",
+          "Rhythmic",
+          "Confident"
         ]
+      }
+    }
+  },
+  "logos": {
+    "primary": {
+      "type": "wordmark",
+      "name": "trendradar-gradient",
+      "text": "trendradar",
+      "font": "Orbitron",
+      "weight": 900,
+      "letterSpacing": "2px",
+      "textTransform": "lowercase",
+      "gradient": {
+        "direction": "135deg",
+        "stops": [
+          {
+            "color": "#8B5CF6",
+            "position": 0
+          },
+          {
+            "color": "#06B6D4",
+            "position": 50
+          },
+          {
+            "color": "#EC4899",
+            "position": 100
+          }
+        ]
+      },
+      "formats": [
+        "SVG",
+        "PNG",
+        "PDF"
+      ],
+      "useCase": "Primary logo for all digital applications"
     },
-    "motion": {
-        "durations": {
-            "instant": "0ms",
-            "fast": "150ms",
-            "normal": "300ms",
-            "slow": "500ms",
-            "slower": "800ms"
-        },
-        "easing": {
-            "easeOut": "cubic-bezier(0.0, 0.0, 0.2, 1)",
-            "easeIn": "cubic-bezier(0.4, 0.0, 1, 1)",
-            "easeInOut": "cubic-bezier(0.4, 0.0, 0.2, 1)",
-            "bounce": "cubic-bezier(0.68, -0.55, 0.265, 1.55)"
-        },
-        "transitions": {
-            "microInteractions": {
-                "duration": "150-300ms",
-                "easing": "easeOut"
-            },
-            "pageTransitions": {
-                "duration": "300-500ms",
-                "easing": "easeInOut"
-            },
-            "dataLoading": {
-                "duration": "600-1000ms",
-                "easing": "easeInOut"
-            }
-        }
+    "icon": {
+      "type": "abbreviated-mark",
+      "name": "tr-icon",
+      "text": "TR",
+      "font": "Orbitron",
+      "weight": 900,
+      "fontSize": "40px",
+      "shape": "rounded-square",
+      "borderRadius": "20px",
+      "background": "gradient",
+      "textColor": "#050508",
+      "sizes": [
+        16,
+        32,
+        64,
+        128,
+        256,
+        512
+      ],
+      "useCase": "Favicons, app icons, small spaces"
     },
-    "voice": {
-        "attributes": {
-            "primary": [
-                "Technical Precision",
-                "Data-Driven Confidence",
-                "Approachable Innovation"
-            ],
-            "tone": "Professional, clear, confident, helpful"
-        },
-        "principles": [
-            "Clarity over cleverness",
-            "Action-oriented language",
-            "Inclusive and accessible",
-            "Support claims with data",
-            "Explain complex concepts simply"
-        ],
-        "microcopy": {
-            "buttons": {
-                "primary": "Get Started",
-                "secondary": "Learn More",
-                "submit": "Generate API Key"
-            },
-            "errors": {
-                "generic": "Something went wrong. Please try again.",
-                "validation": "Please enter a valid email address.",
-                "rateLimit": "Rate limit exceeded. Please try again in a few minutes."
-            },
-            "success": {
-                "apiKey": "Your API key has been generated successfully.",
-                "saved": "Your changes have been saved."
-            }
-        }
+    "variations": [
+      {
+        "name": "horizontal",
+        "layout": "icon-left-text-right",
+        "useCase": "Headers, navigation bars"
+      },
+      {
+        "name": "stacked",
+        "layout": "icon-above-text",
+        "useCase": "Social media, mobile headers"
+      },
+      {
+        "name": "light-version",
+        "background": "light",
+        "color": "#8B5CF6",
+        "useCase": "Light backgrounds, print materials"
+      },
+      {
+        "name": "dark-version",
+        "background": "dark",
+        "color": "gradient",
+        "useCase": "Dark backgrounds, UI headers"
+      }
+    ],
+    "guidelines": {
+      "clearSpace": "1x height of 'T' on all sides",
+      "minimumSize": {
+        "digital": "120px width",
+        "print": "1 inch width",
+        "icon": "32px"
+      },
+      "donts": [
+        "Don't stretch or distort",
+        "Don't rotate",
+        "Don't change colors outside brand palette",
+        "Don't add shadows or effects",
+        "Don't place on busy backgrounds",
+        "Don't use low-contrast color combinations"
+      ]
+    }
+  },
+  "colors": {
+    "primary": {
+      "electricPurple": {
+        "name": "Electric Purple",
+        "hex": "#8B5CF6",
+        "rgb": "rgb(139, 92, 246)",
+        "hsl": "hsl(258, 90%, 66%)",
+        "usage": "Primary brand color, CTAs, highlights",
+        "accessibility": "WCAG AA compliant on dark backgrounds"
+      },
+      "neonCyan": {
+        "name": "Neon Cyan",
+        "hex": "#06B6D4",
+        "rgb": "rgb(6, 182, 212)",
+        "hsl": "hsl(189, 94%, 43%)",
+        "usage": "Secondary brand color, gradients, accents",
+        "accessibility": "WCAG AA compliant on dark backgrounds"
+      },
+      "deepViolet": {
+        "name": "Deep Violet",
+        "hex": "#6D28D9",
+        "rgb": "rgb(109, 40, 217)",
+        "hsl": "hsl(263, 69%, 50%)",
+        "usage": "Gradient endpoint, dark purple accents",
+        "accessibility": "Use with light text only"
+      }
+    },
+    "secondary": {
+      "accentPink": {
+        "name": "Accent Pink",
+        "hex": "#EC4899",
+        "rgb": "rgb(236, 72, 153)",
+        "hsl": "hsl(330, 81%, 60%)",
+        "usage": "Accent color, special highlights, gradient endpoint"
+      },
+      "teal": {
+        "name": "Teal",
+        "hex": "#14B8A6",
+        "rgb": "rgb(20, 184, 166)",
+        "usage": "Alternative accent, data visualization"
+      }
+    },
+    "neutral": {
+      "darkBackground": {
+        "name": "Dark Background",
+        "hex": "#0F172A",
+        "rgb": "rgb(15, 23, 42)",
+        "usage": "Primary background, dark surfaces"
+      },
+      "darkerBackground": {
+        "name": "Darker Background",
+        "hex": "#050508",
+        "usage": "Headers, code blocks, emphasis"
+      },
+      "softWhite": {
+        "name": "Soft White",
+        "hex": "#F8FAFC",
+        "rgb": "rgb(248, 250, 252)",
+        "usage": "Primary text, light surfaces"
+      },
+      "mutedGray": {
+        "name": "Muted Gray",
+        "hex": "#94A3B8",
+        "rgb": "rgb(148, 163, 184)",
+        "usage": "Secondary text, borders, disabled states"
+      },
+      "darkGray": {
+        "name": "Dark Gray",
+        "hex": "#64748B",
+        "rgb": "rgb(100, 116, 139)",
+        "usage": "Captions, helper text, placeholders"
+      }
+    },
+    "semantic": {
+      "success": {
+        "name": "Success",
+        "hex": "#10B981",
+        "rgb": "rgb(16, 185, 129)",
+        "usage": "Success states, confirmations, positive indicators"
+      },
+      "warning": {
+        "name": "Warning",
+        "hex": "#F59E0B",
+        "rgb": "rgb(245, 158, 11)",
+        "usage": "Warning states, cautions, alerts"
+      },
+      "error": {
+        "name": "Error",
+        "hex": "#EF4444",
+        "rgb": "rgb(239, 68, 68)",
+        "usage": "Error states, destructive actions, validation errors"
+      },
+      "info": {
+        "name": "Info",
+        "hex": "#3B82F6",
+        "rgb": "rgb(59, 130, 246)",
+        "usage": "Informational messages, tips, neutral notifications"
+      }
+    },
+    "gradients": {
+      "primary": "linear-gradient(135deg, #8B5CF6 0%, #06B6D4 50%, #EC4899 100%)",
+      "logo": "linear-gradient(135deg, #8B5CF6 0%, #06B6D4 100%)",
+      "radial": "radial-gradient(circle, #8B5CF6 0%, #0F172A 100%)",
+      "subtle": "linear-gradient(180deg, rgba(139, 92, 246, 0.05) 0%, transparent 100%)"
     },
     "accessibility": {
-        "standard": "WCAG 2.1 AA",
-        "requirements": {
-            "colorContrast": {
-                "normalText": "4.5:1 minimum",
-                "largeText": "3:1 minimum",
-                "uiComponents": "3:1 minimum"
-            },
-            "touchTargets": "44px × 44px minimum",
-            "focusIndicators": "Visible for all interactive elements",
-            "keyboardNavigation": "Full support for all functionality",
-            "screenReaders": {
-                "semanticHTML": "Use appropriate HTML elements",
-                "ariaLabels": "Add labels to icons and buttons",
-                "altText": "Provide alt text for all images"
-            },
-            "motion": {
-                "prefersReducedMotion": "Respect user preference",
-                "noFlashing": "Avoid content that flashes more than 3 times per second"
-            }
+      "contrastRatios": {
+        "normalText": "4.5:1 minimum",
+        "largeText": "3:1 minimum",
+        "uiComponents": "3:1 minimum"
+      },
+      "approvedCombinations": [
+        {
+          "foreground": "#F8FAFC",
+          "background": "#0F172A",
+          "ratio": "15.5:1"
+        },
+        {
+          "foreground": "#F8FAFC",
+          "background": "#8B5CF6",
+          "ratio": "4.6:1"
+        },
+        {
+          "foreground": "#8B5CF6",
+          "background": "#F8FAFC",
+          "ratio": "4.6:1"
         }
+      ]
     }
+  },
+  "typography": {
+    "fonts": {
+      "heading": {
+        "name": "Orbitron",
+        "category": "Geometric Sans-Serif",
+        "googleFonts": "https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900",
+        "weights": [
+          400,
+          500,
+          600,
+          700,
+          800,
+          900
+        ],
+        "style": "Futuristic, geometric, tech-forward",
+        "usage": "Headlines, logos, key messaging"
+      },
+      "body": {
+        "name": "Plus Jakarta Sans",
+        "category": "Sans-Serif",
+        "googleFonts": "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800",
+        "weights": [
+          300,
+          400,
+          500,
+          600,
+          700,
+          800
+        ],
+        "style": "Clean, modern, highly readable",
+        "usage": "Body text, paragraphs, long-form content"
+      },
+      "ui": {
+        "name": "DM Sans",
+        "category": "Sans-Serif",
+        "googleFonts": "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700",
+        "weights": [
+          400,
+          500,
+          600,
+          700
+        ],
+        "style": "Clear, professional, optimized for UI",
+        "usage": "UI elements, buttons, labels, small text"
+      },
+      "code": {
+        "name": "JetBrains Mono",
+        "category": "Monospace",
+        "googleFonts": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700",
+        "weights": [
+          400,
+          500,
+          600,
+          700
+        ],
+        "style": "Developer-friendly, clear, technical",
+        "usage": "Code blocks, API keys, technical data"
+      }
+    },
+    "scale": {
+      "h1": {
+        "size": "56px",
+        "weight": 800,
+        "lineHeight": "1.2",
+        "letterSpacing": "-0.02em",
+        "usage": "Main page headings, hero sections"
+      },
+      "h2": {
+        "size": "40px",
+        "weight": 700,
+        "lineHeight": "1.3",
+        "letterSpacing": "-0.01em",
+        "usage": "Section headings"
+      },
+      "h3": {
+        "size": "28px",
+        "weight": 600,
+        "lineHeight": "1.4",
+        "letterSpacing": "0",
+        "usage": "Subheadings, card titles"
+      },
+      "h4": {
+        "size": "24px",
+        "weight": 600,
+        "lineHeight": "1.4",
+        "letterSpacing": "0",
+        "usage": "Card headers, component titles"
+      },
+      "h5": {
+        "size": "20px",
+        "weight": 600,
+        "lineHeight": "1.5",
+        "letterSpacing": "0",
+        "usage": "Small headings, sidebar titles"
+      },
+      "bodyLarge": {
+        "size": "18px",
+        "weight": 400,
+        "lineHeight": "1.7",
+        "letterSpacing": "0",
+        "usage": "Lead paragraphs, introductions"
+      },
+      "body": {
+        "size": "16px",
+        "weight": 400,
+        "lineHeight": "1.6",
+        "letterSpacing": "0",
+        "usage": "Body text, paragraphs"
+      },
+      "bodySmall": {
+        "size": "14px",
+        "weight": 400,
+        "lineHeight": "1.6",
+        "letterSpacing": "0",
+        "usage": "Secondary text, helper text"
+      },
+      "caption": {
+        "size": "12px",
+        "weight": 400,
+        "lineHeight": "1.5",
+        "letterSpacing": "0.01em",
+        "usage": "Captions, footnotes, metadata"
+      }
+    }
+  },
+  "layout": {
+    "grid": {
+      "system": "8-point grid",
+      "baseUnit": 8,
+      "columns": 12,
+      "containerMaxWidth": "1280px",
+      "gutterWidth": "24px"
+    },
+    "spacing": {
+      "scale": [
+        4,
+        8,
+        12,
+        16,
+        20,
+        24,
+        28,
+        32,
+        36,
+        40,
+        48,
+        56,
+        64,
+        72,
+        80,
+        96,
+        128
+      ],
+      "unit": "px",
+      "semantic": {
+        "xs": 4,
+        "sm": 8,
+        "md": 16,
+        "lg": 24,
+        "xl": 32,
+        "2xl": 48,
+        "3xl": 64,
+        "4xl": 96
+      }
+    },
+    "breakpoints": {
+      "mobile": {
+        "name": "Mobile",
+        "minWidth": 0,
+        "maxWidth": 767,
+        "columns": 4,
+        "gutter": 16
+      },
+      "tablet": {
+        "name": "Tablet",
+        "minWidth": 768,
+        "maxWidth": 1023,
+        "columns": 8,
+        "gutter": 24
+      },
+      "desktop": {
+        "name": "Desktop",
+        "minWidth": 1024,
+        "maxWidth": 1439,
+        "columns": 12,
+        "gutter": 24
+      },
+      "largeDesktop": {
+        "name": "Large Desktop",
+        "minWidth": 1440,
+        "maxWidth": null,
+        "columns": 12,
+        "gutter": 32
+      }
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": {
+        "background": "linear-gradient(135deg, #8B5CF6 0%, #06B6D4 100%)",
+        "color": "#050508",
+        "padding": "12px 24px",
+        "borderRadius": "8px",
+        "fontWeight": 600,
+        "fontSize": "14px",
+        "transition": "all 0.2s ease",
+        "states": {
+          "hover": {
+            "transform": "translateY(-2px)",
+            "boxShadow": "0 8px 24px rgba(139, 92, 246, 0.3)"
+          },
+          "active": {
+            "transform": "translateY(0)"
+          },
+          "disabled": {
+            "opacity": 0.5,
+            "cursor": "not-allowed"
+          }
+        }
+      },
+      "secondary": {
+        "background": "transparent",
+        "border": "2px solid #8B5CF6",
+        "color": "#8B5CF6",
+        "padding": "10px 22px",
+        "borderRadius": "8px",
+        "fontWeight": 600,
+        "fontSize": "14px"
+      },
+      "ghost": {
+        "background": "rgba(139, 92, 246, 0.1)",
+        "color": "#C4B5FD",
+        "padding": "12px 24px",
+        "borderRadius": "8px",
+        "fontWeight": 600,
+        "fontSize": "14px"
+      },
+      "sizes": {
+        "sm": {
+          "padding": "8px 16px",
+          "fontSize": "12px"
+        },
+        "md": {
+          "padding": "12px 24px",
+          "fontSize": "14px"
+        },
+        "lg": {
+          "padding": "16px 32px",
+          "fontSize": "16px"
+        }
+      }
+    },
+    "inputs": {
+      "default": {
+        "background": "rgba(15, 23, 42, 0.8)",
+        "border": "1px solid rgba(139, 92, 246, 0.2)",
+        "borderRadius": "8px",
+        "padding": "12px 16px",
+        "fontSize": "14px",
+        "color": "#F8FAFC",
+        "transition": "border-color 0.2s ease",
+        "states": {
+          "focus": {
+            "borderColor": "#8B5CF6",
+            "outline": "none"
+          },
+          "error": {
+            "borderColor": "#EF4444"
+          },
+          "success": {
+            "borderColor": "#10B981"
+          }
+        }
+      },
+      "label": {
+        "fontSize": "13px",
+        "fontWeight": 500,
+        "color": "#CBD5E1",
+        "marginBottom": "8px"
+      }
+    },
+    "cards": {
+      "default": {
+        "background": "rgba(15, 23, 42, 0.6)",
+        "border": "1px solid rgba(139, 92, 246, 0.2)",
+        "borderRadius": "16px",
+        "padding": "24px",
+        "transition": "transform 0.2s ease, box-shadow 0.2s ease"
+      },
+      "elevated": {
+        "boxShadow": "0 4px 24px rgba(139, 92, 246, 0.15)",
+        "hover": {
+          "transform": "translateY(-4px)",
+          "boxShadow": "0 8px 32px rgba(139, 92, 246, 0.25)"
+        }
+      }
+    },
+    "alerts": {
+      "success": {
+        "background": "rgba(16, 185, 129, 0.1)",
+        "borderLeft": "4px solid #10B981",
+        "padding": "16px",
+        "borderRadius": "8px"
+      },
+      "error": {
+        "background": "rgba(239, 68, 68, 0.1)",
+        "borderLeft": "4px solid #EF4444",
+        "padding": "16px",
+        "borderRadius": "8px"
+      },
+      "warning": {
+        "background": "rgba(245, 158, 11, 0.1)",
+        "borderLeft": "4px solid #F59E0B",
+        "padding": "16px",
+        "borderRadius": "8px"
+      },
+      "info": {
+        "background": "rgba(59, 130, 246, 0.1)",
+        "borderLeft": "4px solid #3B82F6",
+        "padding": "16px",
+        "borderRadius": "8px"
+      }
+    },
+    "badges": {
+      "default": {
+        "background": "rgba(139, 92, 246, 0.1)",
+        "color": "#C4B5FD",
+        "padding": "4px 12px",
+        "borderRadius": "50px",
+        "fontSize": "11px",
+        "fontWeight": 600,
+        "letterSpacing": "0.5px"
+      }
+    }
+  },
+  "icons": {
+    "library": "Material Design Icons",
+    "provider": "Google",
+    "url": "https://fonts.googleapis.com/icon?family=Material+Icons",
+    "style": "Outlined",
+    "color": "#8B5CF6",
+    "sizes": {
+      "xs": 16,
+      "sm": 20,
+      "md": 24,
+      "lg": 32,
+      "xl": 40,
+      "2xl": 48
+    },
+    "common": [
+      "api",
+      "search",
+      "settings",
+      "code",
+      "music_note",
+      "trending_up",
+      "radar",
+      "graphic_eq"
+    ]
+  },
+  "motion": {
+    "durations": {
+      "instant": "0ms",
+      "fast": "150ms",
+      "normal": "300ms",
+      "slow": "500ms",
+      "slower": "800ms"
+    },
+    "easing": {
+      "easeOut": "cubic-bezier(0.0, 0.0, 0.2, 1)",
+      "easeIn": "cubic-bezier(0.4, 0.0, 1, 1)",
+      "easeInOut": "cubic-bezier(0.4, 0.0, 0.2, 1)",
+      "bounce": "cubic-bezier(0.68, -0.55, 0.265, 1.55)"
+    },
+    "transitions": {
+      "microInteractions": {
+        "duration": "150-300ms",
+        "easing": "easeOut"
+      },
+      "pageTransitions": {
+        "duration": "300-500ms",
+        "easing": "easeInOut"
+      },
+      "dataLoading": {
+        "duration": "600-1000ms",
+        "easing": "easeInOut"
+      }
+    }
+  },
+  "voice": {
+    "attributes": {
+      "primary": [
+        "Technical Precision",
+        "Data-Driven Confidence",
+        "Approachable Innovation"
+      ],
+      "tone": "Professional, clear, confident, helpful"
+    },
+    "principles": [
+      "Clarity over cleverness",
+      "Action-oriented language",
+      "Inclusive and accessible",
+      "Support claims with data",
+      "Explain complex concepts simply"
+    ],
+    "microcopy": {
+      "buttons": {
+        "primary": "Get Started",
+        "secondary": "Learn More",
+        "submit": "Generate API Key"
+      },
+      "errors": {
+        "generic": "Something went wrong. Please try again.",
+        "validation": "Please enter a valid email address.",
+        "rateLimit": "Rate limit exceeded. Please try again in a few minutes."
+      },
+      "success": {
+        "apiKey": "Your API key has been generated successfully.",
+        "saved": "Your changes have been saved."
+      }
+    }
+  },
+  "accessibility": {
+    "standard": "WCAG 2.1 AA",
+    "requirements": {
+      "colorContrast": {
+        "normalText": "4.5:1 minimum",
+        "largeText": "3:1 minimum",
+        "uiComponents": "3:1 minimum"
+      },
+      "touchTargets": "44px × 44px minimum",
+      "focusIndicators": "Visible for all interactive elements",
+      "keyboardNavigation": "Full support for all functionality",
+      "screenReaders": {
+        "semanticHTML": "Use appropriate HTML elements",
+        "ariaLabels": "Add labels to icons and buttons",
+        "altText": "Provide alt text for all images"
+      },
+      "motion": {
+        "prefersReducedMotion": "Respect user preference",
+        "noFlashing": "Avoid content that flashes more than 3 times per second"
+      }
+    }
+  }
 }

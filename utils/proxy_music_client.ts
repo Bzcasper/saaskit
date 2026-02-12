@@ -4,7 +4,7 @@
  * Integrates ProxyHub with music API clients for robust fallback
  */
 
-import { proxyHub, fetchWithProxy } from "./proxy_hub.ts";
+import { fetchWithProxy, proxyHub } from "./proxy_hub.ts";
 
 // ============ YOUTUBE MUSIC API WITH PROXY SUPPORT ============
 export class ProxyYTMusic {
@@ -39,16 +39,18 @@ export class ProxyYTMusic {
     const params: Record<string, unknown> = continuationToken
       ? { continuation: continuationToken }
       : filterParams
-        ? { query: normalizedQuery, params: filterParams }
-        : { query: normalizedQuery };
+      ? { query: normalizedQuery, params: filterParams }
+      : { query: normalizedQuery };
 
-    const context = (region || language) ? {
-      client: {
-        ...(this.context.client as any),
-        gl: region || (this.context.client as any).gl,
-        hl: language || (this.context.client as any).hl,
-      },
-    } : this.context;
+    const context = (region || language)
+      ? {
+        client: {
+          ...(this.context.client as any),
+          gl: region || (this.context.client as any).gl,
+          hl: language || (this.context.client as any).hl,
+        },
+      }
+      : this.context;
 
     const url = `${this.baseURL}/search?key=${this.apiKey}`;
     const body = { context, ...params };
@@ -95,7 +97,7 @@ export class ProxyYTMusic {
 
     const data = JSON.parse(response.body);
     const details = data?.videoDetails || {};
-    
+
     return {
       videoId: details.videoId,
       title: details.title,
@@ -214,22 +216,21 @@ export class ProxyYTMusic {
 
   private parseMusicItem(item: any) {
     if (!item) return null;
-    const title =
-      item.flexColumns?.[0]?.musicResponsiveListItemFlexColumnRenderer?.text
-        ?.runs?.[0]?.text;
-    const thumbnail =
-      item.thumbnail?.musicThumbnailRenderer?.thumbnail?.thumbnails?.[0]?.url;
-    const videoId =
-      item.overlay?.musicItemThumbnailOverlayRenderer?.content
-        ?.musicPlayButtonRenderer?.playNavigationEndpoint?.watchEndpoint
-        ?.videoId;
+    const title = item.flexColumns?.[0]
+      ?.musicResponsiveListItemFlexColumnRenderer?.text
+      ?.runs?.[0]?.text;
+    const thumbnail = item.thumbnail?.musicThumbnailRenderer?.thumbnail
+      ?.thumbnails?.[0]?.url;
+    const videoId = item.overlay?.musicItemThumbnailOverlayRenderer?.content
+      ?.musicPlayButtonRenderer?.playNavigationEndpoint?.watchEndpoint
+      ?.videoId;
     const browseId = item.navigationEndpoint?.browseEndpoint?.browseId;
     const subtitle =
       item.flexColumns?.[1]?.musicResponsiveListItemFlexColumnRenderer?.text
         ?.runs || [];
-    const duration =
-      item.fixedColumns?.[0]?.musicResponsiveListItemFixedColumnRenderer?.text
-        ?.runs?.[0]?.text;
+    const duration = item.fixedColumns?.[0]
+      ?.musicResponsiveListItemFixedColumnRenderer?.text
+      ?.runs?.[0]?.text;
 
     return {
       title,
@@ -237,7 +238,9 @@ export class ProxyYTMusic {
       videoId,
       browseId,
       duration,
-      resultType: videoId ? "song" : browseId?.startsWith("UC")
+      resultType: videoId
+        ? "song"
+        : browseId?.startsWith("UC")
         ? "artist"
         : "album",
     };
@@ -253,9 +256,9 @@ export class ProxyYTMusic {
       if (item.lockupViewModel) {
         const lockup = item.lockupViewModel;
         const metadata = lockup.metadata?.lockupMetadataViewModel;
-        const contentImage =
-          lockup.contentImage?.collectionThumbnailViewModel?.primaryThumbnail
-            ?.thumbnailViewModel;
+        const contentImage = lockup.contentImage?.collectionThumbnailViewModel
+          ?.primaryThumbnail
+          ?.thumbnailViewModel;
         const videoIdMatch =
           lockup.rendererContext?.commandContext?.onTap?.innertubeCommand
             ?.watchEndpoint?.videoId || lockup.contentId;
@@ -299,18 +302,21 @@ export class ProxyStreamingClient {
     // Try each Piped instance with proxy fallback
     for (const instance of this.pipeInstances) {
       const url = `${instance}/streams/${videoId}`;
-      
+
       try {
         const response = await proxyHub.fetch({
           url,
           headers: {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+            "User-Agent":
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
           },
           timeout: 30000,
         });
 
         if (!response.success) {
-          console.warn(`[ProxyStreaming] ${instance} failed: ${response.error}`);
+          console.warn(
+            `[ProxyStreaming] ${instance} failed: ${response.error}`,
+          );
           continue;
         }
 
@@ -321,7 +327,9 @@ export class ProxyStreamingClient {
           return {
             success: true,
             instance,
-            streamingUrls: data.audioStreams.map((s: Record<string, unknown>) => ({
+            streamingUrls: data.audioStreams.map((
+              s: Record<string, unknown>,
+            ) => ({
               url: s.url,
               quality: s.quality,
               mimeType: s.mimeType,
@@ -339,7 +347,10 @@ export class ProxyStreamingClient {
           };
         }
       } catch (error) {
-        console.warn(`[ProxyStreaming] ${instance} error:`, error instanceof Error ? error.message : String(error));
+        console.warn(
+          `[ProxyStreaming] ${instance} error:`,
+          error instanceof Error ? error.message : String(error),
+        );
         continue;
       }
     }
@@ -365,7 +376,9 @@ export class ProxyLyricsClient {
     error?: string;
   }> {
     try {
-      let url = `https://lrclib.net/api/get?track_name=${encodeURIComponent(title)}&artist_name=${encodeURIComponent(artist)}`;
+      let url = `https://lrclib.net/api/get?track_name=${
+        encodeURIComponent(title)
+      }&artist_name=${encodeURIComponent(artist)}`;
       if (duration) url += `&duration=${duration}`;
 
       let response = await proxyHub.fetch({
@@ -375,7 +388,9 @@ export class ProxyLyricsClient {
 
       if (!response.success) {
         // Try search fallback
-        const searchUrl = `https://lrclib.net/api/search?q=${encodeURIComponent(`${title} ${artist}`)}`;
+        const searchUrl = `https://lrclib.net/api/search?q=${
+          encodeURIComponent(`${title} ${artist}`)
+        }`;
         response = await proxyHub.fetch({
           url: searchUrl,
           timeout: 10000,
@@ -432,7 +447,11 @@ export class ProxyLastFMClient {
     limit = "5",
   ): Promise<{ error: string } | Array<{ title: string; artist: string }>> {
     const url =
-      `https://ws.audioscrobbler.com/2.0/?method=track.getsimilar&artist=${encodeURIComponent(artist)}&track=${encodeURIComponent(title)}&api_key=${this.API_KEY}&limit=${limit}&format=json`;
+      `https://ws.audioscrobbler.com/2.0/?method=track.getsimilar&artist=${
+        encodeURIComponent(artist)
+      }&track=${
+        encodeURIComponent(title)
+      }&api_key=${this.API_KEY}&limit=${limit}&format=json`;
 
     try {
       const response = await proxyHub.fetch({
@@ -465,8 +484,10 @@ export class ProxyLastFMClient {
   }> {
     try {
       const url =
-        `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(artist)}&api_key=${this.API_KEY}&format=json`;
-      
+        `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${
+          encodeURIComponent(artist)
+        }&api_key=${this.API_KEY}&format=json`;
+
       const response = await proxyHub.fetch({
         url,
         timeout: 10000,

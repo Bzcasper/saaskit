@@ -5,7 +5,12 @@
  * Provides semantic search capabilities using embeddings and similarity algorithms
  */
 
-import { getAllTrackEmbeddings, getTrackEmbedding, saveTrackEmbedding, type TrackEmbedding } from "@/utils/music_models.ts";
+import {
+  getAllTrackEmbeddings,
+  getTrackEmbedding,
+  saveTrackEmbedding,
+  type TrackEmbedding,
+} from "@/utils/music_models.ts";
 import { groqClient } from "@/utils/groq_client.ts";
 
 // ============ CONFIGURATION ============
@@ -47,15 +52,18 @@ async function simpleHash(text: string): Promise<number[]> {
   // Add word-based features
   for (let i = 0; i < words.length; i++) {
     const word = words[i];
-    const wordHash = word.split("").reduce((acc, char, idx) =>
-      acc + char.charCodeAt(0) * (idx + 1), 0
+    const wordHash = word.split("").reduce(
+      (acc, char, idx) => acc + char.charCodeAt(0) * (idx + 1),
+      0,
     );
     const position = wordHash % EMBEDDING_DIMENSIONS;
     embedding[position] = (embedding[position] || 0) + 0.1;
   }
 
   // Normalize vector
-  const magnitude = Math.sqrt(embedding.reduce((sum, val) => sum + val * val, 0));
+  const magnitude = Math.sqrt(
+    embedding.reduce((sum, val) => sum + val * val, 0),
+  );
   if (magnitude > 0) {
     for (let i = 0; i < embedding.length; i++) {
       embedding[i] /= magnitude;
@@ -242,12 +250,18 @@ export async function vectorSearch(
         break;
       case "euclidean":
         // Convert distance to similarity (1 / (1 + distance))
-        const dist = euclideanDistance(queryEmbedding, trackEmbedding.embedding);
+        const dist = euclideanDistance(
+          queryEmbedding,
+          trackEmbedding.embedding,
+        );
         score = 1 / (1 + dist);
         break;
       case "manhattan":
         // Convert distance to similarity
-        const manDist = manhattanDistance(queryEmbedding, trackEmbedding.embedding);
+        const manDist = manhattanDistance(
+          queryEmbedding,
+          trackEmbedding.embedding,
+        );
         score = 1 / (1 + manDist);
         break;
       default:
@@ -309,18 +323,30 @@ export async function findSimilarTracks(
 
     switch (metric) {
       case "cosine":
-        score = cosineSimilarity(trackEmbedding.embedding, otherEmbedding.embedding);
+        score = cosineSimilarity(
+          trackEmbedding.embedding,
+          otherEmbedding.embedding,
+        );
         break;
       case "euclidean":
-        const dist = euclideanDistance(trackEmbedding.embedding, otherEmbedding.embedding);
+        const dist = euclideanDistance(
+          trackEmbedding.embedding,
+          otherEmbedding.embedding,
+        );
         score = 1 / (1 + dist);
         break;
       case "manhattan":
-        const manDist = manhattanDistance(trackEmbedding.embedding, otherEmbedding.embedding);
+        const manDist = manhattanDistance(
+          trackEmbedding.embedding,
+          otherEmbedding.embedding,
+        );
         score = 1 / (1 + manDist);
         break;
       default:
-        score = cosineSimilarity(trackEmbedding.embedding, otherEmbedding.embedding);
+        score = cosineSimilarity(
+          trackEmbedding.embedding,
+          otherEmbedding.embedding,
+        );
     }
 
     if (score >= threshold) {
@@ -442,8 +468,10 @@ export async function clusterTracks(
     }
 
     // Check for convergence
-    if (JSON.stringify(Array.from(clusters.keys())) ===
-        JSON.stringify(Array.from(newClusters.keys()))) {
+    if (
+      JSON.stringify(Array.from(clusters.keys())) ===
+        JSON.stringify(Array.from(newClusters.keys()))
+    ) {
       break;
     }
 

@@ -2,7 +2,8 @@
 
 ## Overview
 
-This document describes the new vector search and download systems added to the music application.
+This document describes the new vector search and download systems added to the
+music application.
 
 ---
 
@@ -10,7 +11,9 @@ This document describes the new vector search and download systems added to the 
 
 ### Purpose
 
-The vector search system enables semantic music search using embeddings and similarity algorithms. It allows users to find tracks based on meaning and context rather than exact text matching.
+The vector search system enables semantic music search using embeddings and
+similarity algorithms. It allows users to find tracks based on meaning and
+context rather than exact text matching.
 
 ### Components
 
@@ -19,7 +22,9 @@ The vector search system enables semantic music search using embeddings and simi
 Core utilities for vector operations and similarity search:
 
 **Functions:**
-- `generateEmbedding(text)` - Generates a 768-dimensional vector embedding from text
+
+- `generateEmbedding(text)` - Generates a 768-dimensional vector embedding from
+  text
 - `generateTrackEmbedding(...)` - Creates embeddings for track metadata
 - `indexTrack(...)` - Generates and saves embeddings for a track
 - `cosineSimilarity(a, b)` - Cosine similarity between vectors
@@ -31,6 +36,7 @@ Core utilities for vector operations and similarity search:
 - `clusterTracks(numClusters)` - K-means clustering for playlist generation
 
 **Distance Metrics:**
+
 - `"cosine"` - Cosine similarity (1 = identical, 0 = orthogonal, -1 = opposite)
 - `"euclidean"` - Euclidean distance converted to similarity
 - `"manhattan"` - Manhattan distance converted to similarity
@@ -38,6 +44,7 @@ Core utilities for vector operations and similarity search:
 #### API Endpoints
 
 **POST `/api/music/search/vector`**
+
 ```json
 {
   "query": "chill electronic music for coding",
@@ -47,11 +54,11 @@ Core utilities for vector operations and similarity search:
 }
 ```
 
-**GET `/api/music/tracks/[trackId]/similar`**
-Query params: `limit`, `threshold`, `metric`
+**GET `/api/music/tracks/[trackId]/similar`** Query params: `limit`,
+`threshold`, `metric`
 
-**POST `/api/music/index`**
-Index tracks for vector search:
+**POST `/api/music/index`** Index tracks for vector search:
+
 ```json
 {
   "trackId": "abc123",
@@ -62,28 +69,28 @@ Index tracks for vector search:
 }
 ```
 
-**GET `/api/music/index`**
-Get indexing status (total indexed tracks, last update time)
+**GET `/api/music/index`** Get indexing status (total indexed tracks, last
+update time)
 
-**GET `/api/music/cluster`**
-Get track clusters for playlist generation. Query param: `clusters` (number of clusters)
+**GET `/api/music/cluster`** Get track clusters for playlist generation. Query
+param: `clusters` (number of clusters)
 
 ### Usage Example
 
 ```typescript
-import { vectorSearch, findSimilarTracks, indexTrack } from "@/utils/vector.ts";
+import { findSimilarTracks, indexTrack, vectorSearch } from "@/utils/vector.ts";
 
 // Semantic search
 const results = await vectorSearch("upbeat workout music", {
   limit: 10,
   threshold: 0.6,
-  metric: "cosine"
+  metric: "cosine",
 });
 
 // Find similar tracks
 const similar = await findSimilarTracks("track_123", {
   limit: 15,
-  threshold: 0.7
+  threshold: 0.7,
 });
 
 // Index a track for search
@@ -92,7 +99,7 @@ await indexTrack(
   "yt_abc123",
   "Bohemian Rhapsody",
   "Queen",
-  "A Night at the Opera"
+  "A Night at the Opera",
 );
 ```
 
@@ -102,7 +109,8 @@ await indexTrack(
 
 ### Purpose
 
-The download system manages asynchronous audio file downloads with progress tracking, job queuing, and quality selection.
+The download system manages asynchronous audio file downloads with progress
+tracking, job queuing, and quality selection.
 
 ### Components
 
@@ -111,10 +119,12 @@ The download system manages asynchronous audio file downloads with progress trac
 Download job management utilities:
 
 **Types:**
+
 - `DownloadJob` - Represents a download job with status, progress, and metadata
 - `DownloadOptions` - Format and quality options
 
 **Functions:**
+
 - `createDownloadJob(...)` - Create a new download job
 - `getDownloadJob(jobId)` - Get job by ID
 - `getDownloadJobByVideoId(videoId)` - Get job by video ID
@@ -130,6 +140,7 @@ Download job management utilities:
 - `getDownloadStats(userId)` - Get download statistics
 
 **Job Statuses:**
+
 - `"queued"` - Job is queued, waiting to start
 - `"downloading"` - Currently downloading
 - `"converting"` - Converting audio format
@@ -138,25 +149,27 @@ Download job management utilities:
 - `"cancelled"` - Cancelled by user
 
 **Quality Levels:**
+
 - `"low"` - Lowest bitrate/smallest file
 - `"medium"` - Middle bitrate (default)
 - `"high"` - Highest bitrate/largest file
 
 #### API Endpoints
 
-**POST `/api/music/download`**
-Create a new download job:
+**POST `/api/music/download`** Create a new download job:
+
 ```json
 {
   "videoId": "yt_video_id",
   "title": "Song Title",
   "artist": "Artist Name",
-  "format": "mp3",        // optional: "mp3", "m4a", "webm", "wav"
-  "quality": "high"        // optional: "low", "medium", "high"
+  "format": "mp3", // optional: "mp3", "m4a", "webm", "wav"
+  "quality": "high" // optional: "low", "medium", "high"
 }
 ```
 
 Response:
+
 ```json
 {
   "success": true,
@@ -168,31 +181,29 @@ Response:
 }
 ```
 
-**GET `/api/music/download?userId={userId}&limit={limit}`**
-Get download jobs for a user
+**GET `/api/music/download?userId={userId}&limit={limit}`** Get download jobs
+for a user
 
-**GET `/api/music/download/[jobId]`**
-Get job status
+**GET `/api/music/download/[jobId]`** Get job status
 
-**DELETE `/api/music/download/[jobId]?force=false`**
-Cancel or delete a job:
+**DELETE `/api/music/download/[jobId]?force=false`** Cancel or delete a job:
+
 - `force=false` - Cancel (only queued/downloading jobs)
 - `force=true` - Delete completely
 
-**GET `/api/music/download/stats?userId={userId}`**
-Get download statistics
+**GET `/api/music/download/stats?userId={userId}`** Get download statistics
 
-**DELETE `/api/music/download/stats?maxAge={milliseconds}`**
-Clean up old jobs (default: 7 days)
+**DELETE `/api/music/download/stats?maxAge={milliseconds}`** Clean up old jobs
+(default: 7 days)
 
 ### Usage Example
 
 ```typescript
 import {
+  cancelDownloadJob,
   createDownloadJob,
   getDownloadJob,
-  cancelDownloadJob,
-  getDownloadStats
+  getDownloadStats,
 } from "@/utils/download.ts";
 
 // Create download job
@@ -200,8 +211,8 @@ const job = await createDownloadJob(
   "yt_abc123",
   "Song Title",
   "Artist Name",
-  "user_id",  // optional user ID
-  { format: "mp3", quality: "high" }
+  "user_id", // optional user ID
+  { format: "mp3", quality: "high" },
 );
 
 // Check job status
@@ -228,6 +239,7 @@ The systems integrate with existing `music_models.ts`:
 - `saveTrackEmbedding(embedding)` - Already exported
 
 The download system stores jobs in Deno KV with these key patterns:
+
 - `["download_jobs", jobId]` - Main job data
 - `["download_jobs_by_video", videoId, jobId]` - Video lookup
 - `["download_jobs_by_user", userId, jobId]` - User lookup
@@ -254,12 +266,16 @@ deno test -A --no-check
 ## Future Enhancements
 
 ### Vector Search
-1. **Real Embedding API** - Replace hash-based embedding with OpenAI/Cohere embeddings
-2. **Hybrid Search** - Combine vector search with traditional filters (genre, era, mood)
+
+1. **Real Embedding API** - Replace hash-based embedding with OpenAI/Cohere
+   embeddings
+2. **Hybrid Search** - Combine vector search with traditional filters (genre,
+   era, mood)
 3. **Incremental Indexing** - Auto-index new tracks as they're added
 4. **Embedding Cache** - Cache embeddings to avoid regenerating
 
 ### Download System
+
 1. **Actual File Download** - Download from streaming URL to storage
 2. **Format Conversion** - Use ffmpeg to convert formats
 3. **Progress Streaming** - WebSocket progress updates
@@ -272,17 +288,17 @@ deno test -A --no-check
 
 ### Vector Search API
 
-| Endpoint | Method | Description |
-|----------|----------|-------------|
-| `/api/music/search/vector` | POST | Semantic search |
-| `/api/music/tracks/[id]/similar` | GET | Find similar tracks |
-| `/api/music/index` | GET/POST | Index management |
-| `/api/music/cluster` | GET | Get track clusters |
+| Endpoint                         | Method   | Description         |
+| -------------------------------- | -------- | ------------------- |
+| `/api/music/search/vector`       | POST     | Semantic search     |
+| `/api/music/tracks/[id]/similar` | GET      | Find similar tracks |
+| `/api/music/index`               | GET/POST | Index management    |
+| `/api/music/cluster`             | GET      | Get track clusters  |
 
 ### Download API
 
-| Endpoint | Method | Description |
-|----------|----------|-------------|
-| `/api/music/download` | GET/POST | Job management |
-| `/api/music/download/[id]` | GET/DELETE | Individual job |
+| Endpoint                    | Method     | Description            |
+| --------------------------- | ---------- | ---------------------- |
+| `/api/music/download`       | GET/POST   | Job management         |
+| `/api/music/download/[id]`  | GET/DELETE | Individual job         |
 | `/api/music/download/stats` | GET/DELETE | Statistics and cleanup |

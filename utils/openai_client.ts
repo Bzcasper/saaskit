@@ -115,11 +115,14 @@ export class OpenAIClient {
     const messages: OpenAIMessage[] = [
       {
         role: "system",
-        content: "You are a music expert. Provide detailed, engaging descriptions of songs based on their title, artist, and genre.",
+        content:
+          "You are a music expert. Provide detailed, engaging descriptions of songs based on their title, artist, and genre.",
       },
       {
         role: "user",
-        content: `Describe the song "${track.title}" by ${track.artist}${track.genre ? ` in the ${track.genre} genre` : ""}. Include musical elements, mood, and why it might appeal to listeners.`,
+        content: `Describe the song "${track.title}" by ${track.artist}${
+          track.genre ? ` in the ${track.genre} genre` : ""
+        }. Include musical elements, mood, and why it might appeal to listeners.`,
       },
     ];
 
@@ -127,28 +130,35 @@ export class OpenAIClient {
     return response.choices[0]?.message?.content || "Description not available";
   }
 
-  async generatePlaylistRecommendations(seedTracks: string[], count = 5): Promise<string[]> {
+  async generatePlaylistRecommendations(
+    seedTracks: string[],
+    count = 5,
+  ): Promise<string[]> {
     const messages: OpenAIMessage[] = [
       {
         role: "system",
-        content: "You are a music recommendation expert. Suggest songs that would fit well in a playlist based on seed tracks.",
+        content:
+          "You are a music recommendation expert. Suggest songs that would fit well in a playlist based on seed tracks.",
       },
       {
         role: "user",
-        content: `Based on these tracks: ${seedTracks.join(", ")}, suggest ${count} additional songs that would complement this playlist. Return only the song titles and artists, one per line.`,
+        content: `Based on these tracks: ${
+          seedTracks.join(", ")
+        }, suggest ${count} additional songs that would complement this playlist. Return only the song titles and artists, one per line.`,
       },
     ];
 
     const response = await this.chat(messages, { max_tokens: 200 });
     const content = response.choices[0]?.message?.content || "";
-    return content.split("\n").filter(line => line.trim()).slice(0, count);
+    return content.split("\n").filter((line) => line.trim()).slice(0, count);
   }
 
   async analyzeMusicTrends(data: string): Promise<string> {
     const messages: OpenAIMessage[] = [
       {
         role: "system",
-        content: "You are a music industry analyst. Analyze music data and identify trends, patterns, and insights.",
+        content:
+          "You are a music industry analyst. Analyze music data and identify trends, patterns, and insights.",
       },
       {
         role: "user",

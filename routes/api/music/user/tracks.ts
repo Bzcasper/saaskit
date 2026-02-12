@@ -1,12 +1,16 @@
 // Copyright 2023-2025 the Deno authors. All rights reserved. MIT license.
 
-import { createTrack, getTracksByUser, deleteTrack } from "@/utils/music_models.ts";
 import {
-  successResponse,
+  createTrack,
+  deleteTrack,
+  getTracksByUser,
+} from "@/utils/music_models.ts";
+import {
   errorResponse,
-  paginatedResponse,
-  toJson,
   handleApiError,
+  paginatedResponse,
+  successResponse,
+  toJson,
 } from "@/utils/api_response.ts";
 import type { Handlers } from "$fresh/server.ts";
 
@@ -85,6 +89,5 @@ export const handler: Handlers = {
 
   async POST(req, ctx) {
     return await handlePOST(req, ctx);
-  }
+  },
 };
-

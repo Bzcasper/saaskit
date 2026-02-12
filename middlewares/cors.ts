@@ -60,7 +60,12 @@ function isOriginAllowed(origin: string, config: CORSConfig): boolean {
   return false;
 }
 
-export function corsMiddleware(config: CORSConfig = DEFAULT_CORS_CONFIG): (req: Request, ctx: MiddlewareHandlerContext) => Response | Promise<Response> {
+export function corsMiddleware(
+  config: CORSConfig = DEFAULT_CORS_CONFIG,
+): (
+  req: Request,
+  ctx: MiddlewareHandlerContext,
+) => Response | Promise<Response> {
   return async (req: Request, ctx: MiddlewareHandlerContext) => {
     const origin = req.headers.get("Origin");
 
@@ -70,9 +75,18 @@ export function corsMiddleware(config: CORSConfig = DEFAULT_CORS_CONFIG): (req: 
 
       if (origin && isOriginAllowed(origin, config)) {
         headers.set("Access-Control-Allow-Origin", origin);
-        headers.set("Access-Control-Allow-Methods", config.methods?.join(", ") || "GET, POST, PUT, DELETE, OPTIONS");
-        headers.set("Access-Control-Allow-Headers", config.allowedHeaders?.join(", ") || "");
-        headers.set("Access-Control-Expose-Headers", config.exposedHeaders?.join(", ") || "");
+        headers.set(
+          "Access-Control-Allow-Methods",
+          config.methods?.join(", ") || "GET, POST, PUT, DELETE, OPTIONS",
+        );
+        headers.set(
+          "Access-Control-Allow-Headers",
+          config.allowedHeaders?.join(", ") || "",
+        );
+        headers.set(
+          "Access-Control-Expose-Headers",
+          config.exposedHeaders?.join(", ") || "",
+        );
 
         if (config.credentials) {
           headers.set("Access-Control-Allow-Credentials", "true");
@@ -101,7 +115,10 @@ export function corsMiddleware(config: CORSConfig = DEFAULT_CORS_CONFIG): (req: 
         }
 
         if (config.exposedHeaders && config.exposedHeaders.length > 0) {
-          response.headers.set("Access-Control-Expose-Headers", config.exposedHeaders.join(", "));
+          response.headers.set(
+            "Access-Control-Expose-Headers",
+            config.exposedHeaders.join(", "),
+          );
         }
       }
     }

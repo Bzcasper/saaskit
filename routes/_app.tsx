@@ -14,8 +14,15 @@ export default defineApp<State>((_, ctx) => {
         <meta name="color-scheme" content="dark" />
         <link rel="stylesheet" href="/styles.css" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body class="bg-background text-foreground antialiased custom-scrollbar">
         <div class="min-h-screen flex flex-col">

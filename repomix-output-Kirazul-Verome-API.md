@@ -1,12 +1,15 @@
 # TRENDRADAR - Music API for YouTube Music, Lyrics & Streaming
 
-This file is a merged representation of the Virome API codebase, containing files not matching ignore patterns, combined into a single document.
+This file is a merged representation of the Virome API codebase, containing
+files not matching ignore patterns, combined into a single document.
 
 ## File Summary
 
 ### Purpose
 
-This file contains a complete packed representation of the Virome Music API repository, designed for easy consumption by AI systems for analysis and code review.
+This file contains a complete packed representation of the Virome Music API
+repository, designed for easy consumption by AI systems for analysis and code
+review.
 
 ### File Format
 
@@ -124,7 +127,7 @@ export class YTMusic {
     continuationToken?: string,
     _ignoreSpelling = false,
     region?: string,
-    language?: string
+    language?: string,
   ) {
     const normalizedQuery = query.normalize("NFC");
     const filterParams = this.getFilterParams(filter);
@@ -189,7 +192,9 @@ export class YouTubeSearch {
 
     const normalizedQuery = query.normalize("NFC");
     const response = await fetch(
-      `${this.baseURL}?search_query=${encodeURIComponent(normalizedQuery)}&sp=EgIQAQ%253D%253D`
+      `${this.baseURL}?search_query=${
+        encodeURIComponent(normalizedQuery)
+      }&sp=EgIQAQ%253D%253D`,
     );
     const html = await response.text();
     this.extractAPIConfig(html);
@@ -207,10 +212,14 @@ export const LastFM = {
   async getSimilarTracks(
     title: string,
     artist: string,
-    limit = "5"
+    limit = "5",
   ) {
     const url =
-      `https://ws.audioscrobbler.com/2.0/?method=track.getsimilar&artist=${encodeURIComponent(artist)}&track=${encodeURIComponent(title)}&api_key=${this.API_KEY}&limit=${limit}&format=json`;
+      `https://ws.audioscrobbler.com/2.0/?method=track.getsimilar&artist=${
+        encodeURIComponent(artist)
+      }&track=${
+        encodeURIComponent(title)
+      }&api_key=${this.API_KEY}&limit=${limit}&format=json`;
 
     try {
       const response = await fetch(url);
@@ -240,22 +249,22 @@ export const LastFM = {
 
 import { serve } from "https://deno.land/std@0.208.0/http/server.ts";
 import {
-  YTMusic,
-  YouTubeSearch,
-  LastFM,
-  fetchFromPiped,
   fetchFromInvidious,
-  getLyrics,
-  getTrendingMusic,
-  getRadio,
-  getTopArtists,
-  getTopTracks,
-  getArtistInfo,
-  getTrackInfo,
-  getSongComplete,
+  fetchFromPiped,
   getAlbumComplete,
   getArtistComplete,
+  getArtistInfo,
   getFullChain,
+  getLyrics,
+  getRadio,
+  getSongComplete,
+  getTopArtists,
+  getTopTracks,
+  getTrackInfo,
+  getTrendingMusic,
+  LastFM,
+  YouTubeSearch,
+  YTMusic,
 } from "./lib.ts";
 import { html as uiHtml } from "./ui.ts";
 
@@ -279,7 +288,7 @@ function json(data: unknown, status = 200): Response {
 
 ### File: README.md
 
-```markdown
+````markdown
 # Virome API
 
 Music API for YouTube Music, Lyrics & Streaming
@@ -300,6 +309,7 @@ Music API for YouTube Music, Lyrics & Streaming
 ```bash
 deno run --allow-net --allow-env --allow-read mod.ts
 ```
+````
 
 Server runs at `http://localhost:8000`
 
@@ -307,20 +317,20 @@ Server runs at `http://localhost:8000`
 
 ### Search
 
-| Endpoint | Description |
-|----------|-------------|
-| `/api/search?q=&filter=` | Search YouTube Music |
-| `/api/yt_search?q=&filter=` | Search YouTube |
+| Endpoint                     | Description              |
+| ---------------------------- | ------------------------ |
+| `/api/search?q=&filter=`     | Search YouTube Music     |
+| `/api/yt_search?q=&filter=`  | Search YouTube           |
 | `/api/search/suggestions?q=` | Autocomplete suggestions |
 
 ### Content
 
-| Endpoint | Description |
-|----------|-------------|
-| `/api/songs/:videoId` | Song details |
-| `/api/albums/:browseId` | Album with tracks |
-| `/api/artists/:browseId` | Artist with discography |
-| `/api/playlists/:playlistId` | Playlist tracks |
+| Endpoint                     | Description             |
+| ---------------------------- | ----------------------- |
+| `/api/songs/:videoId`        | Song details            |
+| `/api/albums/:browseId`      | Album with tracks       |
+| `/api/artists/:browseId`     | Artist with discography |
+| `/api/playlists/:playlistId` | Playlist tracks         |
 
 ## Deploy
 
@@ -331,8 +341,8 @@ deployctl deploy --project=verome-api --prod mod.ts
 ## License
 
 MIT
-```
 
+````
 ### File: ui.ts
 
 ```typescript
@@ -351,10 +361,9 @@ export const html = `<!DOCTYPE html>
   <!-- Main content -->
 </body>
 </html>`;
-```
+````
 
 ---
 
-**Report Generated**: 2025
-**Project**: Virome API - Music Streaming Service
+**Report Generated**: 2025 **Project**: Virome API - Music Streaming Service
 **Status**: Documentation Complete

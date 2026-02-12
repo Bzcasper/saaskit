@@ -13,29 +13,29 @@ interface SloganProps {
 
 export function BrandSlogan({
   variant = "primary",
-  class: className = ""
+  class: className = "",
 }: SloganProps) {
   const slogans = {
     primary: {
       text: "Detecting pulse of music trends",
-      style: "border-l-4 border-primary pl-5 text-primary-300"
+      style: "border-l-4 border-primary pl-5 text-primary-300",
     },
     technical: {
       text: "Real-time music trend intelligence",
-      style: "text-secondary"
+      style: "text-secondary",
     },
     product: {
       text: "Data-driven music discovery",
-      style: "text-accent"
+      style: "text-accent",
     },
     visionary: {
       text: "The future of music analytics",
-      style: "text-primary-300"
+      style: "text-primary-300",
     },
     community: {
       text: "By developers, for developers",
-      style: "text-success"
-    }
+      style: "text-success",
+    },
   };
 
   const { text, style } = slogans[variant];

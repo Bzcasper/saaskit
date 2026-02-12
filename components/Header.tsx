@@ -27,14 +27,20 @@ export default function Header(props: HeaderProps) {
           </span>
         </a>
         <div class="flex gap-2 items-center sm:hidden">
-          <label tabIndex={0} class="sm:hidden p-2 -mr-2 rounded-lg hover:bg-primary/10 transition-colors" id="nav-toggle-label" htmlFor="nav-toggle">
+          <label
+            tabIndex={0}
+            class="sm:hidden p-2 -mr-2 rounded-lg hover:bg-primary/10 transition-colors"
+            id="nav-toggle-label"
+            htmlFor="nav-toggle"
+          >
             <IconMenu class="size-6" id="IconMenu" />
             <IconX class="hidden size-6" id="IconX" />
           </label>
         </div>
       </div>
 
-      <script>{`
+      <script>
+        {`
         const navToggleLabel = document.getElementById('nav-toggle-label');
         navToggleLabel.addEventListener('keydown', () => {
           if (event.code === 'Space' || event.code === 'Enter') {
@@ -42,27 +48,42 @@ export default function Header(props: HeaderProps) {
             event.preventDefault();
           }
         });
-      `}</script>
+      `}
+      </script>
 
       {/* Navigation */}
       <nav class="hidden flex-col gap-x-6 sm:flex sm:items-center sm:flex-row peer-checked:flex">
-        <a href="/dashboard" class="text-foreground-muted hover:text-primary transition-colors duration-fast font-medium py-3 sm:py-0 relative after:content-[''] after:absolute after:-bottom-4 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full">
+        <a
+          href="/dashboard"
+          class="text-foreground-muted hover:text-primary transition-colors duration-fast font-medium py-3 sm:py-0 relative after:content-[''] after:absolute after:-bottom-4 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full"
+        >
           Dashboard
         </a>
         {isStripeEnabled() && (
-          <a href="/pricing" class="text-foreground-muted hover:text-primary transition-colors duration-fast font-medium py-3 sm:py-0 relative after:content-[''] after:absolute after:-bottom-4 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full">
+          <a
+            href="/pricing"
+            class="text-foreground-muted hover:text-primary transition-colors duration-fast font-medium py-3 sm:py-0 relative after:content-[''] after:absolute after:-bottom-4 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full"
+          >
             Pricing
           </a>
         )}
-        {props.sessionUser ? (
-          <a href="/account" class="text-foreground-muted hover:text-primary transition-colors duration-fast font-medium py-3 sm:py-0 relative after:content-[''] after:absolute after:-bottom-4 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full">
-            Account
-          </a>
-        ) : (
-          <a href="/signin" class="text-foreground-muted hover:text-primary transition-colors duration-fast font-medium py-3 sm:py-0 relative after:content-[''] after:absolute after:-bottom-4 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full">
-            Sign in
-          </a>
-        )}
+        {props.sessionUser
+          ? (
+            <a
+              href="/account"
+              class="text-foreground-muted hover:text-primary transition-colors duration-fast font-medium py-3 sm:py-0 relative after:content-[''] after:absolute after:-bottom-4 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full"
+            >
+              Account
+            </a>
+          )
+          : (
+            <a
+              href="/signin"
+              class="text-foreground-muted hover:text-primary transition-colors duration-fast font-medium py-3 sm:py-0 relative after:content-[''] after:absolute after:-bottom-4 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full"
+            >
+              Sign in
+            </a>
+          )}
         <a href="/submit" class="btn-primary text-sm">
           Submit
         </a>

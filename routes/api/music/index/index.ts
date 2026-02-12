@@ -1,11 +1,11 @@
 // Copyright 2023-2025 Deno authors. All rights reserved. MIT license.
 
-import { indexTrack, batchIndexTracks } from "@/utils/vector.ts";
+import { batchIndexTracks, indexTrack } from "@/utils/vector.ts";
 import {
-  successResponse,
   errorResponse,
-  toJson,
   handleApiError,
+  successResponse,
+  toJson,
 } from "@/utils/api_response.ts";
 import type { Handlers } from "$fresh/server.ts";
 import { getTrack } from "@/utils/music_models.ts";
@@ -90,7 +90,7 @@ export const handler: Handlers = {
       const response = successResponse({
         totalIndexed: embeddings.length,
         lastUpdate: embeddings.length > 0
-          ? Math.max(...embeddings.map(e => e.createdAt))
+          ? Math.max(...embeddings.map((e) => e.createdAt))
           : null,
       });
 

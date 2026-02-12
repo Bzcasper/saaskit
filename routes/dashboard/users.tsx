@@ -46,7 +46,7 @@ export default defineRoute((_req, ctx) => {
           }]}
           currentPath={ctx.url.pathname}
         />
-        
+
         <Partial name="users">
           <UsersTable endpoint={endpoint} />
         </Partial>

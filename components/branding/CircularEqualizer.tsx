@@ -13,7 +13,7 @@ interface CircularEqualizerProps {
 export function CircularEqualizer({
   size = 280,
   showCenter = true,
-  centerLabel = "♪"
+  centerLabel = "♪",
 }: CircularEqualizerProps) {
   return (
     <div class="relative" style={{ width: `${size}px`, height: `${size}px` }}>
@@ -21,15 +21,15 @@ export function CircularEqualizer({
       <div
         class="absolute top-1/2 left-1/2 rounded-full"
         style={{
-          width: '100%',
-          height: '100%',
-          borderStyle: 'solid',
-          borderWidth: '0',
-          borderTopWidth: '8px',
-          borderRightWidth: '8px',
-          borderColor: '#8B5CF6',
-          transform: 'translate(-50%, -50%)',
-          animation: 'spin-slow 8s linear infinite'
+          width: "100%",
+          height: "100%",
+          borderStyle: "solid",
+          borderWidth: "0",
+          borderTopWidth: "8px",
+          borderRightWidth: "8px",
+          borderColor: "#8B5CF6",
+          transform: "translate(-50%, -50%)",
+          animation: "spin-slow 8s linear infinite",
         }}
       />
 
@@ -37,15 +37,15 @@ export function CircularEqualizer({
       <div
         class="absolute top-1/2 left-1/2 rounded-full"
         style={{
-          width: '75%',
-          height: '75%',
-          borderStyle: 'solid',
-          borderWidth: '0',
-          borderTopWidth: '8px',
-          borderRightWidth: '8px',
-          borderColor: '#06B6D4',
-          transform: 'translate(-50%, -50%)',
-          animation: 'spin-reverse 6s linear infinite'
+          width: "75%",
+          height: "75%",
+          borderStyle: "solid",
+          borderWidth: "0",
+          borderTopWidth: "8px",
+          borderRightWidth: "8px",
+          borderColor: "#06B6D4",
+          transform: "translate(-50%, -50%)",
+          animation: "spin-reverse 6s linear infinite",
         }}
       />
 
@@ -53,15 +53,15 @@ export function CircularEqualizer({
       <div
         class="absolute top-1/2 left-1/2 rounded-full"
         style={{
-          width: '50%',
-          height: '50%',
-          borderStyle: 'solid',
-          borderWidth: '0',
-          borderTopWidth: '8px',
-          borderRightWidth: '8px',
-          borderColor: '#EC4899',
-          transform: 'translate(-50%, -50%)',
-          animation: 'spin-slow 4s linear infinite'
+          width: "50%",
+          height: "50%",
+          borderStyle: "solid",
+          borderWidth: "0",
+          borderTopWidth: "8px",
+          borderRightWidth: "8px",
+          borderColor: "#EC4899",
+          transform: "translate(-50%, -50%)",
+          animation: "spin-slow 4s linear infinite",
         }}
       />
 
@@ -70,19 +70,20 @@ export function CircularEqualizer({
         <div
           class="absolute top-1/2 left-1/2 rounded-full flex items-center justify-center"
           style={{
-            width: '60px',
-            height: '60px',
-            transform: 'translate(-50%, -50%)',
-            background: 'linear-gradient(135deg, #8B5CF6 0%, #06B6D4 100%)',
-            boxShadow: '0 0 40px rgba(139, 92, 246, 0.6)',
-            fontSize: '28px'
+            width: "60px",
+            height: "60px",
+            transform: "translate(-50%, -50%)",
+            background: "linear-gradient(135deg, #8B5CF6 0%, #06B6D4 100%)",
+            boxShadow: "0 0 40px rgba(139, 92, 246, 0.6)",
+            fontSize: "28px",
           }}
         >
           {centerLabel}
         </div>
       )}
 
-      <style>{`
+      <style>
+        {`
         @keyframes spin-slow {
           from { transform: translate(-50%, -50%) rotate(0deg); }
           to { transform: translate(-50%, -50%) rotate(360deg); }
@@ -91,7 +92,8 @@ export function CircularEqualizer({
           from { transform: translate(-50%, -50%) rotate(360deg); }
           to { transform: translate(-50%, -50%) rotate(0deg); }
         }
-      `}</style>
+      `}
+      </style>
     </div>
   );
 }

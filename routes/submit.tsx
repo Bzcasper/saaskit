@@ -6,17 +6,21 @@ import IconMusic from "@preact-icons/tb/TbMusic";
 import { defineRoute, Handlers } from "$fresh/server.ts";
 import { createItem } from "@/utils/db.ts";
 import { redirect } from "@/utils/http.ts";
-import { assertSignedIn, type SignedInState, State } from "@/plugins/session.ts";
+import {
+  assertSignedIn,
+  type SignedInState,
+  State,
+} from "@/plugins/session.ts";
 import { ulid } from "@std/ulid/ulid";
 import IconInfo from "@preact-icons/tb/TbInfoCircle";
 import { SITE_NAME, SITE_TAGLINE } from "@/utils/constants.ts";
 import {
+  AudioReactiveCard,
   BrandSlogan,
+  GlitchText,
   Logo,
   LogoVariations,
   TurntableAnimation,
-  AudioReactiveCard,
-  GlitchText
 } from "@/components/branding";
 
 export const handler: Handlers<undefined, SignedInState> = {
@@ -26,7 +30,10 @@ export const handler: Handlers<undefined, SignedInState> = {
     const title = form.get("title");
     const url = form.get("url");
 
-    if (typeof url !== "string" || !URL.canParse(url) || typeof title !== "string" || title === "") {
+    if (
+      typeof url !== "string" || !URL.canParse(url) ||
+      typeof title !== "string" || title === ""
+    ) {
       return redirect("/submit?error");
     }
 
@@ -71,31 +78,45 @@ export default defineRoute<State>((_req, ctx) => {
                 <div class="flex items-start gap-3">
                   <IconCircleX class="size-5 text-error shrink-0 mt-0.5" />
                   <div>
-                    <p class="text-foreground font-medium">Don't post duplicates</p>
-                    <p class="text-foreground-muted text-sm">Check if the content has already been shared</p>
+                    <p class="text-foreground font-medium">
+                      Don't post duplicates
+                    </p>
+                    <p class="text-foreground-muted text-sm">
+                      Check if the content has already been shared
+                    </p>
                   </div>
                 </div>
                 <div class="flex items-start gap-3">
                   <IconCircleX class="size-5 text-error shrink-0 mt-0.5" />
                   <div>
                     <p class="text-foreground font-medium">No test posts</p>
-                    <p class="text-foreground-muted text-sm">Only submit real, valuable music discoveries</p>
+                    <p class="text-foreground-muted text-sm">
+                      Only submit real, valuable music discoveries
+                    </p>
                   </div>
                 </div>
                 <div class="flex items-start gap-3">
                   <IconCheckCircle class="size-5 text-success shrink-0 mt-0.5" />
                   <div>
                     <p class="text-foreground font-medium">Include context</p>
-                    <p class="text-foreground-muted text-sm">E.g. "Emerging artist from London - Electronic"</p>
+                    <p class="text-foreground-muted text-sm">
+                      E.g. "Emerging artist from London - Electronic"
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Form */}
-            <form class="bg-background-card/40 border border-border rounded-2xl p-8" method="post">
+            <form
+              class="bg-background-card/40 border border-border rounded-2xl p-8"
+              method="post"
+            >
               <div>
-                <label htmlFor="submit_title" class="block text-sm font-medium text-foreground mb-2">
+                <label
+                  htmlFor="submit_title"
+                  class="block text-sm font-medium text-foreground mb-2"
+                >
                   Title
                 </label>
                 <input
@@ -110,7 +131,10 @@ export default defineRoute<State>((_req, ctx) => {
               </div>
 
               <div class="mt-6">
-                <label htmlFor="submit_url" class="block text-sm font-medium text-foreground mb-2">
+                <label
+                  htmlFor="submit_url"
+                  class="block text-sm font-medium text-foreground mb-2"
+                >
                   URL
                 </label>
                 <input
@@ -132,22 +156,24 @@ export default defineRoute<State>((_req, ctx) => {
               )}
 
               <div class="mt-8">
-                {!ctx.state.sessionUser ? (
-                  <a
-                    href="/signin"
-                    class="inline-flex items-center justify-center w-full py-4 px-6 bg-gradient-logo text-black font-heading font-bold rounded-xl hover:scale-105 hover:shadow-glow transition-all"
-                  >
-                    Sign in to submit
-                    <span class="ml-2">→</span>
-                  </a>
-                ) : (
-                  <button
-                    type="submit"
-                    class="inline-flex items-center justify-center w-full py-4 px-6 bg-gradient-logo text-black font-heading font-bold rounded-xl hover:scale-105 hover:shadow-glow transition-all"
-                  >
-                    Submit Discovery
-                  </button>
-                )}
+                {!ctx.state.sessionUser
+                  ? (
+                    <a
+                      href="/signin"
+                      class="inline-flex items-center justify-center w-full py-4 px-6 bg-gradient-logo text-black font-heading font-bold rounded-xl hover:scale-105 hover:shadow-glow transition-all"
+                    >
+                      Sign in to submit
+                      <span class="ml-2">→</span>
+                    </a>
+                  )
+                  : (
+                    <button
+                      type="submit"
+                      class="inline-flex items-center justify-center w-full py-4 px-6 bg-gradient-logo text-black font-heading font-bold rounded-xl hover:scale-105 hover:shadow-glow transition-all"
+                    >
+                      Submit Discovery
+                    </button>
+                  )}
               </div>
             </form>
           </div>

@@ -30,9 +30,9 @@ export function GlitchText({
   text,
   duration = 2,
   letterSpacing = 8,
-  className = ""
+  className = "",
 }: GlitchTextProps) {
-  if (!text || typeof text !== 'string') {
+  if (!text || typeof text !== "string") {
     return null;
   }
 
@@ -42,7 +42,7 @@ export function GlitchText({
         class="font-heading font-black text-h1 text-white relative"
         style={{
           animation: `glitch ${duration}s infinite`,
-          letterSpacing: `${letterSpacing}px`
+          letterSpacing: `${letterSpacing}px`,
         }}
       >
         {text}

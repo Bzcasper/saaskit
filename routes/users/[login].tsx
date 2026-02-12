@@ -19,9 +19,9 @@ interface UserProfileProps {
 function UserProfile(props: UserProfileProps) {
   return (
     <div class="card p-32 flex flex-col items-center w-full max-w-[280px]">
-      <GitHubAvatarImg 
-        login={props.login} 
-        size={140} 
+      <GitHubAvatarImg
+        login={props.login}
+        size={140}
         class="ring-4 ring-primary/20 mb-24"
       />
       <div class="flex items-center gap-8 mb-8">
@@ -86,14 +86,16 @@ export default defineRoute<State>(
               <div class="w-48 h-48 rounded-lg bg-gradient-logo flex items-center justify-center shadow-glow">
                 <IconRadar class="size-24 text-background-dark" />
               </div>
-              <span class="font-heading font-black text-h3 gradient-text lowercase">{SITE_NAME}</span>
+              <span class="font-heading font-black text-h3 gradient-text lowercase">
+                {SITE_NAME}
+              </span>
             </div>
           </div>
 
           <div class="flex justify-center lg:justify-start">
             <UserProfile {...user} />
           </div>
-          
+
           <div class="flex-1">
             <h2 class="font-heading font-bold text-h4 text-foreground mb-24">
               Submissions

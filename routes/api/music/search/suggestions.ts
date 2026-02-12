@@ -2,10 +2,10 @@
 
 import { YTMusic } from "@/utils/music_client.ts";
 import {
-  successResponse,
   errorResponse,
-  toJson,
   handleApiError,
+  successResponse,
+  toJson,
 } from "@/utils/api_response.ts";
 import type { Handlers } from "$fresh/server.ts";
 
@@ -18,31 +18,30 @@ const ytmusic = new YTMusic();
  */
 export const handler: Handlers = {
   async GET(req, ctx) {
-  try {
-    const url = new URL(req.url);
-    const query = url.searchParams.get("q");
+    try {
+      const url = new URL(req.url);
+      const query = url.searchParams.get("q");
 
-    if (!query) {
-      const response = errorResponse(
-        "MISSING_PARAM",
-        "Query parameter 'q' is required",
-      );
-      return toJson(response, 400);
+      if (!query) {
+        const response = errorResponse(
+          "MISSING_PARAM",
+          "Query parameter 'q' is required",
+        );
+        return toJson(response, 400);
+      }
+
+      const suggestions = await ytmusic.getSearchSuggestions(query);
+
+      const response = successResponse({
+        query,
+        suggestions,
+        count: suggestions.length,
+      });
+
+      return toJson(response);
+    } catch (error) {
+      const [errorResp, status] = handleApiError(error);
+      return toJson(errorResp, status);
     }
-
-    const suggestions = await ytmusic.getSearchSuggestions(query);
-
-    const response = successResponse({
-      query,
-      suggestions,
-      count: suggestions.length,
-    });
-
-    return toJson(response);
-  } catch (error) {
-    const [errorResp, status] = handleApiError(error);
-    return toJson(errorResp, status);
-  }
-}
+  },
 };
-

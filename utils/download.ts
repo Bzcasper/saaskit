@@ -7,7 +7,7 @@
 
 import { ulid } from "jsr:@std/ulid";
 import { kv } from "@/utils/db.ts";
-import { fetchFromPiped, fetchFromInvidious } from "@/utils/music_client.ts";
+import { fetchFromInvidious, fetchFromPiped } from "@/utils/music_client.ts";
 
 // ============ DOWNLOAD MODELS ============
 
@@ -17,7 +17,13 @@ export interface DownloadJob {
   title: string;
   artist: string;
   userId?: string;
-  status: "queued" | "downloading" | "converting" | "completed" | "failed" | "cancelled";
+  status:
+    | "queued"
+    | "downloading"
+    | "converting"
+    | "completed"
+    | "failed"
+    | "cancelled";
   progress: number; // 0-100
   format?: "mp3" | "m4a" | "webm" | "wav";
   quality?: "low" | "medium" | "high";
@@ -74,7 +80,9 @@ export async function createDownloadJob(
 /**
  * Get download job by ID
  */
-export async function getDownloadJob(jobId: string): Promise<DownloadJob | null> {
+export async function getDownloadJob(
+  jobId: string,
+): Promise<DownloadJob | null> {
   const res = await kv.get(["download_jobs", jobId]);
   return res.value as DownloadJob | null;
 }
@@ -82,7 +90,9 @@ export async function getDownloadJob(jobId: string): Promise<DownloadJob | null>
 /**
  * Get download job by video ID
  */
-export async function getDownloadJobByVideoId(videoId: string): Promise<DownloadJob | null> {
+export async function getDownloadJobByVideoId(
+  videoId: string,
+): Promise<DownloadJob | null> {
   const iter = kv.list({ prefix: ["download_jobs_by_video", videoId] });
   const entries = [];
 
@@ -123,7 +133,12 @@ export async function getUserDownloadJobs(
  */
 export async function updateDownloadJob(
   jobId: string,
-  updates: Partial<Omit<DownloadJob, "id" | "videoId" | "title" | "artist" | "createdAt" | "userId">>,
+  updates: Partial<
+    Omit<
+      DownloadJob,
+      "id" | "videoId" | "title" | "artist" | "createdAt" | "userId"
+    >
+  >,
 ): Promise<DownloadJob | null> {
   const job = await getDownloadJob(jobId);
   if (!job) return null;
@@ -188,7 +203,10 @@ export async function cancelDownloadJob(jobId: string): Promise<boolean> {
 /**
  * Delete download job
  */
-export async function deleteDownloadJob(jobId: string, userId?: string): Promise<boolean> {
+export async function deleteDownloadJob(
+  jobId: string,
+  userId?: string,
+): Promise<boolean> {
   const job = await getDownloadJob(jobId);
   if (!job) return false;
 
@@ -207,7 +225,9 @@ export async function deleteDownloadJob(jobId: string, userId?: string): Promise
 /**
  * Clean up old download jobs
  */
-export async function cleanupOldDownloadJobs(maxAge = 7 * 24 * 60 * 60 * 1000): Promise<number> {
+export async function cleanupOldDownloadJobs(
+  maxAge = 7 * 24 * 60 * 60 * 1000,
+): Promise<number> {
   const cutoff = Date.now() - maxAge;
   const iter = kv.list({ prefix: ["download_jobs"] });
   let deleted = 0;
@@ -236,13 +256,16 @@ export async function cleanupOldDownloadJobs(maxAge = 7 * 24 * 60 * 60 * 1000): 
  * Exported for testing purposes
  */
 export function selectBestStream(
-  streams: { url: string; quality?: string; bitrate?: number; mimeType?: string }[],
+  streams: {
+    url: string;
+    quality?: string;
+    bitrate?: number;
+    mimeType?: string;
+  }[],
   quality: "low" | "medium" | "high",
 ) {
   // Filter for audio streams
-  const audioStreams = streams.filter((s) =>
-    s.mimeType?.includes("audio")
-  );
+  const audioStreams = streams.filter((s) => s.mimeType?.includes("audio"));
 
   if (audioStreams.length === 0) return null;
 
@@ -306,7 +329,10 @@ export async function processDownloadJob(jobId: string): Promise<DownloadJob> {
       mimeType?: string;
     }[];
 
-    const selectedStream = selectBestStream(streamingUrls, job.quality || "medium");
+    const selectedStream = selectBestStream(
+      streamingUrls,
+      job.quality || "medium",
+    );
 
     if (!selectedStream) {
       throw new Error("No suitable audio stream found");
@@ -388,17 +414,19 @@ export interface DownloadStats {
 /**
  * Get download statistics
  */
-export async function getDownloadStats(userId?: string): Promise<DownloadStats> {
+export async function getDownloadStats(
+  userId?: string,
+): Promise<DownloadStats> {
   const jobs = userId
     ? await getUserDownloadJobs(userId, 1000)
     : await (async () => {
-        const iter = kv.list({ prefix: ["download_jobs"] });
-        const allJobs: DownloadJob[] = [];
-        for await (const entry of iter) {
-          allJobs.push(entry.value as DownloadJob);
-        }
-        return allJobs;
-      })();
+      const iter = kv.list({ prefix: ["download_jobs"] });
+      const allJobs: DownloadJob[] = [];
+      for await (const entry of iter) {
+        allJobs.push(entry.value as DownloadJob);
+      }
+      return allJobs;
+    })();
 
   const stats: DownloadStats = {
     totalJobs: jobs.length,

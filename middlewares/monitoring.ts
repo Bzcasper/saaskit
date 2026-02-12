@@ -5,9 +5,12 @@
  */
 
 import { MiddlewareHandlerContext } from "$fresh/server.ts";
-import { logger, generateRequestId } from "@/utils/logger.ts";
+import { generateRequestId, logger } from "@/utils/logger.ts";
 
-export function monitoringMiddleware(): (req: Request, ctx: MiddlewareHandlerContext) => Response | Promise<Response> {
+export function monitoringMiddleware(): (
+  req: Request,
+  ctx: MiddlewareHandlerContext,
+) => Response | Promise<Response> {
   return async (req: Request, ctx: MiddlewareHandlerContext) => {
     const startTime = Date.now();
     const requestId = generateRequestId();
@@ -18,11 +21,11 @@ export function monitoringMiddleware(): (req: Request, ctx: MiddlewareHandlerCon
     // Extract context info
     const url = new URL(req.url);
     const userId = (ctx.state as any)?.user?.login;
-    const ip = req.headers.get('CF-Connecting-IP') ||
-               req.headers.get('X-Forwarded-For') ||
-               req.headers.get('X-Real-IP') ||
-               req.headers.get('Forwarded')?.split(',')[0]?.trim() ||
-               'unknown';
+    const ip = req.headers.get("CF-Connecting-IP") ||
+      req.headers.get("X-Forwarded-For") ||
+      req.headers.get("X-Real-IP") ||
+      req.headers.get("Forwarded")?.split(",")[0]?.trim() ||
+      "unknown";
 
     // Log incoming request
     logger.logRequest(req, { userId, ip });
@@ -39,7 +42,7 @@ export function monitoringMiddleware(): (req: Request, ctx: MiddlewareHandlerCon
 
       // Add request ID to response headers for debugging
       if (response instanceof Response) {
-        response.headers.set('X-Request-ID', requestId);
+        response.headers.set("X-Request-ID", requestId);
       }
 
       return response;
@@ -48,7 +51,7 @@ export function monitoringMiddleware(): (req: Request, ctx: MiddlewareHandlerCon
       const duration = Date.now() - startTime;
 
       // Log error
-      logger.error('Request failed', error as Error, {
+      logger.error("Request failed", error as Error, {
         method: req.method,
         path: url.pathname,
         userId,

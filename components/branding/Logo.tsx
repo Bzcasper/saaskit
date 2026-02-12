@@ -23,11 +23,15 @@ export function Logo({ size = "md", href = "/", showText = true }: LogoProps) {
 
   return (
     <a href={href} class="flex items-center gap-3 group">
-      <div class={`${sizeClasses.icon} rounded-xl bg-gradient-logo flex items-center justify-center shadow-glow group-hover:scale-105 transition-transform duration-fast`}>
+      <div
+        class={`${sizeClasses.icon} rounded-xl bg-gradient-logo flex items-center justify-center shadow-glow group-hover:scale-105 transition-transform duration-fast`}
+      >
         <span class="font-heading font-black text-base">TR</span>
       </div>
       {showText && (
-        <span class={`font-heading font-black ${sizeClasses.text} gradient-text lowercase tracking-wide`}>
+        <span
+          class={`font-heading font-black ${sizeClasses.text} gradient-text lowercase tracking-wide`}
+        >
           {SITE_NAME}
         </span>
       )}

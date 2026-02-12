@@ -62,7 +62,9 @@ class Logger {
     if (entry.statusCode) contextParts.push(`status=${entry.statusCode}`);
     if (entry.duration) contextParts.push(`duration=${entry.duration}ms`);
 
-    const context = contextParts.length > 0 ? ` {${contextParts.join(', ')}}` : '';
+    const context = contextParts.length > 0
+      ? ` {${contextParts.join(", ")}}`
+      : "";
 
     if (entry.error) {
       return `${base}${context}\n  Error: ${entry.error.name}: ${entry.error.message}\n  Stack: ${entry.error.stack}`;
@@ -104,7 +106,7 @@ class Logger {
     this.writeLog({
       timestamp: new Date().toISOString(),
       level: LogLevel.DEBUG,
-      levelName: 'DEBUG',
+      levelName: "DEBUG",
       message,
       context,
       requestId: this.requestId || undefined,
@@ -116,7 +118,7 @@ class Logger {
     this.writeLog({
       timestamp: new Date().toISOString(),
       level: LogLevel.INFO,
-      levelName: 'INFO',
+      levelName: "INFO",
       message,
       context,
       requestId: this.requestId || undefined,
@@ -128,7 +130,7 @@ class Logger {
     this.writeLog({
       timestamp: new Date().toISOString(),
       level: LogLevel.WARN,
-      levelName: 'WARN',
+      levelName: "WARN",
       message,
       context,
       requestId: this.requestId || undefined,
@@ -140,15 +142,17 @@ class Logger {
     this.writeLog({
       timestamp: new Date().toISOString(),
       level: LogLevel.ERROR,
-      levelName: 'ERROR',
+      levelName: "ERROR",
       message,
       context,
       requestId: this.requestId || undefined,
-      error: error ? {
-        name: error.name,
-        message: error.message,
-        stack: error.stack,
-      } : undefined,
+      error: error
+        ? {
+          name: error.name,
+          message: error.message,
+          stack: error.stack,
+        }
+        : undefined,
     });
   }
 
@@ -157,31 +161,41 @@ class Logger {
     this.writeLog({
       timestamp: new Date().toISOString(),
       level: LogLevel.CRITICAL,
-      levelName: 'CRITICAL',
+      levelName: "CRITICAL",
       message,
       context,
       requestId: this.requestId || undefined,
-      error: error ? {
-        name: error.name,
-        message: error.message,
-        stack: error.stack,
-      } : undefined,
+      error: error
+        ? {
+          name: error.name,
+          message: error.message,
+          stack: error.stack,
+        }
+        : undefined,
     });
   }
 
   // Request logging methods
   logRequest(req: Request, context?: { userId?: string; ip?: string }) {
-    this.info('Request received', {
+    this.info("Request received", {
       method: req.method,
       path: new URL(req.url).pathname,
-      userAgent: req.headers.get('User-Agent'),
+      userAgent: req.headers.get("User-Agent"),
       ...context,
     });
   }
 
-  logResponse(req: Request, statusCode: number, duration: number, context?: { userId?: string; ip?: string }) {
-    const level = statusCode >= 500 ? LogLevel.ERROR :
-                  statusCode >= 400 ? LogLevel.WARN : LogLevel.INFO;
+  logResponse(
+    req: Request,
+    statusCode: number,
+    duration: number,
+    context?: { userId?: string; ip?: string },
+  ) {
+    const level = statusCode >= 500
+      ? LogLevel.ERROR
+      : statusCode >= 400
+      ? LogLevel.WARN
+      : LogLevel.INFO;
 
     const message = `Response sent: ${statusCode}`;
 
@@ -215,10 +229,13 @@ class Logger {
 
 // Global logger instance
 export const logger = new Logger(
-  Deno.env.get('LOG_LEVEL') === 'debug' ? LogLevel.DEBUG :
-  Deno.env.get('LOG_LEVEL') === 'warn' ? LogLevel.WARN :
-  Deno.env.get('LOG_LEVEL') === 'error' ? LogLevel.ERROR :
-  LogLevel.INFO
+  Deno.env.get("LOG_LEVEL") === "debug"
+    ? LogLevel.DEBUG
+    : Deno.env.get("LOG_LEVEL") === "warn"
+    ? LogLevel.WARN
+    : Deno.env.get("LOG_LEVEL") === "error"
+    ? LogLevel.ERROR
+    : LogLevel.INFO,
 );
 
 // Request ID generator

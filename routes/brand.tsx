@@ -7,21 +7,21 @@
 import { defineRoute } from "$fresh/server.ts";
 import Head from "@/components/Head.tsx";
 import {
-  RadarLogo,
-  SoundWaveLogo,
-  CircularEqualizer,
-  ScanningLogo,
-  Banner,
-  LogoVariations,
-  SloganCard,
-  LogoHolographic,
-  TurntableAnimation,
   AudioReactiveCard,
-  GlitchText,
-  VUMeter,
-  BrandSlogan,
+  Banner,
   BrandButton,
-  Logo
+  BrandSlogan,
+  CircularEqualizer,
+  GlitchText,
+  Logo,
+  LogoHolographic,
+  LogoVariations,
+  RadarLogo,
+  ScanningLogo,
+  SloganCard,
+  SoundWaveLogo,
+  TurntableAnimation,
+  VUMeter,
 } from "@/components/branding";
 import { SITE_NAME } from "@/utils/constants.ts";
 
@@ -33,7 +33,12 @@ const ErrorFallback = ({ componentName }: { componentName: string }) => (
 );
 
 // Safe component wrapper with error handling
-const SafeComponent = ({ children, fallbackName }: { children: React.ReactNode; fallbackName: string }) => {
+const SafeComponent = (
+  { children, fallbackName }: {
+    children: React.ReactNode;
+    fallbackName: string;
+  },
+) => {
   try {
     return <>{children}</>;
   } catch (error) {
@@ -43,30 +48,42 @@ const SafeComponent = ({ children, fallbackName }: { children: React.ReactNode; 
 };
 
 // Constants for reusable styles and values
-const HERO_BACKGROUND = "linear-gradient(180deg, #050508 0%, #0A0A12 50%, #050508 100%)";
+const HERO_BACKGROUND =
+  "linear-gradient(180deg, #050508 0%, #0A0A12 50%, #050508 100%)";
 const GRID_BACKGROUND = {
-  backgroundImage: 'linear-gradient(rgba(139, 92, 246, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(139, 92, 246, 0.02) 1px, transparent 1px)',
-  backgroundSize: '40px 40px'
+  backgroundImage:
+    "linear-gradient(rgba(139, 92, 246, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(139, 92, 246, 0.02) 1px, transparent 1px)",
+  backgroundSize: "40px 40px",
 };
 const BLOB_GRADIENT_1 = "linear-gradient(135deg, #8B5CF6 0%, #06B6D4 100%)";
 const BLOB_GRADIENT_2 = "linear-gradient(135deg, #06B6D4 0%, #EC4899 100%)";
-const APPLICATION_BACKGROUND = "linear-gradient(180deg, #050508 0%, #0A0A12 100%)";
+const APPLICATION_BACKGROUND =
+  "linear-gradient(180deg, #050508 0%, #0A0A12 100%)";
 
 // Component for Hero Section
 const HeroSection = () => (
-  <section class="section-padding-lg relative overflow-hidden" style={{ background: HERO_BACKGROUND }}>
+  <section
+    class="section-padding-lg relative overflow-hidden"
+    style={{ background: HERO_BACKGROUND }}
+  >
     {/* Background Grid */}
     <div class="absolute inset-0 opacity-20" style={GRID_BACKGROUND} />
 
     {/* Gradient Blobs */}
-    <div class="absolute top-25 -left-40 w-[500px] h-[500px] rounded-full blur-[120px]" style={{
-      background: BLOB_GRADIENT_1,
-      opacity: 0.08
-    }} />
-    <div class="absolute bottom-[600px] -right-40 w-[400px] h-[400px] rounded-full blur-[120px]" style={{
-      background: BLOB_GRADIENT_2,
-      opacity: 0.08
-    }} />
+    <div
+      class="absolute top-25 -left-40 w-[500px] h-[500px] rounded-full blur-[120px]"
+      style={{
+        background: BLOB_GRADIENT_1,
+        opacity: 0.08,
+      }}
+    />
+    <div
+      class="absolute bottom-[600px] -right-40 w-[400px] h-[400px] rounded-full blur-[120px]"
+      style={{
+        background: BLOB_GRADIENT_2,
+        opacity: 0.08,
+      }}
+    />
 
     <div class="relative z-10 container-max text-center">
       {/* Brand Badge */}
@@ -85,7 +102,9 @@ const HeroSection = () => (
 );
 
 // Component for Section Header
-const SectionHeader = ({ title, description }: { title: string; description: string }) => (
+const SectionHeader = (
+  { title, description }: { title: string; description: string },
+) => (
   <div class="text-center mb-8">
     <h2 class="font-heading font-bold text-h2 text-white mb-3">
       {title}
@@ -110,7 +129,10 @@ const DesignConcept = ({ text }: { text: string }) => (
 const RadarLogoSection = () => (
   <section class="section-padding-lg">
     <div class="container-max">
-      <SectionHeader title="Radar Logo" description="Dynamic scanning radar with music detection" />
+      <SectionHeader
+        title="Radar Logo"
+        description="Dynamic scanning radar with music detection"
+      />
 
       {/* Primary Radar */}
       <div class="bg-background-card/60 backdrop-blur-xl border-2 border-primary/20 rounded-2xl p-10 mb-6 relative overflow-hidden">
@@ -131,9 +153,18 @@ const RadarLogoSection = () => (
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div class="bg-background-card/40 border border-primary/10 rounded-2xl p-8 text-center">
           <div class="relative w-[150px] h-[150px] mx-auto mb-4">
-            <div class="absolute top-1/2 left-1/2 w-full h-full border-2 border-primary/30 rounded-full" style={{ transform: 'translate(-50%, -50%)' }} />
-            <div class="absolute top-1/2 left-1/2 w-[60%] h-[60%] border-2 border-secondary/30 rounded-full" style={{ transform: 'translate(-50%, -50%)' }} />
-            <div class="absolute top-1/2 left-1/2 w-[35%] h-[35%] bg-gradient-logo rounded-full flex items-center justify-center" style={{ transform: 'translate(-50%, -50%)' }}>
+            <div
+              class="absolute top-1/2 left-1/2 w-full h-full border-2 border-primary/30 rounded-full"
+              style={{ transform: "translate(-50%, -50%)" }}
+            />
+            <div
+              class="absolute top-1/2 left-1/2 w-[60%] h-[60%] border-2 border-secondary/30 rounded-full"
+              style={{ transform: "translate(-50%, -50%)" }}
+            />
+            <div
+              class="absolute top-1/2 left-1/2 w-[35%] h-[35%] bg-gradient-logo rounded-full flex items-center justify-center"
+              style={{ transform: "translate(-50%, -50%)" }}
+            >
               <span class="text-xl">♪</span>
             </div>
           </div>
@@ -144,8 +175,14 @@ const RadarLogoSection = () => (
 
         <div class="bg-background-card/40 border border-primary/10 rounded-2xl p-8 text-center">
           <div class="relative w-[150px] h-[150px] mx-auto mb-4">
-            <div class="absolute top-1/2 left-1/2 w-full h-full border-2 border-dashed border-primary/40 rounded-full" style={{ transform: 'translate(-50%, -50%)' }} />
-            <div class="absolute top-1/2 left-1/2 font-6xl gradient-text" style={{ transform: 'translate(-50%, -50%)' }}>
+            <div
+              class="absolute top-1/2 left-1/2 w-full h-full border-2 border-dashed border-primary/40 rounded-full"
+              style={{ transform: "translate(-50%, -50%)" }}
+            />
+            <div
+              class="absolute top-1/2 left-1/2 font-6xl gradient-text"
+              style={{ transform: "translate(-50%, -50%)" }}
+            >
               ♪
             </div>
           </div>
@@ -209,9 +246,13 @@ export default defineRoute((_req, ctx) => {
               </div>
 
               <div class="bg-primary/5 border border-primary/20 rounded-xl p-5 mt-6">
-                <div class="text-sm font-bold text-primary-300 mb-2">Design Concept</div>
+                <div class="text-sm font-bold text-primary-300 mb-2">
+                  Design Concept
+                </div>
                 <div class="text-xs text-foreground-muted leading-relaxed">
-                  Animated equalizer bars represent real-time audio analysis. The wave pattern symbolizes continuous music trend monitoring and dynamic data visualization.
+                  Animated equalizer bars represent real-time audio analysis.
+                  The wave pattern symbolizes continuous music trend monitoring
+                  and dynamic data visualization.
                 </div>
               </div>
             </div>
@@ -229,9 +270,13 @@ export default defineRoute((_req, ctx) => {
               </div>
 
               <div class="bg-primary/5 border border-primary/20 rounded-xl p-5 mt-6">
-                <div class="text-sm font-bold text-primary-300 mb-2">Design Concept</div>
+                <div class="text-sm font-bold text-primary-300 mb-2">
+                  Design Concept
+                </div>
                 <div class="text-xs text-foreground-muted leading-relaxed">
-                  Rotating rings create a spinning radar effect. Each ring represents different frequency ranges in music data. Central music note anchors the visual identity.
+                  Rotating rings create a spinning radar effect. Each ring
+                  represents different frequency ranges in music data. Central
+                  music note anchors the visual identity.
                 </div>
               </div>
             </div>
@@ -262,9 +307,13 @@ export default defineRoute((_req, ctx) => {
               </div>
 
               <div class="bg-primary/5 border border-primary/20 rounded-xl p-5 mt-6">
-                <div class="text-sm font-bold text-primary-300 mb-2">Design Concept</div>
+                <div class="text-sm font-bold text-primary-300 mb-2">
+                  Design Concept
+                </div>
                 <div class="text-xs text-foreground-muted leading-relaxed">
-                  Horizontal scan line actively searches for music trends. The music note in background represents the data being analyzed. Combines scanning action with music discovery.
+                  Horizontal scan line actively searches for music trends. The
+                  music note in background represents the data being analyzed.
+                  Combines scanning action with music discovery.
                 </div>
               </div>
             </div>
@@ -312,7 +361,9 @@ export default defineRoute((_req, ctx) => {
                 <div class="text-[10px] font-bold tracking-widest uppercase text-foreground-dark">
                   Horizontal Layout
                 </div>
-                <div class="text-xs text-foreground-muted mt-2">Headers, navigation</div>
+                <div class="text-xs text-foreground-muted mt-2">
+                  Headers, navigation
+                </div>
               </div>
 
               <div class="bg-background-card/40 border border-primary/10 rounded-2xl p-8 text-center">
@@ -322,7 +373,9 @@ export default defineRoute((_req, ctx) => {
                 <div class="text-[10px] font-bold tracking-widest uppercase text-foreground-dark">
                   Stacked Layout
                 </div>
-                <div class="text-xs text-foreground-muted mt-2">Social media, mobile</div>
+                <div class="text-xs text-foreground-muted mt-2">
+                  Social media, mobile
+                </div>
               </div>
 
               <div class="bg-white rounded-2xl p-8 text-center border border-gray-200">
@@ -342,7 +395,9 @@ export default defineRoute((_req, ctx) => {
                 <div class="text-[10px] font-bold tracking-widest uppercase text-foreground-dark">
                   Icon Only
                 </div>
-                <div class="text-xs text-foreground-muted mt-2">Favicons, app icons</div>
+                <div class="text-xs text-foreground-muted mt-2">
+                  Favicons, app icons
+                </div>
               </div>
             </div>
           </div>
@@ -371,7 +426,12 @@ export default defineRoute((_req, ctx) => {
         </section>
 
         {/* SECTION 7: APPLICATION EXAMPLES */}
-        <section class="section-padding-lg" style={{ background: 'linear-gradient(180deg, #050508 0%, #0A0A12 100%)' }}>
+        <section
+          class="section-padding-lg"
+          style={{
+            background: "linear-gradient(180deg, #050508 0%, #0A0A12 100%)",
+          }}
+        >
           <div class="container-max">
             <div class="text-center mb-8">
               <h2 class="font-heading font-bold text-h2 text-white mb-3">
@@ -385,38 +445,62 @@ export default defineRoute((_req, ctx) => {
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <div class="bg-background-card/40 border border-primary/10 rounded-2xl p-8 text-center">
                 <div class="text-4xl mb-3">🌐</div>
-                <div class="font-heading text-h4 font-bold text-white mb-2">Website Header</div>
-                <div class="text-xs text-foreground-muted">Use horizontal logo or animated radar</div>
+                <div class="font-heading text-h4 font-bold text-white mb-2">
+                  Website Header
+                </div>
+                <div class="text-xs text-foreground-muted">
+                  Use horizontal logo or animated radar
+                </div>
               </div>
 
               <div class="bg-background-card/40 border border-primary/10 rounded-2xl p-8 text-center">
                 <div class="text-4xl mb-3">📱</div>
-                <div class="font-heading text-h4 font-bold text-white mb-2">Mobile App</div>
-                <div class="text-xs text-foreground-muted">Use icon mark or radar circle</div>
+                <div class="font-heading text-h4 font-bold text-white mb-2">
+                  Mobile App
+                </div>
+                <div class="text-xs text-foreground-muted">
+                  Use icon mark or radar circle
+                </div>
               </div>
 
               <div class="bg-background-card/40 border border-primary/10 rounded-2xl p-8 text-center">
                 <div class="text-4xl mb-3">📊</div>
-                <div class="font-heading text-h4 font-bold text-white mb-2">Dashboard</div>
-                <div class="text-xs text-foreground-muted">Use scanning or equalizer logos</div>
+                <div class="font-heading text-h4 font-bold text-white mb-2">
+                  Dashboard
+                </div>
+                <div class="text-xs text-foreground-muted">
+                  Use scanning or equalizer logos
+                </div>
               </div>
 
               <div class="bg-background-card/40 border border-primary/10 rounded-2xl p-8 text-center">
                 <div class="text-4xl mb-3">📄</div>
-                <div class="font-heading text-h4 font-bold text-white mb-2">Documentation</div>
-                <div class="text-xs text-foreground-muted">Use static wordmark or icon</div>
+                <div class="font-heading text-h4 font-bold text-white mb-2">
+                  Documentation
+                </div>
+                <div class="text-xs text-foreground-muted">
+                  Use static wordmark or icon
+                </div>
               </div>
 
               <div class="bg-background-card/40 border border-primary/10 rounded-2xl p-8 text-center">
                 <div class="text-4xl mb-3">📢</div>
-                <div class="font-heading text-h4 font-bold text-white mb-2">Marketing</div>
-                <div class="text-xs text-foreground-muted">Use animated banners with slogan</div>
+                <div class="font-heading text-h4 font-bold text-white mb-2">
+                  Marketing
+                </div>
+                <div class="text-xs text-foreground-muted">
+                  Use animated banners with slogan
+                </div>
               </div>
 
               <div class="bg-background-card/40 border border-primary/10 rounded-2xl p-8 text-center">
                 <div class="text-4xl mb-3">💬</div>
-                <div class="font-heading text-h4 font-bold text-white mb-2">Social Media</div>
-                <div class="text-xs text-foreground-muted">Use sound wave or radar logos</div>
+                <div class="font-heading text-h4 font-bold text-white mb-2">
+                  Social Media
+                </div>
+                <div class="text-xs text-foreground-muted">
+                  Use sound wave or radar logos
+                </div>
               </div>
             </div>
           </div>

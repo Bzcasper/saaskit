@@ -10,7 +10,9 @@ interface SoundWaveLogoProps {
   label?: string;
 }
 
-export function SoundWaveLogo({ bars = 9, showLabel = true, label = "trendradar" }: SoundWaveLogoProps) {
+export function SoundWaveLogo(
+  { bars = 9, showLabel = true, label = "trendradar" }: SoundWaveLogoProps,
+) {
   return (
     <div class="flex flex-col items-center gap-6">
       {/* Wave Bars */}
@@ -20,8 +22,8 @@ export function SoundWaveLogo({ bars = 9, showLabel = true, label = "trendradar"
             key={i}
             class="w-2 bg-gradient-logo rounded"
             style={{
-              animation: 'wave-dance 1.2s ease-in-out infinite',
-              animationDelay: `${i * 0.1}s`
+              animation: "wave-dance 1.2s ease-in-out infinite",
+              animationDelay: `${i * 0.1}s`,
             }}
           />
         ))}
@@ -32,20 +34,22 @@ export function SoundWaveLogo({ bars = 9, showLabel = true, label = "trendradar"
         <div
           class="font-heading font-black gradient-text lowercase"
           style={{
-            fontSize: '48px',
-            letterSpacing: '4px'
+            fontSize: "48px",
+            letterSpacing: "4px",
           }}
         >
           {label}
         </div>
       )}
 
-      <style>{`
+      <style>
+        {`
         @keyframes wave-dance {
           0%, 100% { height: 30px; }
           50% { height: 100px; }
         }
-      `}</style>
+      `}
+      </style>
     </div>
   );
 }

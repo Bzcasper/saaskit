@@ -2,7 +2,7 @@
 /**
  * ProxyHub - Robust Proxy Fallback System
  * Manages multiple proxy providers with automatic failover and health monitoring
- * 
+ *
  * Architecture:
  * 1. Primary: Direct connection (no proxy)
  * 2. Secondary: Proxifly SDK (affordable, reliable)
@@ -15,7 +15,7 @@ export interface ProxyProvider {
   name: string;
   enabled: boolean;
   priority: number;
-  healthStatus: 'healthy' | 'degraded' | 'unhealthy';
+  healthStatus: "healthy" | "degraded" | "unhealthy";
   lastChecked: number;
   failureCount: number;
   successCount: number;
@@ -42,7 +42,7 @@ export interface ProxyResponse {
 
 export interface ProxyHealth {
   provider: string;
-  status: 'healthy' | 'degraded' | 'unhealthy';
+  status: "healthy" | "degraded" | "unhealthy";
   latency: number;
   failureRate: number;
   lastSuccess: number;
@@ -76,11 +76,11 @@ export class ProxyHub {
    */
   private initializeProviders(): void {
     // Primary: Direct connection (priority 0)
-    this.providers.set('direct', {
-      name: 'direct',
+    this.providers.set("direct", {
+      name: "direct",
       enabled: true,
       priority: 0,
-      healthStatus: 'healthy',
+      healthStatus: "healthy",
       lastChecked: Date.now(),
       failureCount: 0,
       successCount: 0,
@@ -88,11 +88,11 @@ export class ProxyHub {
     });
 
     // Secondary: Proxifly (priority 1)
-    this.providers.set('proxifly', {
-      name: 'proxifly',
+    this.providers.set("proxifly", {
+      name: "proxifly",
       enabled: !!PROXYFLY_API_KEY,
       priority: 1,
-      healthStatus: 'healthy',
+      healthStatus: "healthy",
       lastChecked: Date.now(),
       failureCount: 0,
       successCount: 0,
@@ -100,11 +100,11 @@ export class ProxyHub {
     });
 
     // Tertiary: Bright Data (priority 2)
-    this.providers.set('brightdata', {
-      name: 'brightdata',
+    this.providers.set("brightdata", {
+      name: "brightdata",
       enabled: !!BRIGHTDATA_API_KEY,
       priority: 2,
-      healthStatus: 'healthy',
+      healthStatus: "healthy",
       lastChecked: Date.now(),
       failureCount: 0,
       successCount: 0,
@@ -112,11 +112,11 @@ export class ProxyHub {
     });
 
     // Quaternary: SmartProxy (priority 3)
-    this.providers.set('smartproxy', {
-      name: 'smartproxy',
+    this.providers.set("smartproxy", {
+      name: "smartproxy",
       enabled: !!SMARTPROXY_API_KEY,
       priority: 3,
-      healthStatus: 'healthy',
+      healthStatus: "healthy",
       lastChecked: Date.now(),
       failureCount: 0,
       successCount: 0,
@@ -138,21 +138,21 @@ export class ProxyHub {
 
       for (let attempt = 0; attempt < this.maxRetries; attempt++) {
         const startTime = performance.now();
-        
+
         try {
           let response: ProxyResponse;
 
           switch (provider.name) {
-            case 'direct':
+            case "direct":
               response = await this.fetchDirect(request);
               break;
-            case 'proxifly':
+            case "proxifly":
               response = await this.fetchProxifly(request);
               break;
-            case 'brightdata':
+            case "brightdata":
               response = await this.fetchBrightData(request);
               break;
-            case 'smartproxy':
+            case "smartproxy":
               response = await this.fetchSmartProxy(request);
               break;
             default:
@@ -173,8 +173,12 @@ export class ProxyHub {
         } catch (error) {
           const latency = performance.now() - startTime;
           this.updateProviderHealth(provider.name, false, latency);
-          errors.push(`${provider.name}: ${error instanceof Error ? error.message : String(error)}`);
-          
+          errors.push(
+            `${provider.name}: ${
+              error instanceof Error ? error.message : String(error)
+            }`,
+          );
+
           // Exponential backoff
           await this.delay(Math.pow(2, attempt) * 1000);
         }
@@ -186,10 +190,10 @@ export class ProxyHub {
       success: false,
       statusCode: 0,
       headers: {},
-      body: '',
-      provider: 'none',
+      body: "",
+      provider: "none",
       latency: 0,
-      error: `All proxy providers failed: ${errors.join('; ')}`,
+      error: `All proxy providers failed: ${errors.join("; ")}`,
     };
   }
 
@@ -198,11 +202,14 @@ export class ProxyHub {
    */
   private async fetchDirect(request: ProxyRequest): Promise<ProxyResponse> {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), request.timeout || 30000);
+    const timeoutId = setTimeout(
+      () => controller.abort(),
+      request.timeout || 30000,
+    );
 
     try {
       const response = await fetch(request.url, {
-        method: request.method || 'GET',
+        method: request.method || "GET",
         headers: request.headers,
         body: request.body,
         signal: controller.signal,
@@ -221,7 +228,7 @@ export class ProxyHub {
         statusCode: response.status,
         headers,
         body,
-        provider: 'direct',
+        provider: "direct",
         latency: 0,
       };
     } catch (error) {
@@ -230,8 +237,8 @@ export class ProxyHub {
         success: false,
         statusCode: 0,
         headers: {},
-        body: '',
-        provider: 'direct',
+        body: "",
+        provider: "direct",
         latency: 0,
         error: error instanceof Error ? error.message : String(error),
       };
@@ -244,11 +251,11 @@ export class ProxyHub {
    */
   private async fetchProxifly(request: ProxyRequest): Promise<ProxyResponse> {
     const proxyUrl = `https://api.proxifly.dev/get-proxy`;
-    
+
     // Get fresh proxy
     const proxyResponse = await fetch(proxyUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         apiKey: PROXYFLY_API_KEY,
         https: true,
@@ -257,29 +264,32 @@ export class ProxyHub {
     });
 
     if (!proxyResponse.ok) {
-      throw new Error('Failed to get Proxifly proxy');
+      throw new Error("Failed to get Proxifly proxy");
     }
 
     const proxyData = await proxyResponse.json();
     const proxy = proxyData[0];
-    
+
     if (!proxy) {
-      throw new Error('No proxies available from Proxifly');
+      throw new Error("No proxies available from Proxifly");
     }
 
     const proxyUrl_str = `${proxy.protocol}://${proxy.ip}:${proxy.port}`;
-    
+
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), request.timeout || 30000);
+    const timeoutId = setTimeout(
+      () => controller.abort(),
+      request.timeout || 30000,
+    );
 
     try {
       // Note: Deno's fetch doesn't natively support proxies, so we use a workaround
       // In production, you'd use a library like fetch-with-proxy or implement raw HTTP
       const response = await fetch(request.url, {
-        method: request.method || 'GET',
+        method: request.method || "GET",
         headers: {
           ...request.headers,
-          'X-Forwarded-For': proxy.ip,
+          "X-Forwarded-For": proxy.ip,
         },
         body: request.body,
         signal: controller.signal,
@@ -298,7 +308,7 @@ export class ProxyHub {
         statusCode: response.status,
         headers,
         body,
-        provider: 'proxifly',
+        provider: "proxifly",
         latency: 0,
       };
     } catch (error) {
@@ -307,8 +317,8 @@ export class ProxyHub {
         success: false,
         statusCode: 0,
         headers: {},
-        body: '',
-        provider: 'proxifly',
+        body: "",
+        provider: "proxifly",
         latency: 0,
         error: error instanceof Error ? error.message : String(error),
       };
@@ -324,22 +334,25 @@ export class ProxyHub {
     const brightDataZone = Deno.env.get("BRIGHTDATA_ZONE") || "residential";
     const proxyHost = `brd.superproxy.io`;
     const proxyPort = 22225;
-    
+
     // Bright Data credentials
     const username = `${BRIGHTDATA_API_KEY}-zone-${brightDataZone}`;
     const password = BRIGHTDATA_API_KEY;
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), request.timeout || 30000);
+    const timeoutId = setTimeout(
+      () => controller.abort(),
+      request.timeout || 30000,
+    );
 
     try {
       // Add Bright Data proxy headers
       const response = await fetch(request.url, {
-        method: request.method || 'GET',
+        method: request.method || "GET",
         headers: {
           ...request.headers,
-          'Proxy-Authorization': `Basic ${btoa(`${username}:${password}`)}`,
-          'X-BrightData-Zone': brightDataZone,
+          "Proxy-Authorization": `Basic ${btoa(`${username}:${password}`)}`,
+          "X-BrightData-Zone": brightDataZone,
         },
         body: request.body,
         signal: controller.signal,
@@ -358,7 +371,7 @@ export class ProxyHub {
         statusCode: response.status,
         headers,
         body,
-        provider: 'brightdata',
+        provider: "brightdata",
         latency: 0,
       };
     } catch (error) {
@@ -367,8 +380,8 @@ export class ProxyHub {
         success: false,
         statusCode: 0,
         headers: {},
-        body: '',
-        provider: 'brightdata',
+        body: "",
+        provider: "brightdata",
         latency: 0,
         error: error instanceof Error ? error.message : String(error),
       };
@@ -385,14 +398,17 @@ export class ProxyHub {
     const proxyPort = 7000;
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), request.timeout || 30000);
+    const timeoutId = setTimeout(
+      () => controller.abort(),
+      request.timeout || 30000,
+    );
 
     try {
       const response = await fetch(request.url, {
-        method: request.method || 'GET',
+        method: request.method || "GET",
         headers: {
           ...request.headers,
-          'Proxy-Authorization': `Basic ${btoa(`${SMARTPROXY_API_KEY}:`)}`,
+          "Proxy-Authorization": `Basic ${btoa(`${SMARTPROXY_API_KEY}:`)}`,
         },
         body: request.body,
         signal: controller.signal,
@@ -411,7 +427,7 @@ export class ProxyHub {
         statusCode: response.status,
         headers,
         body,
-        provider: 'smartproxy',
+        provider: "smartproxy",
         latency: 0,
       };
     } catch (error) {
@@ -420,8 +436,8 @@ export class ProxyHub {
         success: false,
         statusCode: 0,
         headers: {},
-        body: '',
-        provider: 'smartproxy',
+        body: "",
+        provider: "smartproxy",
         latency: 0,
         error: error instanceof Error ? error.message : String(error),
       };
@@ -433,7 +449,7 @@ export class ProxyHub {
    */
   private getSortedProviders(): ProxyProvider[] {
     return Array.from(this.providers.values())
-      .filter(p => p.enabled && p.healthStatus !== 'unhealthy')
+      .filter((p) => p.enabled && p.healthStatus !== "unhealthy")
       .sort((a, b) => {
         // First sort by priority
         if (a.priority !== b.priority) {
@@ -451,7 +467,7 @@ export class ProxyHub {
   private updateProviderHealth(
     providerName: string,
     success: boolean,
-    latency: number
+    latency: number,
   ): void {
     const provider = this.providers.get(providerName);
     if (!provider) return;
@@ -459,46 +475,53 @@ export class ProxyHub {
     if (success) {
       provider.successCount++;
       provider.failureCount = 0;
-      
+
       // Update average latency
-      provider.averageLatency = 
-        (provider.averageLatency * (provider.successCount - 1) + latency) / 
+      provider.averageLatency =
+        (provider.averageLatency * (provider.successCount - 1) + latency) /
         provider.successCount;
-      
+
       // Update health status
       if (provider.averageLatency < 1000) {
-        provider.healthStatus = 'healthy';
+        provider.healthStatus = "healthy";
       } else if (provider.averageLatency < 3000) {
-        provider.healthStatus = 'degraded';
+        provider.healthStatus = "degraded";
       }
     } else {
       provider.failureCount++;
-      
+
       // Mark as unhealthy if too many failures
       if (provider.failureCount >= this.maxFailures) {
-        provider.healthStatus = 'unhealthy';
+        provider.healthStatus = "unhealthy";
       }
     }
 
     provider.lastChecked = Date.now();
-    
+
     // Store health history
     const history = this.healthHistory.get(providerName) || [];
     history.push({
       provider: providerName,
       status: provider.healthStatus,
       latency,
-      failureRate: provider.failureCount / (provider.failureCount + provider.successCount),
-      lastSuccess: success ? Date.now() : (history[history.length - 1]?.lastSuccess || 0),
-      lastFailure: success ? (history[history.length - 1]?.lastFailure || 0) : Date.now(),
-      consecutiveFailures: success ? 0 : (history[history.length - 1]?.consecutiveFailures || 0) + 1,
+      failureRate: provider.failureCount /
+        (provider.failureCount + provider.successCount),
+      lastSuccess: success
+        ? Date.now()
+        : (history[history.length - 1]?.lastSuccess || 0),
+      lastFailure: success
+        ? (history[history.length - 1]?.lastFailure || 0)
+        : Date.now(),
+      consecutiveFailures: success
+        ? 0
+        : (history[history.length - 1]?.consecutiveFailures || 0) + 1,
     });
-    
+
     // Keep only last 100 entries
     if (history.length > 100) {
       history.shift();
     }
-    
+
     this.healthHistory.set(providerName, history);
   }
 
@@ -515,35 +538,43 @@ export class ProxyHub {
    * Perform health checks on all providers
    */
   private async performHealthChecks(): Promise<void> {
-    const checkUrl = 'https://httpbin.org/ip';
-    
+    const checkUrl = "https://httpbin.org/ip";
+
     for (const [name, provider] of this.providers) {
       if (!provider.enabled) continue;
-      
+
       try {
         const start = performance.now();
-        
+
         const response = await this.fetch({
           url: checkUrl,
-          method: 'GET',
+          method: "GET",
           timeout: 10000,
         });
-        
+
         const latency = performance.now() - start;
-        
+
         if (response.success) {
-          console.log(`[ProxyHub] ${name} health check passed (${latency.toFixed(0)}ms)`);
-          
+          console.log(
+            `[ProxyHub] ${name} health check passed (${latency.toFixed(0)}ms)`,
+          );
+
           // Reset unhealthy providers after successful check
-          if (provider.healthStatus === 'unhealthy') {
-            provider.healthStatus = 'degraded';
+          if (provider.healthStatus === "unhealthy") {
+            provider.healthStatus = "degraded";
             provider.failureCount = 0;
           }
         } else {
-          console.warn(`[ProxyHub] ${name} health check failed: ${response.error}`);
+          console.warn(
+            `[ProxyHub] ${name} health check failed: ${response.error}`,
+          );
         }
       } catch (error) {
-        console.error(`[ProxyHub] ${name} health check error: ${error instanceof Error ? error.message : String(error)}`);
+        console.error(
+          `[ProxyHub] ${name} health check error: ${
+            error instanceof Error ? error.message : String(error)
+          }`,
+        );
       }
     }
   }
@@ -552,15 +583,16 @@ export class ProxyHub {
    * Get current health status of all providers
    */
   getHealthStatus(): ProxyHealth[] {
-    return Array.from(this.providers.values()).map(provider => {
+    return Array.from(this.providers.values()).map((provider) => {
       const history = this.healthHistory.get(provider.name) || [];
       const latest = history[history.length - 1];
-      
+
       return {
         provider: provider.name,
         status: provider.healthStatus,
         latency: provider.averageLatency,
-        failureRate: provider.failureCount / Math.max(1, provider.failureCount + provider.successCount),
+        failureRate: provider.failureCount /
+          Math.max(1, provider.failureCount + provider.successCount),
         lastSuccess: latest?.lastSuccess || 0,
         lastFailure: latest?.lastFailure || 0,
         consecutiveFailures: latest?.consecutiveFailures || 0,
@@ -574,7 +606,7 @@ export class ProxyHub {
   setProviderEnabled(providerName: string, enabled: boolean): boolean {
     const provider = this.providers.get(providerName);
     if (!provider) return false;
-    
+
     provider.enabled = enabled;
     return true;
   }
@@ -590,7 +622,7 @@ export class ProxyHub {
     totalRequests: number;
   }> {
     const stats: Record<string, any> = {};
-    
+
     for (const [name, provider] of this.providers) {
       const total = provider.successCount + provider.failureCount;
       stats[name] = {
@@ -601,7 +633,7 @@ export class ProxyHub {
         totalRequests: total,
       };
     }
-    
+
     return stats;
   }
 
@@ -609,7 +641,7 @@ export class ProxyHub {
    * Utility delay function
    */
   private delay(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   /**
@@ -628,7 +660,7 @@ export const proxyHub = new ProxyHub();
 // Convenience function for simple GET requests
 export async function fetchWithProxy(
   url: string,
-  options?: Partial<ProxyRequest>
+  options?: Partial<ProxyRequest>,
 ): Promise<ProxyResponse> {
   return proxyHub.fetch({
     url,

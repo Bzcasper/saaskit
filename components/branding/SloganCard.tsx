@@ -19,39 +19,47 @@ export function SloganCard({
   title,
   description,
   useCase,
-  children
+  children,
 }: SloganCardProps) {
   const slogans = {
     primary: {
       title: "Detecting pulse of music trends",
-      description: "Our primary tagline that captures essence of real-time music trend detection and analysis. Emphasizes dynamic, living nature of music data.",
-      useCase: "Use for: Hero sections, main marketing materials, primary brand messaging",
-      borderColor: "#8B5CF6"
+      description:
+        "Our primary tagline that captures essence of real-time music trend detection and analysis. Emphasizes dynamic, living nature of music data.",
+      useCase:
+        "Use for: Hero sections, main marketing materials, primary brand messaging",
+      borderColor: "#8B5CF6",
     },
     technical: {
       title: "Real-time music trend intelligence",
-      description: "Technical tagline emphasizing real-time data processing and intelligent analytics capabilities of platform.",
-      useCase: "Use for: Developer documentation, API marketing, technical audiences",
-      borderColor: "#06B6D4"
+      description:
+        "Technical tagline emphasizing real-time data processing and intelligent analytics capabilities of platform.",
+      useCase:
+        "Use for: Developer documentation, API marketing, technical audiences",
+      borderColor: "#06B6D4",
     },
     product: {
       title: "Data-driven music discovery",
-      description: "Focuses on the discovery aspect, highlighting how data powers better music recommendations and trend forecasting.",
-      useCase: "Use for: Product features, user-facing applications, discovery tools",
-      borderColor: "#EC4899"
+      description:
+        "Focuses on the discovery aspect, highlighting how data powers better music recommendations and trend forecasting.",
+      useCase:
+        "Use for: Product features, user-facing applications, discovery tools",
+      borderColor: "#EC4899",
     },
     visionary: {
       title: "The future of music analytics",
-      description: "Visionary tagline positioning trendradar as industry leader in music analytics and trend prediction technology.",
+      description:
+        "Visionary tagline positioning trendradar as industry leader in music analytics and trend prediction technology.",
       useCase: "Use for: Press releases, investor materials, vision statements",
-      borderColor: "#F59E0B"
+      borderColor: "#F59E0B",
     },
     community: {
       title: "By developers, for developers",
-      description: "Community-focused tagline emphasizing our developer-first approach and commitment to developer community.",
+      description:
+        "Community-focused tagline emphasizing our developer-first approach and commitment to developer community.",
       useCase: "Use for: Developer community, open-source projects, hackathons",
-      borderColor: "#10B981"
-    }
+      borderColor: "#10B981",
+    },
   };
 
   const config = slogans[variant];

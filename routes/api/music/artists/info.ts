@@ -2,10 +2,10 @@
 
 import { LastFM } from "@/utils/music_client.ts";
 import {
-  successResponse,
   errorResponse,
-  toJson,
   handleApiError,
+  successResponse,
+  toJson,
 } from "@/utils/api_response.ts";
 import type { Handlers } from "$fresh/server.ts";
 
@@ -16,31 +16,30 @@ import type { Handlers } from "$fresh/server.ts";
  */
 export const handler: Handlers = {
   async GET(req, ctx) {
-  try {
-    const url = new URL(req.url);
-    const artist = url.searchParams.get("artist");
+    try {
+      const url = new URL(req.url);
+      const artist = url.searchParams.get("artist");
 
-    if (!artist) {
-      const response = errorResponse(
-        "MISSING_PARAM",
-        "artist parameter required",
-      );
-      return toJson(response, 400);
+      if (!artist) {
+        const response = errorResponse(
+          "MISSING_PARAM",
+          "artist parameter required",
+        );
+        return toJson(response, 400);
+      }
+
+      const info = await LastFM.getArtistInfo(artist);
+
+      if (!info.success) {
+        const response = errorResponse("NOT_FOUND", "Artist not found");
+        return toJson(response, 404);
+      }
+
+      const response = successResponse(info);
+      return toJson(response);
+    } catch (error) {
+      const [errorResp, status] = handleApiError(error);
+      return toJson(errorResp, status);
     }
-
-    const info = await LastFM.getArtistInfo(artist);
-
-    if (!info.success) {
-      const response = errorResponse("NOT_FOUND", "Artist not found");
-      return toJson(response, 404);
-    }
-
-    const response = successResponse(info);
-    return toJson(response);
-  } catch (error) {
-    const [errorResp, status] = handleApiError(error);
-    return toJson(errorResp, status);
-  }
-}
+  },
 };
-

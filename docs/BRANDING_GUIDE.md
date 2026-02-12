@@ -2,11 +2,13 @@
 
 ## Overview
 
-This guide ensures consistent brand application across all pages and components in the trendradar application.
+This guide ensures consistent brand application across all pages and components
+in the trendradar application.
 
 ## Quick Reference
 
 ### Brand Name
+
 - **trendradar** (always lowercase)
 - Use `gradient-text` class for brand name display
 - Font: Orbitron, weight: 800-900
@@ -15,7 +17,8 @@ This guide ensures consistent brand application across all pages and components 
 
 1. **Primary**: "Detecting the pulse of music trends"
    - Use for: Hero sections, main marketing
-   - Class: `text-h5 font-heading text-primary-300 border-l-4 border-primary pl-20`
+   - Class:
+     `text-h5 font-heading text-primary-300 border-l-4 border-primary pl-20`
 
 2. **Technical**: "Real-time music trend intelligence"
    - Use for: Developer docs, API pages, dashboard
@@ -36,6 +39,7 @@ This guide ensures consistent brand application across all pages and components 
 ## Logo Usage
 
 ### Horizontal Layout (Headers, Navigation)
+
 ```tsx
 <div class="flex items-center gap-16">
   <div class="w-48 h-48 rounded-xl bg-gradient-logo flex items-center justify-center shadow-glow">
@@ -44,19 +48,21 @@ This guide ensures consistent brand application across all pages and components 
   <span class="font-heading font-black text-h5 gradient-text lowercase">
     {SITE_NAME}
   </span>
-</div>
+</div>;
 ```
 
 ### Icon Only (Small spaces)
+
 ```tsx
 <div class="w-64 h-64 rounded-xl bg-gradient-logo flex items-center justify-center shadow-glow">
   <IconRadar class="size-32 text-background-dark" />
-</div>
+</div>;
 ```
 
 ## Page Templates
 
 ### 1. Hero Page (Landing, Welcome)
+
 ```tsx
 <main class="flex-1 p-16 lg:p-24">
   {/* Brand Header */}
@@ -75,18 +81,19 @@ This guide ensures consistent brand application across all pages and components 
         </p>
       </div>
     </div>
-    
+
     {/* Primary Slogan */}
     <p class="text-h5 font-heading text-primary-300 border-l-4 border-primary pl-20">
       "Detecting the pulse of music trends"
     </p>
   </div>
-  
+
   {/* Content */}
-</main>
+</main>;
 ```
 
 ### 2. Page with Header (Pricing, Submit)
+
 ```tsx
 <main class="mx-auto max-w-container px-16 lg:px-24 py-32">
   <div class="text-center mb-48">
@@ -100,12 +107,13 @@ This guide ensures consistent brand application across all pages and components 
       "Context-appropriate slogan"
     </p>
   </div>
-  
+
   {/* Content */}
-</main>
+</main>;
 ```
 
 ### 3. Dashboard/Admin Page
+
 ```tsx
 <main class="flex-1 p-16 lg:p-24">
   {/* Brand Header */}
@@ -122,12 +130,13 @@ This guide ensures consistent brand application across all pages and components 
       </p>
     </div>
   </div>
-  
+
   {/* Content */}
-</main>
+</main>;
 ```
 
 ### 4. Error Pages (404, 500)
+
 ```tsx
 <main class="flex-1 p-16 lg:p-24 flex flex-col justify-center items-center min-h-[60vh]">
   <div class="card card-elevated max-w-lg w-full py-48 px-32">
@@ -137,7 +146,7 @@ This guide ensures consistent brand application across all pages and components 
         <IconRadar class="size-40 text-background-dark" />
       </div>
     </div>
-    
+
     <h1 class="font-heading font-black text-h1 gradient-text mb-16">
       404
     </h1>
@@ -147,22 +156,23 @@ This guide ensures consistent brand application across all pages and components 
     <p class="text-foreground-muted text-body mb-32">
       We couldn't detect that trend.
     </p>
-    
+
     {/* Always include slogan on error pages */}
     <p class="text-h5 font-heading text-primary-300 mb-32">
       "Detecting the pulse of music trends"
     </p>
-    
+
     <a href="/" class="btn-primary">
       Return to {SITE_NAME}
     </a>
   </div>
-</main>
+</main>;
 ```
 
 ## Component Patterns
 
 ### Cards
+
 ```tsx
 // Standard card
 <div class="card p-32">
@@ -181,6 +191,7 @@ This guide ensures consistent brand application across all pages and components 
 ```
 
 ### Buttons
+
 ```tsx
 // Primary CTA
 <button class="btn-primary">
@@ -199,10 +210,11 @@ This guide ensures consistent brand application across all pages and components 
 ```
 
 ### Feature Icons
+
 ```tsx
 <div class="w-48 h-48 rounded-full bg-primary/10 flex items-center justify-center">
   <Icon class="size-24 text-primary" />
-</div>
+</div>;
 ```
 
 ## Spacing Standards
@@ -236,12 +248,14 @@ This guide ensures consistent brand application across all pages and components 
 ## Brand Voice
 
 ### Do:
+
 - Use active, confident language
 - Be technical but approachable
 - Focus on innovation and intelligence
 - Include data-driven messaging
 
 ### Don't:
+
 - Use passive voice
 - Be overly casual or playful
 - Use music puns or clichés
@@ -249,7 +263,8 @@ This guide ensures consistent brand application across all pages and components 
 
 ## Checklist for New Pages
 
-- [ ] Import brand utilities: `import { SITE_NAME, SITE_TAGLINE } from "@/utils/constants.ts";`
+- [ ] Import brand utilities:
+      `import { SITE_NAME, SITE_TAGLINE } from "@/utils/constants.ts";`
 - [ ] Import brand icons: `import IconRadar from "@preact-icons/tb/TbRadar";`
 - [ ] Add brand logo/header at top of page
 - [ ] Use appropriate gradient text for brand name
@@ -264,29 +279,38 @@ This guide ensures consistent brand application across all pages and components 
 
 ```css
 /* Primary Brand */
---color-primary: #8B5CF6;      /* Electric Purple */
---color-secondary: #06B6D4;     /* Neon Cyan */
---color-accent: #EC4899;        /* Accent Pink */
+--color-primary: #8b5cf6; /* Electric Purple */
+--color-secondary: #06b6d4; /* Neon Cyan */
+--color-accent: #ec4899; /* Accent Pink */
 
 /* Backgrounds */
---color-bg: #0F172A;           /* Dark Background */
---color-bg-darker: #050508;     /* Darker Background */
---color-bg-card: rgba(15, 23, 42, 0.6);  /* Card Background */
+--color-bg: #0f172a; /* Dark Background */
+--color-bg-darker: #050508; /* Darker Background */
+--color-bg-card: rgba(15, 23, 42, 0.6); /* Card Background */
 
 /* Text */
---color-text: #F8FAFC;         /* Soft White */
---color-text-muted: #94A3B8;    /* Muted Gray */
+--color-text: #f8fafc; /* Soft White */
+--color-text-muted: #94a3b8; /* Muted Gray */
 
 /* Gradients */
---gradient-primary: linear-gradient(135deg, #8B5CF6 0%, #06B6D4 50%, #EC4899 100%);
---gradient-logo: linear-gradient(135deg, #8B5CF6 0%, #06B6D4 100%);
+--gradient-primary: linear-gradient(
+  135deg,
+  #8b5cf6 0%,
+  #06b6d4 50%,
+  #ec4899 100%
+);
+--gradient-logo: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
 ```
 
 ## Common Imports
 
 ```tsx
 // Essential brand imports for every page
-import { SITE_NAME, SITE_DESCRIPTION, SITE_TAGLINE } from "@/utils/constants.ts";
+import {
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_TAGLINE,
+} from "@/utils/constants.ts";
 import IconRadar from "@preact-icons/tb/TbRadar";
 import Head from "@/components/Head.tsx";
 ```

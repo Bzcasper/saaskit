@@ -48,16 +48,18 @@ export class YTMusic {
     const params: Record<string, unknown> = continuationToken
       ? { continuation: continuationToken }
       : filterParams
-        ? { query: normalizedQuery, params: filterParams }
-        : { query: normalizedQuery };
+      ? { query: normalizedQuery, params: filterParams }
+      : { query: normalizedQuery };
 
-    const context = (region || language) ? {
-      client: {
-        ...this.context.client,
-        gl: region || this.context.client.gl,
-        hl: language || this.context.client.hl,
-      },
-    } : this.context;
+    const context = (region || language)
+      ? {
+        client: {
+          ...this.context.client,
+          gl: region || this.context.client.gl,
+          hl: language || this.context.client.hl,
+        },
+      }
+      : this.context;
 
     const data = await this.makeRequestWithContext("search", params, context);
     return this.parseSearchResults(data);
@@ -85,23 +87,22 @@ export class YTMusic {
 
   async getAlbum(browseId: string) {
     const data: any = await this.makeRequest("browse", { browseId });
-    const singleColumn =
-      data?.contents?.singleColumnBrowseResultsRenderer?.tabs?.[0]?.tabRenderer
-        ?.content?.sectionListRenderer?.contents;
-    const twoColumnPrimary =
-      data?.contents?.twoColumnBrowseResultsRenderer?.tabs?.[0]?.tabRenderer
-        ?.content?.sectionListRenderer?.contents;
-    const twoColumnSecondary =
-      data?.contents?.twoColumnBrowseResultsRenderer?.secondaryContents
-        ?.sectionListRenderer?.contents;
+    const singleColumn = data?.contents?.singleColumnBrowseResultsRenderer?.tabs
+      ?.[0]?.tabRenderer
+      ?.content?.sectionListRenderer?.contents;
+    const twoColumnPrimary = data?.contents?.twoColumnBrowseResultsRenderer
+      ?.tabs?.[0]?.tabRenderer
+      ?.content?.sectionListRenderer?.contents;
+    const twoColumnSecondary = data?.contents?.twoColumnBrowseResultsRenderer
+      ?.secondaryContents
+      ?.sectionListRenderer?.contents;
 
     let title = "";
     let artist = "";
     let thumbnail = "";
     let year = "";
 
-    const oldHeader =
-      data?.header?.musicDetailHeaderRenderer ||
+    const oldHeader = data?.header?.musicDetailHeaderRenderer ||
       data?.header?.musicImmersiveHeaderRenderer ||
       data?.header?.musicVisualHeaderRenderer;
 
@@ -128,13 +129,14 @@ export class YTMusic {
         artist = subtitleRuns.find((r: Record<string, unknown>) =>
           r.navigationEndpoint
         )?.text || subtitleRuns[0]?.text || artist;
-        thumbnail =
-          h.thumbnail?.musicThumbnailRenderer?.thumbnail?.thumbnails
-            ?.slice(-1)[0]?.url || thumbnail;
+        thumbnail = h.thumbnail?.musicThumbnailRenderer?.thumbnail?.thumbnails
+          ?.slice(-1)[0]?.url || thumbnail;
         const secondSubtitle = h.subtitle?.runs || [];
         for (const run of secondSubtitle) {
           const yearMatch = run.text?.match(/\d{4}/);
-          if (yearMatch) year = yearMatch[0];
+          if (yearMatch) {
+            year = yearMatch[0];
+          }
         }
       }
       if (section.musicDescriptionShelfRenderer) {
@@ -183,9 +185,8 @@ export class YTMusic {
         description =
           h.description?.musicDescriptionShelfRenderer?.description?.runs?.[0]
             ?.text || "";
-        thumbnail =
-          h.thumbnail?.musicThumbnailRenderer?.thumbnail?.thumbnails
-            ?.slice(-1)[0]?.url || "";
+        thumbnail = h.thumbnail?.musicThumbnailRenderer?.thumbnail?.thumbnails
+          ?.slice(-1)[0]?.url || "";
       }
     }
 
@@ -225,8 +226,7 @@ export class YTMusic {
   }
 
   async getRelated(videoId: string) {
-    const url =
-      `https://www.youtube.com/youtubei/v1/next?key=${this.apiKey}`;
+    const url = `https://www.youtube.com/youtubei/v1/next?key=${this.apiKey}`;
     const body = {
       videoId,
       context: {
@@ -251,9 +251,9 @@ export class YTMusic {
       if (item.lockupViewModel) {
         const lockup = item.lockupViewModel;
         const metadata = lockup.metadata?.lockupMetadataViewModel;
-        const contentImage =
-          lockup.contentImage?.collectionThumbnailViewModel?.primaryThumbnail
-            ?.thumbnailViewModel;
+        const contentImage = lockup.contentImage?.collectionThumbnailViewModel
+          ?.primaryThumbnail
+          ?.thumbnailViewModel;
         const videoIdMatch =
           lockup.rendererContext?.commandContext?.onTap?.innertubeCommand
             ?.watchEndpoint?.videoId || lockup.contentId;
@@ -356,22 +356,21 @@ export class YTMusic {
 
   private parseMusicItem(item: any) {
     if (!item) return null;
-    const title =
-      item.flexColumns?.[0]?.musicResponsiveListItemFlexColumnRenderer?.text
-        ?.runs?.[0]?.text;
-    const thumbnail =
-      item.thumbnail?.musicThumbnailRenderer?.thumbnail?.thumbnails?.[0]?.url;
-    const videoId =
-      item.overlay?.musicItemThumbnailOverlayRenderer?.content
-        ?.musicPlayButtonRenderer?.playNavigationEndpoint?.watchEndpoint
-        ?.videoId;
+    const title = item.flexColumns?.[0]
+      ?.musicResponsiveListItemFlexColumnRenderer?.text
+      ?.runs?.[0]?.text;
+    const thumbnail = item.thumbnail?.musicThumbnailRenderer?.thumbnail
+      ?.thumbnails?.[0]?.url;
+    const videoId = item.overlay?.musicItemThumbnailOverlayRenderer?.content
+      ?.musicPlayButtonRenderer?.playNavigationEndpoint?.watchEndpoint
+      ?.videoId;
     const browseId = item.navigationEndpoint?.browseEndpoint?.browseId;
     const subtitle =
       item.flexColumns?.[1]?.musicResponsiveListItemFlexColumnRenderer?.text
         ?.runs || [];
-    const duration =
-      item.fixedColumns?.[0]?.musicResponsiveListItemFixedColumnRenderer?.text
-        ?.runs?.[0]?.text;
+    const duration = item.fixedColumns?.[0]
+      ?.musicResponsiveListItemFixedColumnRenderer?.text
+      ?.runs?.[0]?.text;
 
     return {
       title,
@@ -379,7 +378,9 @@ export class YTMusic {
       videoId,
       browseId,
       duration,
-      resultType: videoId ? "song" : browseId?.startsWith("UC")
+      resultType: videoId
+        ? "song"
+        : browseId?.startsWith("UC")
         ? "artist"
         : "album",
     };
@@ -405,8 +406,7 @@ export class YTMusic {
   async getArtist(browseId: string) {
     const data: any = await this.makeRequest("browse", { browseId });
 
-    const oldHeader =
-      data?.header?.musicDetailHeaderRenderer ||
+    const oldHeader = data?.header?.musicDetailHeaderRenderer ||
       data?.header?.musicImmersiveHeaderRenderer ||
       data?.header?.musicVisualHeaderRenderer;
 
@@ -421,7 +421,9 @@ export class YTMusic {
           ?.slice(-1)[0]?.url ||
         oldHeader.thumbnail?.croppedSquareThumbnailRenderer?.thumbnail
           ?.thumbnails?.slice(-1)[0]?.url;
-      description = oldHeader.description?.musicDescriptionShelfRenderer?.description?.runs?.[0]?.text || "";
+      description =
+        oldHeader.description?.musicDescriptionShelfRenderer?.description?.runs
+          ?.[0]?.text || "";
     }
 
     const primaryContents =
@@ -432,9 +434,8 @@ export class YTMusic {
       if (section.musicResponsiveHeaderRenderer) {
         const h = section.musicResponsiveHeaderRenderer;
         name = h.title?.runs?.[0]?.text || name;
-        thumbnail =
-          h.thumbnail?.musicThumbnailRenderer?.thumbnail?.thumbnails
-            ?.slice(-1)[0]?.url || thumbnail;
+        thumbnail = h.thumbnail?.musicThumbnailRenderer?.thumbnail?.thumbnails
+          ?.slice(-1)[0]?.url || thumbnail;
         description =
           h.description?.musicDescriptionShelfRenderer?.description?.runs?.[0]
             ?.text || description;
@@ -453,13 +454,14 @@ export class YTMusic {
         const contents = section.musicShelfRenderer?.contents ||
           section.musicCarouselShelfRenderer?.contents;
         const title = section.musicShelfRenderer?.title?.runs?.[0]?.text ||
-          section.musicCarouselShelfRenderer?.header?.musicCarouselShelfBasicHeaderRenderer?.title?.runs?.[0]?.text;
+          section.musicCarouselShelfRenderer?.header
+            ?.musicCarouselShelfBasicHeaderRenderer?.title?.runs?.[0]?.text;
 
         if (contents) {
           for (const item of contents) {
             const parsed = this.parseMusicItem(
               item.musicResponsiveListItemRenderer ||
-              item.musicTwoRowItemRenderer,
+                item.musicTwoRowItemRenderer,
             );
             if (parsed) {
               if (title?.toLowerCase().includes("album")) {
@@ -506,8 +508,15 @@ export class YTMusic {
       const tracks = [];
       for (const section of contents) {
         if (section.musicPlaylistShelfRenderer) {
-          for (const item of section.musicPlaylistShelfRenderer.contents.slice(0, limit)) {
-            const parsed = this.parseMusicItem(item.musicResponsiveListItemRenderer);
+          for (
+            const item of section.musicPlaylistShelfRenderer.contents.slice(
+              0,
+              limit,
+            )
+          ) {
+            const parsed = this.parseMusicItem(
+              item.musicResponsiveListItemRenderer,
+            );
             if (parsed) tracks.push(parsed);
           }
         }
@@ -532,7 +541,8 @@ export class YTMusic {
       const params = country !== "US" ? `6gIQAjAA${country}` : undefined;
 
       const data = await this.makeRequest("browse", { browseId, params });
-      const contents = data?.contents?.singleColumnBrowseResultsRenderer?.tabs?.[0]
+      const contents = data?.contents?.singleColumnBrowseResultsRenderer?.tabs
+        ?.[0]
         ?.tabRenderer?.content?.sectionListRenderer?.contents;
 
       if (!contents) return [];
@@ -548,7 +558,9 @@ export class YTMusic {
                 videoId: track.navigationEndpoint?.watchEndpoint?.videoId,
                 title: track.title?.runs?.[0]?.text || "",
                 artist: track.subtitle?.runs?.[0]?.text || "",
-                thumbnail: track.thumbnailRenderer?.musicThumbnailRenderer?.thumbnail?.thumbnails?.[0]?.url || "",
+                thumbnail:
+                  track.thumbnailRenderer?.musicThumbnailRenderer?.thumbnail
+                    ?.thumbnails?.[0]?.url || "",
                 views: track.subtitle?.runs?.[2]?.text || "",
               });
             }
@@ -568,7 +580,8 @@ export class YTMusic {
       const browseId = "FEmusic_charts";
       const data = await this.makeRequest("browse", { browseId });
 
-      const contents = data?.contents?.singleColumnBrowseResultsRenderer?.tabs?.[0]
+      const contents = data?.contents?.singleColumnBrowseResultsRenderer?.tabs
+        ?.[0]
         ?.tabRenderer?.content?.sectionListRenderer?.contents;
 
       if (!contents) return [];
@@ -576,7 +589,8 @@ export class YTMusic {
       const artists = [];
       for (const section of contents) {
         if (section.musicCarouselShelfRenderer) {
-          const header = section.musicCarouselShelfRenderer.header?.musicCarouselShelfBasicHeaderRenderer?.title?.runs?.[0]?.text;
+          const header = section.musicCarouselShelfRenderer.header
+            ?.musicCarouselShelfBasicHeaderRenderer?.title?.runs?.[0]?.text;
           if (header?.toLowerCase().includes("artist")) {
             const items = section.musicCarouselShelfRenderer.contents || [];
             for (const item of items.slice(0, limit)) {
@@ -586,7 +600,9 @@ export class YTMusic {
                   browseId: artist.navigationEndpoint?.browseEndpoint?.browseId,
                   name: artist.title?.runs?.[0]?.text || "",
                   subscribers: artist.subtitle?.runs?.[0]?.text || "",
-                  thumbnail: artist.thumbnailRenderer?.musicThumbnailRenderer?.thumbnail?.thumbnails?.[0]?.url || "",
+                  thumbnail:
+                    artist.thumbnailRenderer?.musicThumbnailRenderer?.thumbnail
+                      ?.thumbnails?.[0]?.url || "",
                 });
               }
             }
@@ -606,7 +622,8 @@ export class YTMusic {
       const browseId = "FEmusic_charts";
       const data = await this.makeRequest("browse", { browseId });
 
-      const contents = data?.contents?.singleColumnBrowseResultsRenderer?.tabs?.[0]
+      const contents = data?.contents?.singleColumnBrowseResultsRenderer?.tabs
+        ?.[0]
         ?.tabRenderer?.content?.sectionListRenderer?.contents;
 
       if (!contents) return [];
@@ -614,8 +631,12 @@ export class YTMusic {
       const tracks = [];
       for (const section of contents) {
         if (section.musicCarouselShelfRenderer) {
-          const header = section.musicCarouselShelfRenderer.header?.musicCarouselShelfBasicHeaderRenderer?.title?.runs?.[0]?.text;
-          if (header?.toLowerCase().includes("track") || header?.toLowerCase().includes("song")) {
+          const header = section.musicCarouselShelfRenderer.header
+            ?.musicCarouselShelfBasicHeaderRenderer?.title?.runs?.[0]?.text;
+          if (
+            header?.toLowerCase().includes("track") ||
+            header?.toLowerCase().includes("song")
+          ) {
             const items = section.musicCarouselShelfRenderer.contents || [];
             for (const item of items.slice(0, limit)) {
               if (item.musicTwoRowItemRenderer) {
@@ -624,7 +645,9 @@ export class YTMusic {
                   videoId: track.navigationEndpoint?.watchEndpoint?.videoId,
                   title: track.title?.runs?.[0]?.text || "",
                   artist: track.subtitle?.runs?.[0]?.text || "",
-                  thumbnail: track.thumbnailRenderer?.musicThumbnailRenderer?.thumbnail?.thumbnails?.[0]?.url || "",
+                  thumbnail:
+                    track.thumbnailRenderer?.musicThumbnailRenderer?.thumbnail
+                      ?.thumbnails?.[0]?.url || "",
                   rank: tracks.length + 1,
                 });
               }
@@ -688,16 +711,18 @@ export async function getAlbumComplete(browseId: string) {
 
   // Enhance tracks with Last.fm info
   const enhancedTracks = await Promise.all(
-    (album.tracks as Record<string, unknown>[]).map(async (track: Record<string, unknown>) => {
-      const trackInfo = await LastFM.getTrackInfo(
-        track.title as string,
-        album.artist as string,
-      );
-      return {
-        ...track,
-        lastfm: trackInfo.success ? trackInfo : null,
-      };
-    })
+    (album.tracks as Record<string, unknown>[]).map(
+      async (track: Record<string, unknown>) => {
+        const trackInfo = await LastFM.getTrackInfo(
+          track.title as string,
+          album.artist as string,
+        );
+        return {
+          ...track,
+          lastfm: trackInfo.success ? trackInfo : null,
+        };
+      },
+    ),
   );
 
   return {
@@ -719,7 +744,11 @@ export const LastFM = {
     limit = "5",
   ): Promise<Record<string, unknown> | Record<string, unknown>[]> {
     const url =
-      `https://ws.audioscrobbler.com/2.0/?method=track.getsimilar&artist=${encodeURIComponent(artist)}&track=${encodeURIComponent(title)}&api_key=${this.API_KEY}&limit=${limit}&format=json`;
+      `https://ws.audioscrobbler.com/2.0/?method=track.getsimilar&artist=${
+        encodeURIComponent(artist)
+      }&track=${
+        encodeURIComponent(title)
+      }&api_key=${this.API_KEY}&limit=${limit}&format=json`;
     try {
       const response = await fetch(url);
       const data = await response.json();
@@ -740,7 +769,9 @@ export const LastFM = {
   ): Promise<Record<string, unknown>> {
     try {
       const url =
-        `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(artist)}&api_key=${this.API_KEY}&format=json`;
+        `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${
+          encodeURIComponent(artist)
+        }&api_key=${this.API_KEY}&format=json`;
       const response = await fetch(url);
       const data = await response.json();
       if (data?.error) return { success: false, error: data.message };
@@ -767,7 +798,11 @@ export const LastFM = {
   ): Promise<Record<string, unknown>> {
     try {
       const url =
-        `https://ws.audioscrobbler.com/2.0/?method=track.getInfo&artist=${encodeURIComponent(artist)}&track=${encodeURIComponent(title)}&api_key=${this.API_KEY}&format=json`;
+        `https://ws.audioscrobbler.com/2.0/?method=track.getInfo&artist=${
+          encodeURIComponent(artist)
+        }&track=${
+          encodeURIComponent(title)
+        }&api_key=${this.API_KEY}&format=json`;
       const response = await fetch(url);
       const data = await response.json();
       if (data?.error) return { success: false, error: data.message };
@@ -795,16 +830,18 @@ export async function getLyrics(
   duration?: number,
 ): Promise<Record<string, unknown>> {
   try {
-    let url =
-      `https://lrclib.net/api/get?track_name=${encodeURIComponent(title)}&artist_name=${encodeURIComponent(artist)}`;
+    let url = `https://lrclib.net/api/get?track_name=${
+      encodeURIComponent(title)
+    }&artist_name=${encodeURIComponent(artist)}`;
     if (duration) url += `&duration=${duration}`;
 
     let response = await fetch(url);
     let data = await response.json();
 
     if (!data || data.statusCode === 404) {
-      const searchUrl =
-        `https://lrclib.net/api/search?q=${encodeURIComponent(`${title} ${artist}`)}`;
+      const searchUrl = `https://lrclib.net/api/search?q=${
+        encodeURIComponent(`${title} ${artist}`)
+      }`;
       response = await fetch(searchUrl);
       const results = await response.json();
       if (Array.isArray(results) && results.length > 0) {
@@ -921,7 +958,9 @@ export async function fetchFromInvidious(
             streamingUrls: audioStreams.map(
               (s: Record<string, unknown>) => ({
                 url: s.url,
-                quality: s.bitrate ? `${Math.round(Number(s.bitrate) / 1000)}kbps` : "unknown",
+                quality: s.bitrate
+                  ? `${Math.round(Number(s.bitrate) / 1000)}kbps`
+                  : "unknown",
                 mimeType: s.type,
                 bitrate: s.bitrate,
               }),
@@ -963,7 +1002,9 @@ export class YouTubeSearch {
 
     const normalizedQuery = query.normalize("NFC");
     const response = await fetch(
-      `${this.searchURL}?search_query=${encodeURIComponent(normalizedQuery)}&sp=EgIQAQ%253D%253D`
+      `${this.searchURL}?search_query=${
+        encodeURIComponent(normalizedQuery)
+      }&sp=EgIQAQ%253D%253D`,
     );
     const html = await response.text();
     this.extractAPIConfig(html);
@@ -978,7 +1019,9 @@ export class YouTubeSearch {
     }
 
     // Extract client version
-    const clientVersionMatch = html.match(/"INNERTUBE_CLIENT_VERSION":"([^"]+)"/);
+    const clientVersionMatch = html.match(
+      /"INNERTUBE_CLIENT_VERSION":"([^"]+)"/,
+    );
     if (clientVersionMatch) {
       this.clientVersion = clientVersionMatch[1];
     }
@@ -993,7 +1036,9 @@ export class YouTubeSearch {
     if (ytInitialDataMatch) {
       try {
         const data = JSON.parse(ytInitialDataMatch[1]);
-        const contents = data?.contents?.twoColumnSearchResultsRenderer?.primaryContents?.sectionListRenderer?.contents?.[0]?.itemSectionRenderer?.contents;
+        const contents = data?.contents?.twoColumnSearchResultsRenderer
+          ?.primaryContents?.sectionListRenderer?.contents?.[0]
+          ?.itemSectionRenderer?.contents;
 
         if (contents) {
           for (const item of contents) {
@@ -1003,9 +1048,11 @@ export class YouTubeSearch {
                 id: video.videoId,
                 title: video.title?.runs?.[0]?.text || "",
                 channel: {
-                  id: video.ownerText?.runs?.[0]?.navigationEndpoint?.browseEndpoint?.browseId || "",
+                  id: video.ownerText?.runs?.[0]?.navigationEndpoint
+                    ?.browseEndpoint?.browseId || "",
                   name: video.ownerText?.runs?.[0]?.text || "",
-                  url: video.ownerText?.runs?.[0]?.navigationEndpoint?.browseEndpoint?.canonicalBaseUrl || "",
+                  url: video.ownerText?.runs?.[0]?.navigationEndpoint
+                    ?.browseEndpoint?.canonicalBaseUrl || "",
                 },
                 duration: video.lengthText?.simpleText || "",
                 viewCount: video.viewCountText?.simpleText || "",
@@ -1018,11 +1065,14 @@ export class YouTubeSearch {
         }
 
         // Extract continuation token
-        const continuationContents = data?.contents?.twoColumnSearchResultsRenderer?.primaryContents?.sectionListRenderer?.contents;
+        const continuationContents = data?.contents
+          ?.twoColumnSearchResultsRenderer?.primaryContents?.sectionListRenderer
+          ?.contents;
         if (continuationContents) {
           for (const section of continuationContents) {
             if (section.continuationItemRenderer) {
-              continuationToken = section.continuationItemRenderer.continuationEndpoint?.continuationCommand?.token;
+              continuationToken = section.continuationItemRenderer
+                .continuationEndpoint?.continuationCommand?.token;
               break;
             }
           }
@@ -1040,7 +1090,9 @@ export class YouTubeSearch {
 
   private async fetchContinuation(continuationToken: string, filter: string) {
     if (!this.apiKey || !this.clientVersion) {
-      throw new Error("API configuration not available. Perform an initial search first.");
+      throw new Error(
+        "API configuration not available. Perform an initial search first.",
+      );
     }
 
     const payload = {
@@ -1076,7 +1128,8 @@ export class YouTubeSearch {
     let continuationToken: string | undefined;
 
     try {
-      const contents = data?.onResponseReceivedCommands?.[0]?.appendContinuationItemsAction?.continuationItems;
+      const contents = data?.onResponseReceivedCommands?.[0]
+        ?.appendContinuationItemsAction?.continuationItems;
 
       if (contents) {
         for (const item of contents) {
@@ -1086,9 +1139,13 @@ export class YouTubeSearch {
               id: video.videoId,
               title: video.title?.runs?.[0]?.text || "",
               channel: {
-                id: video.ownerText?.runs?.[0]?.navigationEndpoint?.browseEndpoint?.browseId || "",
+                id:
+                  video.ownerText?.runs?.[0]?.navigationEndpoint?.browseEndpoint
+                    ?.browseId || "",
                 name: video.ownerText?.runs?.[0]?.text || "",
-                url: video.ownerText?.runs?.[0]?.navigationEndpoint?.browseEndpoint?.canonicalBaseUrl || "",
+                url:
+                  video.ownerText?.runs?.[0]?.navigationEndpoint?.browseEndpoint
+                    ?.canonicalBaseUrl || "",
               },
               duration: video.lengthText?.simpleText || "",
               viewCount: video.viewCountText?.simpleText || "",
@@ -1097,7 +1154,8 @@ export class YouTubeSearch {
               url: `https://www.youtube.com/watch?v=${video.videoId}`,
             });
           } else if (item.continuationItemRenderer) {
-            continuationToken = item.continuationItemRenderer.continuationEndpoint?.continuationCommand?.token;
+            continuationToken = item.continuationItemRenderer
+              .continuationEndpoint?.continuationCommand?.token;
           }
         }
       }

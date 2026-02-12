@@ -1,16 +1,16 @@
 // Copyright 2023-2025 Deno authors. All rights reserved. MIT license.
 
 import {
-  vectorSearch,
-  findSimilarTracks,
   batchIndexTracks,
+  findSimilarTracks,
   indexTrack,
+  vectorSearch,
 } from "@/utils/vector.ts";
 import {
-  successResponse,
   errorResponse,
-  toJson,
   handleApiError,
+  successResponse,
+  toJson,
 } from "@/utils/api_response.ts";
 import type { Handlers } from "$fresh/server.ts";
 import { getTrack } from "@/utils/music_models.ts";

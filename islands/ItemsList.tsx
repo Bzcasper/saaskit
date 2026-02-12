@@ -48,8 +48,8 @@ function VoteButton(props: VoteButtonProps) {
   }
 
   return (
-    <button 
-      onClick={onClick} 
+    <button
+      onClick={onClick}
       class="group flex flex-col items-center gap-4 transition-colors duration-fast"
       type="button"
     >
@@ -118,7 +118,7 @@ function ItemSummary(props: ItemSummaryProps) {
           </a>
         </h3>
         <div class="flex items-center gap-12 text-foreground-muted text-body-sm flex-wrap">
-          <a 
+          <a
             href={props.item.url}
             target="_blank"
             rel="noopener noreferrer"
@@ -132,8 +132,8 @@ function ItemSummary(props: ItemSummaryProps) {
               login={props.item.userLogin}
               size={20}
             />
-            <a 
-              class="hover:text-primary transition-colors duration-fast" 
+            <a
+              class="hover:text-primary transition-colors duration-fast"
               href={`/users/${props.item.userLogin}`}
             >
               {props.item.userLogin}
@@ -222,9 +222,9 @@ export default function ItemsList(props: ItemsListProps) {
         : <EmptyItemsList />}
       {cursorSig.value !== "" && (
         <div class="flex justify-center mt-32">
-          <button 
-            onClick={loadMoreItems} 
-            class="btn-ghost" 
+          <button
+            onClick={loadMoreItems}
+            class="btn-ghost"
             type="button"
             disabled={isLoadingSig.value}
           >

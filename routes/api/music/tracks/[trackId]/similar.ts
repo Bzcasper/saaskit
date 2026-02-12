@@ -2,10 +2,10 @@
 
 import { findSimilarTracks } from "@/utils/vector.ts";
 import {
-  successResponse,
   errorResponse,
-  toJson,
   handleApiError,
+  successResponse,
+  toJson,
 } from "@/utils/api_response.ts";
 import type { Handlers } from "$fresh/server.ts";
 import { getTrack } from "@/utils/music_models.ts";
@@ -30,7 +30,11 @@ export const handler: Handlers = {
       const url = new URL(req.url);
       const limit = url.searchParams.get("limit");
       const threshold = url.searchParams.get("threshold");
-      const metric = url.searchParams.get("metric") as "cosine" | "euclidean" | "manhattan" | null;
+      const metric = url.searchParams.get("metric") as
+        | "cosine"
+        | "euclidean"
+        | "manhattan"
+        | null;
 
       const results = await findSimilarTracks(trackId, {
         limit: limit ? parseInt(limit) : 20,

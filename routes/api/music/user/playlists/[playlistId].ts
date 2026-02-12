@@ -1,18 +1,18 @@
 // Copyright 2023-2025 the Deno authors. All rights reserved. MIT license.
 
 import {
-  getPlaylist,
-  updatePlaylist,
-  deletePlaylist,
   addTrackToPlaylist,
+  deletePlaylist,
+  getPlaylist,
   removeTrackFromPlaylist,
   reorderTracksInPlaylist,
+  updatePlaylist,
 } from "@/utils/music_models.ts";
 import {
-  successResponse,
   errorResponse,
-  toJson,
   handleApiError,
+  successResponse,
+  toJson,
 } from "@/utils/api_response.ts";
 import type { Handlers } from "$fresh/server.ts";
 
@@ -63,7 +63,10 @@ async function handleRequest(
       const updated = await updatePlaylist(playlistId, userLogin, body);
 
       if (!updated) {
-        const response = errorResponse("UPDATE_FAILED", "Failed to update playlist");
+        const response = errorResponse(
+          "UPDATE_FAILED",
+          "Failed to update playlist",
+        );
         return toJson(response, 500);
       }
 
@@ -75,7 +78,10 @@ async function handleRequest(
       const deleted = await deletePlaylist(playlistId, userLogin);
 
       if (!deleted) {
-        const response = errorResponse("DELETE_FAILED", "Failed to delete playlist");
+        const response = errorResponse(
+          "DELETE_FAILED",
+          "Failed to delete playlist",
+        );
         return toJson(response, 500);
       }
 
@@ -93,7 +99,10 @@ async function handleRequest(
       if (action === "add-track") {
         const trackId = body.trackId;
         if (!trackId) {
-          const response = errorResponse("INVALID_REQUEST", "Track ID required");
+          const response = errorResponse(
+            "INVALID_REQUEST",
+            "Track ID required",
+          );
           return toJson(response, 400);
         }
 
@@ -108,7 +117,10 @@ async function handleRequest(
       if (action === "remove-track") {
         const trackId = body.trackId;
         if (!trackId) {
-          const response = errorResponse("INVALID_REQUEST", "Track ID required");
+          const response = errorResponse(
+            "INVALID_REQUEST",
+            "Track ID required",
+          );
           return toJson(response, 400);
         }
 
@@ -127,7 +139,10 @@ async function handleRequest(
       if (action === "reorder-tracks") {
         const trackIds = body.trackIds;
         if (!Array.isArray(trackIds) || trackIds.length === 0) {
-          const response = errorResponse("INVALID_REQUEST", "Track IDs array required");
+          const response = errorResponse(
+            "INVALID_REQUEST",
+            "Track IDs array required",
+          );
           return toJson(response, 400);
         }
 
@@ -137,7 +152,10 @@ async function handleRequest(
           userLogin,
         );
         if (!reordered) {
-          const response = errorResponse("REORDER_FAILED", "Failed to reorder tracks");
+          const response = errorResponse(
+            "REORDER_FAILED",
+            "Failed to reorder tracks",
+          );
           return toJson(response, 500);
         }
 
@@ -151,17 +169,27 @@ async function handleRequest(
       if (action === "share") {
         const isPublic = body.isPublic;
         if (typeof isPublic !== "boolean") {
-          const response = errorResponse("INVALID_REQUEST", "isPublic boolean required");
+          const response = errorResponse(
+            "INVALID_REQUEST",
+            "isPublic boolean required",
+          );
           return toJson(response, 400);
         }
 
-        const updated = await updatePlaylist(playlistId, userLogin, { isPublic });
+        const updated = await updatePlaylist(playlistId, userLogin, {
+          isPublic,
+        });
         if (!updated) {
-          const response = errorResponse("SHARE_FAILED", "Failed to update playlist sharing");
+          const response = errorResponse(
+            "SHARE_FAILED",
+            "Failed to update playlist sharing",
+          );
           return toJson(response, 500);
         }
 
-        const shareUrl = isPublic ? `/api/music/playlists/public/${playlistId}` : null;
+        const shareUrl = isPublic
+          ? `/api/music/playlists/public/${playlistId}`
+          : null;
         const response = successResponse(
           { playlistId, isPublic, shareUrl },
           `Playlist ${isPublic ? "shared publicly" : "made private"}`,
@@ -173,15 +201,16 @@ async function handleRequest(
       return toJson(response, 400);
     }
 
-    const response = errorResponse("METHOD_NOT_ALLOWED", `${method} not allowed`);
+    const response = errorResponse(
+      "METHOD_NOT_ALLOWED",
+      `${method} not allowed`,
+    );
     return toJson(response, 405);
   } catch (error) {
     const [errorResp, status] = handleApiError(error);
     return toJson(errorResp, status);
   }
 }
-
-
 
 export async function PUT(req: Request, ctx: any) {
   return await handleRequest("PUT", req, ctx);
@@ -191,14 +220,11 @@ export async function DELETE(req: Request, ctx: any) {
   return await handleRequest("DELETE", req, ctx);
 }
 
-
 export const handler: Handlers = {
   async GET(req, ctx) {
-
-      return await handleRequest("GET", req, ctx);
+    return await handleRequest("GET", req, ctx);
   },
   async POST(req, ctx) {
-
-      return await handleRequest("POST", req, ctx);
+    return await handleRequest("POST", req, ctx);
   },
 };

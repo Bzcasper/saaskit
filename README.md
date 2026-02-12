@@ -2,12 +2,16 @@
 
 [![Discord Chat](https://img.shields.io/discord/684898665143206084?logo=discord&style=social)](https://discord.gg/trendradar)
 
-**trendradar** - Detecting the pulse of music trends. Empower developers and music platforms with real-time trend intelligence, enabling data-driven decisions that shape the future of music discovery.
+**trendradar** - Detecting the pulse of music trends. Empower developers and
+music platforms with real-time trend intelligence, enabling data-driven
+decisions that shape the future of music discovery.
 
 ## 📚 Documentation
 
-- **[Branding Guide](docs/BRANDING_GUIDE.md)** - Complete brand guidelines for consistent UI
-- **[Branding Checklist](docs/BRANDING_CHECKLIST.md)** - Implementation checklist and verification
+- **[Branding Guide](docs/BRANDING_GUIDE.md)** - Complete brand guidelines for
+  consistent UI
+- **[Branding Checklist](docs/BRANDING_CHECKLIST.md)** - Implementation
+  checklist and verification
 - **API Documentation** - See below for endpoints
 
 ## Features
@@ -34,6 +38,7 @@
 ## Brand System
 
 ### Official Brand Colors
+
 - **Electric Purple** `#8B5CF6` - Primary brand color
 - **Neon Cyan** `#06B6D4` - Secondary accent
 - **Accent Pink** `#EC4899` - Highlights and gradients
@@ -41,19 +46,22 @@
 - **Soft White** `#F8FAFC` - Primary text
 
 ### Typography
+
 - **Headings**: Orbitron (geometric sans-serif)
 - **Body**: Plus Jakarta Sans
 - **UI Elements**: DM Sans
 - **Code**: JetBrains Mono
 
 ### Official Slogans
+
 1. **Primary**: "Detecting the pulse of music trends"
 2. **Technical**: "Real-time music trend intelligence"
 3. **Product**: "Data-driven music discovery"
 4. **Visionary**: "The future of music analytics"
 5. **Community**: "By developers, for developers"
 
-See [Branding Guide](docs/BRANDING_GUIDE.md) for complete implementation details.
+See [Branding Guide](docs/BRANDING_GUIDE.md) for complete implementation
+details.
 
 ## Quick Start
 
@@ -147,22 +155,26 @@ All pages follow the official trendradar brand guidelines:
 ### Music API Endpoints
 
 #### Search
+
 ```
 GET /api/music/search?q={query}&filter={songs|albums|artists}
 ```
 
 #### Track Info
+
 ```
 GET /api/music/tracks/{videoId}
 ```
 
 #### Top Charts
+
 ```
 GET /api/music/top/tracks?limit=50
 GET /api/music/top/artists?limit=50
 ```
 
 #### AI Features
+
 ```
 GET /api/music/ai/search?q={query}
 POST /api/music/ai/recommendations
@@ -211,13 +223,13 @@ deno task preview     # Preview production build
 
 ## Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `GITHUB_CLIENT_ID` | GitHub OAuth app ID | Yes |
-| `GITHUB_CLIENT_SECRET` | GitHub OAuth secret | Yes |
-| `STRIPE_SECRET_KEY` | Stripe secret key | No |
-| `STRIPE_WEBHOOK_SECRET` | Stripe webhook secret | No |
-| `GA4_MEASUREMENT_ID` | Google Analytics ID | No |
+| Variable                | Description           | Required |
+| ----------------------- | --------------------- | -------- |
+| `GITHUB_CLIENT_ID`      | GitHub OAuth app ID   | Yes      |
+| `GITHUB_CLIENT_SECRET`  | GitHub OAuth secret   | Yes      |
+| `STRIPE_SECRET_KEY`     | Stripe secret key     | No       |
+| `STRIPE_WEBHOOK_SECRET` | Stripe webhook secret | No       |
+| `GA4_MEASUREMENT_ID`    | Google Analytics ID   | No       |
 
 ## Contributing
 
@@ -227,7 +239,8 @@ deno task preview     # Preview production build
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-See [Branding Guide](docs/BRANDING_GUIDE.md) for UI/UX guidelines when contributing.
+See [Branding Guide](docs/BRANDING_GUIDE.md) for UI/UX guidelines when
+contributing.
 
 ## License
 
@@ -243,4 +256,4 @@ MIT License - see [LICENSE](LICENSE) file
 
 **Built with ❤️ by the trendradar team**
 
-*Official Brand System v1.0.0 - Detecting the pulse of music trends*
+_Official Brand System v1.0.0 - Detecting the pulse of music trends_

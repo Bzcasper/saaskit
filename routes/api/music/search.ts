@@ -2,10 +2,10 @@
 
 import { YTMusic } from "@/utils/music_client.ts";
 import {
-  successResponse,
   errorResponse,
-  toJson,
   handleApiError,
+  successResponse,
+  toJson,
 } from "@/utils/api_response.ts";
 import { logSearch } from "@/utils/music_models.ts";
 import { generateCacheKey, getOrSetCache } from "@/utils/cache.ts";
@@ -48,14 +48,15 @@ export const handler: Handlers = {
 
         results = await getOrSetCache(
           cacheKey,
-          async () => await ytmusic.search(
-            query || "",
-            filter || undefined,
-            undefined, // no continuation for cached results
-            false,
-            region || undefined,
-            language || undefined,
-          ),
+          async () =>
+            await ytmusic.search(
+              query || "",
+              filter || undefined,
+              undefined, // no continuation for cached results
+              false,
+              region || undefined,
+              language || undefined,
+            ),
           { ttl: 600 }, // 10 minutes
         );
       } else {
@@ -72,7 +73,12 @@ export const handler: Handlers = {
 
       // Log search for analytics
       if (query) {
-        await logSearch(query, filter || undefined, results.results?.length || 0, "anonymous").catch(
+        await logSearch(
+          query,
+          filter || undefined,
+          results.results?.length || 0,
+          "anonymous",
+        ).catch(
           () => null,
         );
       }

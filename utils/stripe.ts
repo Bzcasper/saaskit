@@ -36,11 +36,11 @@ export const stripe = new Proxy({} as Stripe, {
   get(_target, prop) {
     const client = getStripe();
     const value = client[prop as keyof Stripe];
-    if (typeof value === 'function') {
+    if (typeof value === "function") {
       return value.bind(client);
     }
     return value;
-  }
+  },
 });
 
 /**

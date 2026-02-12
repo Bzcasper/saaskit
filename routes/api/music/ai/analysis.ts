@@ -9,20 +9,20 @@ import { cerebrasClient } from "@/utils/cerebras_client.ts";
 import { openaiClient } from "@/utils/openai_client.ts";
 import { getLyrics } from "@/utils/music_client.ts";
 import {
+  getAudioFeatures,
+  getListeningHistory,
+  getListeningStats,
+  getLyricsAnalysis,
   getTrack,
   getTracksByVideoId,
-  getListeningStats,
-  getAudioFeatures,
   saveAudioFeatures,
   saveLyricsAnalysis,
-  getLyricsAnalysis,
-  getListeningHistory,
 } from "@/utils/music_models.ts";
 import {
-  successResponse,
   errorResponse,
-  toJson,
   handleApiError,
+  successResponse,
+  toJson,
 } from "@/utils/api_response.ts";
 import type { Handlers, RouteContext } from "$fresh/server.ts";
 
@@ -53,7 +53,7 @@ export async function handleTrackAnalysis(req: Request) {
 
     // Check for existing audio features
     let audioFeatures = await getAudioFeatures(track.id);
-    
+
     if (!audioFeatures || forceRefresh) {
       // Generate audio features using Cerebras
       const features = await cerebrasClient.extractAudioFeatures(
@@ -61,7 +61,7 @@ export async function handleTrackAnalysis(req: Request) {
         track.artist,
         track.album,
       );
-      
+
       // Save to database
       audioFeatures = await saveAudioFeatures({
         trackId: track.id,
@@ -108,10 +108,14 @@ export async function handleLyricsAnalysis(req: Request) {
 
     // Check for existing lyrics analysis
     let lyricsAnalysis = await getLyricsAnalysis(track.id);
-    
+
     if (!lyricsAnalysis || forceRefresh) {
       // Fetch lyrics
-      const lyricsResult = await getLyrics(track.title, track.artist, track.duration);
+      const lyricsResult = await getLyrics(
+        track.title,
+        track.artist,
+        track.duration,
+      );
 
       if (!lyricsResult.success || !(lyricsResult as any).plainLyrics) {
         const response = errorResponse("NOT_FOUND", "Lyrics not found");
@@ -124,7 +128,7 @@ export async function handleLyricsAnalysis(req: Request) {
         track.artist,
         (lyricsResult as any).plainLyrics,
       );
-      
+
       // Save to database
       lyricsAnalysis = await saveLyricsAnalysis({
         trackId: track.id,
@@ -163,7 +167,7 @@ export async function handleListeningAnalysis(req: Request, ctx: RouteContext) {
 
     const user = ctx.state.user as { login: string };
     const userLogin = user.login;
-    
+
     // Get user's listening history and stats
     const history = await getListeningHistory(userLogin, 200);
     const stats = await getListeningStats(userLogin);
@@ -178,7 +182,7 @@ export async function handleListeningAnalysis(req: Request, ctx: RouteContext) {
 
     // Analyze trends using Cerebras
     const trends = await cerebrasClient.analyzeTrends(
-      history.map(h => ({
+      history.map((h) => ({
         title: h.title,
         artist: h.artist,
         genre: (h as any).genre,
@@ -191,17 +195,21 @@ export async function handleListeningAnalysis(req: Request, ctx: RouteContext) {
       liked: 0,
       total: history.length,
     };
-    
+
     for (const event of history) {
       // Analyze time of day
       const hour = new Date(event.playedAt).getHours();
-      const timeCategory = 
-        hour >= 5 && hour < 12 ? "morning" :
-        hour >= 12 && hour < 17 ? "afternoon" :
-        hour >= 17 && hour < 22 ? "evening" : "night";
-      
-      timeOfDayPattern[timeCategory] = (timeOfDayPattern[timeCategory] || 0) + 1;
-      
+      const timeCategory = hour >= 5 && hour < 12
+        ? "morning"
+        : hour >= 12 && hour < 17
+        ? "afternoon"
+        : hour >= 17 && hour < 22
+        ? "evening"
+        : "night";
+
+      timeOfDayPattern[timeCategory] = (timeOfDayPattern[timeCategory] || 0) +
+        1;
+
       // Count likes
       if (event.liked) {
         likedVsPlayed.liked++;
@@ -222,11 +230,14 @@ export async function handleListeningAnalysis(req: Request, ctx: RouteContext) {
       trends,
       patterns: {
         timeOfDay,
-        likedPercentage: ((likedVsPlayed.liked / likedVsPlayed.total) * 100).toFixed(1) + "%",
+        likedPercentage:
+          ((likedVsPlayed.liked / likedVsPlayed.total) * 100).toFixed(1) + "%",
         completionRate: (stats.averageCompletionRate * 100).toFixed(1) + "%",
       },
       insights: [
-        `You most frequently listen to music during ${timeOfDay[0]?.time || "the day"}`,
+        `You most frequently listen to music during ${
+          timeOfDay[0]?.time || "the day"
+        }`,
         `Your top genre is ${stats.topGenres[0]?.genre || "varied"}`,
         `Your favorite artist is ${stats.topArtists[0]?.artist || "varied"}`,
         ...trends.emergingPatterns,
@@ -263,9 +274,12 @@ export async function handleTrackComparison(req: Request) {
     // Get tracks from database
     const tracks1 = await getTracksByVideoId(videoId1);
     const tracks2 = await getTracksByVideoId(videoId2);
-    
+
     if (tracks1.length === 0 || tracks2.length === 0) {
-      const response = errorResponse("NOT_FOUND", "One or both tracks not found");
+      const response = errorResponse(
+        "NOT_FOUND",
+        "One or both tracks not found",
+      );
       return toJson(response, 404);
     }
 
@@ -275,7 +289,7 @@ export async function handleTrackComparison(req: Request) {
     // Get audio features for both tracks
     let features1 = await getAudioFeatures(track1.id);
     let features2 = await getAudioFeatures(track2.id);
-    
+
     if (!features1) {
       const genFeatures = await cerebrasClient.extractAudioFeatures(
         track1.title,
@@ -287,7 +301,7 @@ export async function handleTrackComparison(req: Request) {
         ...genFeatures,
       });
     }
-    
+
     if (!features2) {
       const genFeatures = await cerebrasClient.extractAudioFeatures(
         track2.title,
@@ -303,34 +317,40 @@ export async function handleTrackComparison(req: Request) {
     // Compare audio features
     const similarities: Record<string, number> = {};
     const differences: Record<string, number> = {};
-    
+
     // Numeric features
     const numericFeatures = [
-      "acousticness", "danceability", "energy", "instrumentalness",
-      "liveness", "speechiness", "valence",
+      "acousticness",
+      "danceability",
+      "energy",
+      "instrumentalness",
+      "liveness",
+      "speechiness",
+      "valence",
     ];
-    
+
     for (const feature of numericFeatures) {
       const val1 = features1[feature as keyof typeof features1] as number || 0;
       const val2 = features2[feature as keyof typeof features2] as number || 0;
       const diff = Math.abs(val1 - val2);
       const similarity = 1 - diff;
-      
+
       similarities[feature] = parseFloat(similarity.toFixed(2));
       differences[feature] = parseFloat(diff.toFixed(2));
     }
-    
+
     // Calculate overall similarity
-    const overallSimilarity = Object.values(similarities).reduce((sum, val) => sum + val, 0) / 
-                            numericFeatures.length;
+    const overallSimilarity = Object.values(similarities).reduce((sum, val) =>
+      sum + val, 0) /
+      numericFeatures.length;
 
     // Compare production styles and instrumentation
     const commonProductionStyles = features1.productionStyle.filter(
-      style => features2.productionStyle.includes(style)
+      (style) => features2.productionStyle.includes(style),
     );
-    
+
     const commonInstrumentation = features1.instrumentation.filter(
-      instrument => features2.instrumentation.includes(instrument)
+      (instrument) => features2.instrumentation.includes(instrument),
     );
 
     const response = successResponse({
@@ -348,7 +368,8 @@ export async function handleTrackComparison(req: Request) {
         differences,
         commonProductionStyles,
         commonInstrumentation,
-        sameModeAndKey: features1.key === features2.key && features1.mode === features2.mode,
+        sameModeAndKey: features1.key === features2.key &&
+          features1.mode === features2.mode,
         tempoDifference: Math.abs(features1.tempo - features2.tempo),
       },
     });

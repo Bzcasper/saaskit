@@ -45,9 +45,9 @@ const ENTERPRISE_CONFIG: RateLimitConfig = {
  */
 function getRateLimitConfig(userTier?: string): RateLimitConfig {
   switch (userTier?.toLowerCase()) {
-    case 'premium':
+    case "premium":
       return PREMIUM_CONFIG;
-    case 'enterprise':
+    case "enterprise":
       return ENTERPRISE_CONFIG;
     default:
       return DEFAULT_CONFIG;
@@ -66,7 +66,7 @@ function getRateLimitKey(identifier: string): string {
  */
 async function checkRateLimit(
   identifier: string,
-  config: RateLimitConfig
+  config: RateLimitConfig,
 ): Promise<{ allowed: boolean; remaining: number; resetTime: number }> {
   const key = getRateLimitKey(identifier);
   const now = Date.now();
@@ -108,29 +108,36 @@ async function checkRateLimit(
   } catch (error) {
     console.error("Rate limiting error:", error);
     // Allow request on error to avoid blocking users
-    return { allowed: true, remaining: config.maxRequests, resetTime: now + config.windowMs };
+    return {
+      allowed: true,
+      remaining: config.maxRequests,
+      resetTime: now + config.windowMs,
+    };
   }
 }
 
 /**
  * Rate limiting middleware
  */
-export function rateLimitingMiddleware(): (req: Request, ctx: MiddlewareHandlerContext) => Response | Promise<Response> {
+export function rateLimitingMiddleware(): (
+  req: Request,
+  ctx: MiddlewareHandlerContext,
+) => Response | Promise<Response> {
   return async (req: Request, ctx: MiddlewareHandlerContext) => {
     // Skip rate limiting for non-API routes
-    if (!req.url.includes('/api/')) {
+    if (!req.url.includes("/api/")) {
       return ctx.next();
     }
 
     // Get user identifier and tier
-    let identifier = 'anonymous';
-    let userTier = 'free';
+    let identifier = "anonymous";
+    let userTier = "free";
     let apiKeyData = null;
 
     // Check for API key in header
-    const authHeader = req.headers.get('Authorization');
-    if (authHeader?.startsWith('Bearer ')) {
-      const apiKey = authHeader.replace('Bearer ', '');
+    const authHeader = req.headers.get("Authorization");
+    if (authHeader?.startsWith("Bearer ")) {
+      const apiKey = authHeader.replace("Bearer ", "");
 
       // Validate API key
       apiKeyData = await validateAPIKey(apiKey);
@@ -139,62 +146,77 @@ export function rateLimitingMiddleware(): (req: Request, ctx: MiddlewareHandlerC
         userTier = apiKeyData.rateLimitTier;
       } else {
         // Invalid API key
-        return new Response(JSON.stringify({
-          success: false,
-          error: {
-            code: 'INVALID_API_KEY',
-            message: 'Invalid API key provided',
-          }
-        }), {
-          status: 401,
-          headers: { 'Content-Type': 'application/json' }
-        });
+        return new Response(
+          JSON.stringify({
+            success: false,
+            error: {
+              code: "INVALID_API_KEY",
+              message: "Invalid API key provided",
+            },
+          }),
+          {
+            status: 401,
+            headers: { "Content-Type": "application/json" },
+          },
+        );
       }
     } else if (ctx.state.user) {
       const user = ctx.state.user as { login: string; tier?: string };
       identifier = `user:${user.login}`;
-      userTier = user.tier || 'free';
+      userTier = user.tier || "free";
     } else {
       // Use IP address as fallback for anonymous users
-      const ip = req.headers.get('CF-Connecting-IP') ||
-                 req.headers.get('X-Forwarded-For') ||
-                 req.headers.get('X-Real-IP') ||
-                 'unknown';
+      const ip = req.headers.get("CF-Connecting-IP") ||
+        req.headers.get("X-Forwarded-For") ||
+        req.headers.get("X-Real-IP") ||
+        "unknown";
       identifier = `ip:${ip}`;
     }
     const config = getRateLimitConfig(userTier);
 
     // Check rate limit
-    const { allowed, remaining, resetTime } = await checkRateLimit(identifier, config);
+    const { allowed, remaining, resetTime } = await checkRateLimit(
+      identifier,
+      config,
+    );
 
     // Set rate limit headers
     const response = await ctx.next();
 
     if (response instanceof Response) {
-      response.headers.set('X-RateLimit-Limit', config.maxRequests.toString());
-      response.headers.set('X-RateLimit-Remaining', remaining.toString());
-      response.headers.set('X-RateLimit-Reset', Math.floor(resetTime / 1000).toString());
+      response.headers.set("X-RateLimit-Limit", config.maxRequests.toString());
+      response.headers.set("X-RateLimit-Remaining", remaining.toString());
+      response.headers.set(
+        "X-RateLimit-Reset",
+        Math.floor(resetTime / 1000).toString(),
+      );
 
       if (!allowed) {
-        response.headers.set('Retry-After', Math.ceil((resetTime - Date.now()) / 1000).toString());
-        return new Response(JSON.stringify({
-          success: false,
-          error: {
-            code: 'RATE_LIMITED',
-            message: 'Rate limit exceeded. Please try again later.',
-            details: {
-              limit: config.maxRequests,
-              remaining: 0,
-              resetTime: new Date(resetTime).toISOString(),
-            }
-          }
-        }), {
-          status: 429,
-          headers: {
-            'Content-Type': 'application/json',
-            ...Object.fromEntries(response.headers.entries()),
-          }
-        });
+        response.headers.set(
+          "Retry-After",
+          Math.ceil((resetTime - Date.now()) / 1000).toString(),
+        );
+        return new Response(
+          JSON.stringify({
+            success: false,
+            error: {
+              code: "RATE_LIMITED",
+              message: "Rate limit exceeded. Please try again later.",
+              details: {
+                limit: config.maxRequests,
+                remaining: 0,
+                resetTime: new Date(resetTime).toISOString(),
+              },
+            },
+          }),
+          {
+            status: 429,
+            headers: {
+              "Content-Type": "application/json",
+              ...Object.fromEntries(response.headers.entries()),
+            },
+          },
+        );
       }
     }
 

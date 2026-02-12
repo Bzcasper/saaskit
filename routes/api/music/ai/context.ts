@@ -9,19 +9,19 @@ import { cerebrasClient } from "@/utils/cerebras_client.ts";
 import { YTMusic } from "@/utils/music_client.ts";
 import {
   createAIPlaylist,
-  getUserTasteProfile,
   getListeningStats,
   getLyricsByMood,
+  getUserTasteProfile,
 } from "@/utils/music_models.ts";
 import {
-  successResponse,
   errorResponse,
-  toJson,
   handleApiError,
+  successResponse,
+  toJson,
 } from "@/utils/api_response.ts";
 import type { Handlers, RouteContext } from "$fresh/server.ts";
 
-const ytmusic = new YTMusic();
+const _ytmusic = new YTMusic();
 
 /**
  * GET /api/music/ai/context/mood
@@ -38,7 +38,10 @@ export async function handleMoodPlaylist(req: Request, ctx: RouteContext) {
     const userLogin = ctx.state.user?.login || "anonymous";
 
     if (!mood) {
-      const response = errorResponse("MISSING_PARAM", "Mood parameter required");
+      const response = errorResponse(
+        "MISSING_PARAM",
+        "Mood parameter required",
+      );
       return toJson(response, 400);
     }
 
@@ -54,9 +57,11 @@ export async function handleMoodPlaylist(req: Request, ctx: RouteContext) {
     let moodBasedTracks = [];
     try {
       const lyricsAnalyses = await getLyricsByMood(mood);
-      moodBasedTracks = lyricsAnalyses.slice(0, 5).map(analysis => ({
-        title: analysis.videoId.split("-")[0].replace(/([A-Z])/g, ' $1').trim(),
-        artist: analysis.videoId.split("-")[1]?.replace(/([A-Z])/g, ' $1').trim() || "Unknown",
+      moodBasedTracks = lyricsAnalyses.slice(0, 5).map((analysis) => ({
+        title: analysis.videoId.split("-")[0].replace(/([A-Z])/g, " $1").trim(),
+        artist:
+          analysis.videoId.split("-")[1]?.replace(/([A-Z])/g, " $1").trim() ||
+          "Unknown",
         why: `Lyrics match the ${mood} mood`,
       }));
     } catch (err) {
@@ -73,13 +78,19 @@ export async function handleMoodPlaylist(req: Request, ctx: RouteContext) {
     let savedPlaylist = null;
     if (ctx.state.user) {
       try {
-        const prompt = `A ${mood} playlist${activity ? ` for ${activity}` : ""}${timeOfDay ? ` during ${timeOfDay}` : ""}`;
+        const prompt = `A ${mood} playlist${
+          activity ? ` for ${activity}` : ""
+        }${timeOfDay ? ` during ${timeOfDay}` : ""}`;
         savedPlaylist = await createAIPlaylist({
-          name: `${mood.charAt(0).toUpperCase() + mood.slice(1)}${activity ? ` ${activity}` : ""}`,
-          description: `Generated playlist for ${mood} mood${activity ? ` while ${activity}` : ""}${timeOfDay ? ` during ${timeOfDay}` : ""}`,
+          name: `${mood.charAt(0).toUpperCase() + mood.slice(1)}${
+            activity ? ` ${activity}` : ""
+          }`,
+          description: `Generated playlist for ${mood} mood${
+            activity ? ` while ${activity}` : ""
+          }${timeOfDay ? ` during ${timeOfDay}` : ""}`,
           prompt,
           userLogin,
-          tracks: combinedTracks.map(t => ({
+          tracks: combinedTracks.map((t) => ({
             title: t.title,
             artist: t.artist,
             mood,
@@ -116,15 +127,18 @@ export async function handleMoodPlaylist(req: Request, ctx: RouteContext) {
  * Get time-aware music recommendations
  * Automatically detects time of day and suggests appropriate music
  */
-export async function handleTimeAwarePlaylist(req: Request, ctx: RouteContext) {
+export async function handleTimeAwarePlaylist(
+  _req: Request,
+  ctx: RouteContext,
+) {
   try {
     const now = new Date();
     const hour = now.getHours();
-    
+
     // Determine time of day
     let timeOfDay;
     let mood;
-    
+
     if (hour >= 5 && hour < 9) {
       timeOfDay = "early morning";
       mood = "energizing";
@@ -147,14 +161,16 @@ export async function handleTimeAwarePlaylist(req: Request, ctx: RouteContext) {
       timeOfDay = "late night";
       mood = "mellow";
     }
-    
+
     // Get user taste profile if available
-    let activity = "";
+    const activity = "";
     if (ctx.state.user) {
       const tasteProfile = await getUserTasteProfile(ctx.state.user.login);
       if (tasteProfile) {
         // Adjust mood based on user preferences
-        const preferredMoods = tasteProfile.moods.slice(0, 3).map(m => m.name);
+        const preferredMoods = tasteProfile.moods.slice(0, 3).map((m) =>
+          m.name
+        );
         if (preferredMoods.length > 0) {
           mood = preferredMoods[0];
         }
@@ -190,15 +206,18 @@ export async function handleTimeAwarePlaylist(req: Request, ctx: RouteContext) {
  * Get activity-specific music recommendations
  * Query params: activity (required), energy (optional), limit (optional)
  */
-export async function handleActivityPlaylist(req: Request, ctx: RouteContext) {
+export async function handleActivityPlaylist(req: Request, _ctx: RouteContext) {
   try {
     const url = new URL(req.url);
     const activity = url.searchParams.get("activity");
     const energy = url.searchParams.get("energy") || "medium";
     const limit = parseInt(url.searchParams.get("limit") || "15");
-    
+
     if (!activity) {
-      const response = errorResponse("MISSING_PARAM", "Activity parameter required");
+      const response = errorResponse(
+        "MISSING_PARAM",
+        "Activity parameter required",
+      );
       return toJson(response, 400);
     }
 
@@ -282,11 +301,11 @@ export async function handleDiscoveryPlaylist(req: Request, ctx: RouteContext) {
     const url = new URL(req.url);
     const limit = parseInt(url.searchParams.get("limit") || "15");
     const userLogin = ctx.state.user.login;
-    
+
     // Get user taste profile and listening stats
     const tasteProfile = await getUserTasteProfile(userLogin);
     const stats = await getListeningStats(userLogin);
-    
+
     if (!tasteProfile && (!stats || stats.totalPlays === 0)) {
       const response = errorResponse(
         "NO_DATA",
@@ -294,23 +313,26 @@ export async function handleDiscoveryPlaylist(req: Request, ctx: RouteContext) {
       );
       return toJson(response, 400);
     }
-    
+
     // Create discovery prompt based on user taste
-    let genres = tasteProfile?.genres.slice(0, 3).map(g => g.name) || 
-                stats?.topGenres.slice(0, 3).map(g => g.genre) || 
-                [];
-    
-    let artists = tasteProfile?.artists.slice(0, 3).map(a => a.name) || 
-                 stats?.topArtists.slice(0, 3).map(a => a.artist) || 
-                 [];
-    
-    const prompt = `Create a discovery playlist for a user who likes ${genres.join(", ")} music ` +
-                  `and artists like ${artists.join(", ")}. ` +
-                  `Include tracks they probably haven't heard before, but would enjoy.`;
-    
+    const genres = tasteProfile?.genres.slice(0, 3).map((g) => g.name) ||
+      stats?.topGenres.slice(0, 3).map((g) => g.genre) ||
+      [];
+
+    const artists = tasteProfile?.artists.slice(0, 3).map((a) => a.name) ||
+      stats?.topArtists.slice(0, 3).map((a) => a.artist) ||
+      [];
+
+    const prompt =
+      `Create a discovery playlist for a user who likes ${
+        genres.join(", ")
+      } music ` +
+      `and artists like ${artists.join(", ")}. ` +
+      `Include tracks they probably haven't heard before, but would enjoy.`;
+
     // Generate discovery playlist using Cerebras
     const playlistData = await cerebrasClient.generatePlaylistContinuation(
-      artists.map(artist => ({ title: "", artist })),
+      artists.map((artist) => ({ title: "", artist })),
       Math.min(Math.max(limit, 5), 30),
     );
 
@@ -319,10 +341,12 @@ export async function handleDiscoveryPlaylist(req: Request, ctx: RouteContext) {
     try {
       savedPlaylist = await createAIPlaylist({
         name: "Discovery Mix",
-        description: `Personalized discovery playlist based on your taste in ${genres.join(", ")}`,
+        description: `Personalized discovery playlist based on your taste in ${
+          genres.join(", ")
+        }`,
         prompt,
         userLogin,
-        tracks: playlistData.continuation.map(t => ({
+        tracks: playlistData.continuation.map((t) => ({
           title: t.title,
           artist: t.artist,
         })),
@@ -359,7 +383,7 @@ export async function handleDiscoveryPlaylist(req: Request, ctx: RouteContext) {
  * Get or update user's taste profile
  * Requires authentication
  */
-export async function handleTasteProfile(req: Request, ctx: RouteContext) {
+export async function handleTasteProfile(_req: Request, ctx: RouteContext) {
   try {
     if (!ctx.state.user) {
       const response = errorResponse("UNAUTHORIZED", "Authentication required");
@@ -367,30 +391,36 @@ export async function handleTasteProfile(req: Request, ctx: RouteContext) {
     }
 
     const userLogin = ctx.state.user.login;
-    
+
     // Get user taste profile
     const tasteProfile = await getUserTasteProfile(userLogin);
-    
+
     if (!tasteProfile) {
       // Generate initial taste profile
       const questions = await groqClient.generateDiscoveryQuestions();
-      
+
       const response = successResponse({
         status: "needs_setup",
         questions: questions.questions,
         initialProfile: questions.profile,
       });
-      
+
       return toJson(response);
     }
-    
+
     // Get listening stats
     const stats = await getListeningStats(userLogin);
-    
+
     // Generate next discovery questions
     const questions = await groqClient.generateDiscoveryQuestions([
-      { question: "What genres do you like?", answer: tasteProfile.genres.map(g => g.name).join(", ") },
-      { question: "What artists do you like?", answer: tasteProfile.artists.map(a => a.name).join(", ") },
+      {
+        question: "What genres do you like?",
+        answer: tasteProfile.genres.map((g) => g.name).join(", "),
+      },
+      {
+        question: "What artists do you like?",
+        answer: tasteProfile.artists.map((a) => a.name).join(", "),
+      },
     ]);
 
     const response = successResponse({
@@ -427,12 +457,13 @@ export const handler: Handlers = {
         return await handleDiscoveryPlaylist(req, ctx);
       case "taste":
         return await handleTasteProfile(req, ctx);
-      default:
+      default: {
         const response = errorResponse(
           "INVALID_ENDPOINT",
           "Invalid context endpoint. Must be 'mood', 'time', 'activity', 'discovery', or 'taste'",
         );
         return toJson(response, 400);
+      }
     }
   },
 };

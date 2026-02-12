@@ -1,26 +1,26 @@
 // Copyright 2023-2025 the Deno authors. All rights reserved. MIT license.
 
 import {
-  createPlaylist,
-  getPlaylistsByUser,
-  deletePlaylist,
-  updatePlaylist,
   addTrackToPlaylist,
+  createPlaylist,
+  deletePlaylist,
+  getPlaylistsByUser,
   removeTrackFromPlaylist,
+  updatePlaylist,
 } from "@/utils/music_models.ts";
 import {
-  successResponse,
   errorResponse,
-  paginatedResponse,
-  toJson,
   handleApiError,
+  paginatedResponse,
+  successResponse,
+  toJson,
 } from "@/utils/api_response.ts";
 import type { Handlers } from "$fresh/server.ts";
 
 /**
  * GET /api/music/user/playlists
  * Get user's playlists
- * 
+ *
  * POST /api/music/user/playlists
  * Create new playlist
  */
@@ -28,7 +28,10 @@ export const handler: Handlers = {
   async GET(req, ctx) {
     try {
       if (!ctx.state.user) {
-        const response = errorResponse("UNAUTHORIZED", "Authentication required");
+        const response = errorResponse(
+          "UNAUTHORIZED",
+          "Authentication required",
+        );
         return toJson(response, 401);
       }
 
@@ -52,7 +55,10 @@ export const handler: Handlers = {
   async POST(req, ctx) {
     try {
       if (!ctx.state.user) {
-        const response = errorResponse("UNAUTHORIZED", "Authentication required");
+        const response = errorResponse(
+          "UNAUTHORIZED",
+          "Authentication required",
+        );
         return toJson(response, 401);
       }
 
@@ -60,7 +66,10 @@ export const handler: Handlers = {
       const { name, description, isPublic } = body;
 
       if (!name) {
-        const response = errorResponse("INVALID_REQUEST", "Playlist name required");
+        const response = errorResponse(
+          "INVALID_REQUEST",
+          "Playlist name required",
+        );
         return toJson(response, 400);
       }
 
@@ -80,4 +89,3 @@ export const handler: Handlers = {
     }
   },
 };
-

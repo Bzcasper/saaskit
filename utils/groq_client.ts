@@ -37,7 +37,10 @@ export class GroqClient {
     this.model = model;
   }
 
-  async chat(messages: GroqMessage[], temperature = 0.7): Promise<GroqResponse> {
+  async chat(
+    messages: GroqMessage[],
+    temperature = 0.7,
+  ): Promise<GroqResponse> {
     if (!this.apiKey) {
       throw new Error("GROQ_API_KEY not configured");
     }
@@ -80,13 +83,22 @@ export class GroqClient {
     }[];
     analysis: string;
   }> {
-    const prompt = `Based on the user's listening history and preferences, generate ${limit} personalized music recommendations.
+    const prompt =
+      `Based on the user's listening history and preferences, generate ${limit} personalized music recommendations.
 
 Listening History:
-${userHistory.map(h => `- "${h.title}" by ${h.artist}${h.genre ? ` (${h.genre})` : ""}`).join("\n")}
+${
+        userHistory.map((h) =>
+          `- "${h.title}" by ${h.artist}${h.genre ? ` (${h.genre})` : ""}`
+        ).join("\n")
+      }
 
 User Preferences:
-${preferences.genres ? `Preferred Genres: ${preferences.genres.join(", ")}` : ""}
+${
+        preferences.genres
+          ? `Preferred Genres: ${preferences.genres.join(", ")}`
+          : ""
+      }
 ${preferences.mood ? `Desired Mood: ${preferences.mood}` : ""}
 ${preferences.energy ? `Energy Level: ${preferences.energy}` : ""}
 
@@ -106,13 +118,14 @@ Provide recommendations in JSON format with this structure:
     const response = await this.chat([
       {
         role: "system",
-        content: "You are a music recommendation expert. Analyze listening patterns and provide personalized suggestions with explanations.",
+        content:
+          "You are a music recommendation expert. Analyze listening patterns and provide personalized suggestions with explanations.",
       },
       { role: "user", content: prompt },
     ]);
 
     const content = response.choices[0]?.message?.content || "";
-    
+
     try {
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
@@ -136,7 +149,8 @@ Provide recommendations in JSON format with this structure:
     tracks: { title: string; artist: string; genre?: string; mood?: string }[];
     themes: string[];
   }> {
-    const prompt = `Create a music playlist based on this description: "${description}"
+    const prompt =
+      `Create a music playlist based on this description: "${description}"
 
 Generate exactly ${trackCount} tracks in JSON format:
 {
@@ -156,13 +170,14 @@ Generate exactly ${trackCount} tracks in JSON format:
     const response = await this.chat([
       {
         role: "system",
-        content: "You are a playlist curator. Create cohesive, well-structured playlists based on natural language descriptions.",
+        content:
+          "You are a playlist curator. Create cohesive, well-structured playlists based on natural language descriptions.",
       },
       { role: "user", content: prompt },
     ]);
 
     const content = response.choices[0]?.message?.content || "";
-    
+
     try {
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
@@ -218,13 +233,14 @@ Provide analysis in JSON format:
     const response = await this.chat([
       {
         role: "system",
-        content: "You are a music analyst specializing in lyrical interpretation and thematic analysis.",
+        content:
+          "You are a music analyst specializing in lyrical interpretation and thematic analysis.",
       },
       { role: "user", content: prompt },
     ], 0.5);
 
     const content = response.choices[0]?.message?.content || "";
-    
+
     try {
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
@@ -267,7 +283,9 @@ Provide analysis in JSON format:
     }[];
     characteristics: string[];
   }> {
-    const prompt = `Find ${limit} tracks similar to "${title}" by ${artist}${genre ? ` (${genre})` : ""}.
+    const prompt = `Find ${limit} tracks similar to "${title}" by ${artist}${
+      genre ? ` (${genre})` : ""
+    }.
 
 Provide results in JSON format:
 {
@@ -285,13 +303,14 @@ Provide results in JSON format:
     const response = await this.chat([
       {
         role: "system",
-        content: "You are a music discovery expert. Find tracks with genuine musical similarities, not just same-genre matches.",
+        content:
+          "You are a music discovery expert. Find tracks with genuine musical similarities, not just same-genre matches.",
       },
       { role: "user", content: prompt },
     ]);
 
     const content = response.choices[0]?.message?.content || "";
-    
+
     try {
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
@@ -309,7 +328,12 @@ Provide results in JSON format:
   async generateDiscoveryQuestions(
     answeredQuestions?: { question: string; answer: string }[],
   ): Promise<{
-    questions: { id: string; question: string; category: string; options?: string[] }[];
+    questions: {
+      id: string;
+      question: string;
+      category: string;
+      options?: string[];
+    }[];
     profile: {
       genres: string[];
       eras: string[];
@@ -318,7 +342,11 @@ Provide results in JSON format:
     };
   }> {
     const context = answeredQuestions && answeredQuestions.length > 0
-      ? `Previous answers:\n${answeredQuestions.map(q => `Q: ${q.question}\nA: ${q.answer}`).join("\n\n")}`
+      ? `Previous answers:\n${
+        answeredQuestions.map((q) => `Q: ${q.question}\nA: ${q.answer}`).join(
+          "\n\n",
+        )
+      }`
       : "No previous answers. Start fresh.";
 
     const prompt = `${context}
@@ -350,13 +378,14 @@ Provide in JSON format:
     const response = await this.chat([
       {
         role: "system",
-        content: "You are a music taste profiler. Ask insightful questions to understand musical preferences and build a comprehensive taste profile.",
+        content:
+          "You are a music taste profiler. Ask insightful questions to understand musical preferences and build a comprehensive taste profile.",
       },
       { role: "user", content: prompt },
     ]);
 
     const content = response.choices[0]?.message?.content || "";
-    
+
     try {
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
@@ -415,13 +444,14 @@ Design a playlist with emotional progression. Return JSON:
     const response = await this.chat([
       {
         role: "system",
-        content: "You are a mood-based playlist curator. Create playlists with intentional emotional arcs and smooth transitions.",
+        content:
+          "You are a mood-based playlist curator. Create playlists with intentional emotional arcs and smooth transitions.",
       },
       { role: "user", content: prompt },
     ]);
 
     const content = response.choices[0]?.message?.content || "";
-    
+
     try {
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
@@ -443,10 +473,16 @@ Design a playlist with emotional progression. Return JSON:
     coherence: number;
     themes: string[];
     strengths: string[];
-    suggestions: { type: string; description: string; priority: "high" | "medium" | "low" }[];
+    suggestions: {
+      type: string;
+      description: string;
+      priority: "high" | "medium" | "low";
+    }[];
     flow: { transitions: string[]; energyBalance: string };
   }> {
-    const prompt = `Analyze this playlist${playlistName ? ` "${playlistName}"` : ""}:
+    const prompt = `Analyze this playlist${
+      playlistName ? ` "${playlistName}"` : ""
+    }:
 
 Tracks:
 ${tracks.map((t, i) => `${i + 1}. "${t.title}" by ${t.artist}`).join("\n")}
@@ -472,13 +508,14 @@ Provide analysis in JSON format:
     const response = await this.chat([
       {
         role: "system",
-        content: "You are a playlist analyst. Evaluate coherence, flow, and provide actionable suggestions for improvement.",
+        content:
+          "You are a playlist analyst. Evaluate coherence, flow, and provide actionable suggestions for improvement.",
       },
       { role: "user", content: prompt },
     ]);
 
     const content = response.choices[0]?.message?.content || "";
-    
+
     try {
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (jsonMatch) {

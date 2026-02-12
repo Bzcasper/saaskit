@@ -1,5 +1,9 @@
 // Copyright 2023-2025 Deno authors. All rights reserved. MIT license.
-import { SITE_NAME, SITE_TAGLINE, SITE_DESCRIPTION } from "@/utils/constants.ts";
+import {
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_TAGLINE,
+} from "@/utils/constants.ts";
 import IconBrandDiscord from "@preact-icons/tb/TbBrandDiscord";
 import IconBrandGithub from "@preact-icons/tb/TbBrandGithub";
 import IconBrandTwitter from "@preact-icons/tb/TbBrandTwitter";
@@ -50,19 +54,45 @@ export default function Footer() {
 
       {/* Links */}
       <nav class="flex items-center gap-6">
-        <a href="/blog" class="text-foreground-muted hover:text-primary transition-colors duration-fast text-sm" aria-label="Blog">
+        <a
+          href="/blog"
+          class="text-foreground-muted hover:text-primary transition-colors duration-fast text-sm"
+          aria-label="Blog"
+        >
           Blog
         </a>
-        <a href="/feed" aria-label="RSS Feed" class="text-foreground-muted hover:text-primary transition-colors duration-fast">
+        <a
+          href="/feed"
+          aria-label="RSS Feed"
+          class="text-foreground-muted hover:text-primary transition-colors duration-fast"
+        >
           <IconRss class="size-5" />
         </a>
-        <a href="https://discord.gg/trendradar" target="_blank" rel="noopener noreferrer" aria-label="Discord" class="text-foreground-muted hover:text-primary transition-colors duration-fast">
+        <a
+          href="https://discord.gg/trendradar"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Discord"
+          class="text-foreground-muted hover:text-primary transition-colors duration-fast"
+        >
           <IconBrandDiscord class="size-5" />
         </a>
-        <a href="https://github.com/trendradar" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="text-foreground-muted hover:text-primary transition-colors duration-fast">
+        <a
+          href="https://github.com/trendradar"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="GitHub"
+          class="text-foreground-muted hover:text-primary transition-colors duration-fast"
+        >
           <IconBrandGithub class="size-5" />
         </a>
-        <a href="https://twitter.com/trendradar" target="_blank" rel="noopener noreferrer" aria-label="Twitter" class="text-foreground-muted hover:text-primary transition-colors duration-fast">
+        <a
+          href="https://twitter.com/trendradar"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Twitter"
+          class="text-foreground-muted hover:text-primary transition-colors duration-fast"
+        >
           <IconBrandTwitter class="size-5" />
         </a>
       </nav>

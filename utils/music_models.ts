@@ -86,7 +86,13 @@ export interface AIPlaylist {
   description: string;
   prompt: string;
   userLogin: string;
-  tracks: { title: string; artist: string; videoId?: string; genre?: string; mood?: string }[];
+  tracks: {
+    title: string;
+    artist: string;
+    videoId?: string;
+    genre?: string;
+    mood?: string;
+  }[];
   themes: string[];
   mood: string;
   energyCurve: string;
@@ -206,12 +212,16 @@ export async function createPlaylist(
   return newPlaylist;
 }
 
-export async function getPlaylist(playlistId: string): Promise<Playlist | null> {
+export async function getPlaylist(
+  playlistId: string,
+): Promise<Playlist | null> {
   const res = await kv.get(["playlists", playlistId]);
   return res.value as Playlist | null;
 }
 
-export async function getPlaylistsByUser(userLogin: string): Promise<Playlist[]> {
+export async function getPlaylistsByUser(
+  userLogin: string,
+): Promise<Playlist[]> {
   const iter = kv.list({ prefix: ["playlists_by_user", userLogin] });
   const playlists: Playlist[] = [];
   for await (const entry of iter) {
@@ -339,7 +349,9 @@ export async function getSearchHistory(
 }
 
 // ============ AUDIO FEATURES OPERATIONS ============
-export async function saveAudioFeatures(features: Omit<AudioFeatures, "createdAt">) {
+export async function saveAudioFeatures(
+  features: Omit<AudioFeatures, "createdAt">,
+) {
   const newFeatures: AudioFeatures = {
     ...features,
     createdAt: Date.now(),
@@ -348,13 +360,17 @@ export async function saveAudioFeatures(features: Omit<AudioFeatures, "createdAt
   return newFeatures;
 }
 
-export async function getAudioFeatures(trackId: string): Promise<AudioFeatures | null> {
+export async function getAudioFeatures(
+  trackId: string,
+): Promise<AudioFeatures | null> {
   const res = await kv.get(["audio_features", trackId]);
   return res.value as AudioFeatures | null;
 }
 
 // ============ TRACK EMBEDDINGS OPERATIONS ============
-export async function saveTrackEmbedding(embedding: Omit<TrackEmbedding, "createdAt">) {
+export async function saveTrackEmbedding(
+  embedding: Omit<TrackEmbedding, "createdAt">,
+) {
   const newEmbedding: TrackEmbedding = {
     ...embedding,
     createdAt: Date.now(),
@@ -363,7 +379,9 @@ export async function saveTrackEmbedding(embedding: Omit<TrackEmbedding, "create
   return newEmbedding;
 }
 
-export async function getTrackEmbedding(trackId: string): Promise<TrackEmbedding | null> {
+export async function getTrackEmbedding(
+  trackId: string,
+): Promise<TrackEmbedding | null> {
   const res = await kv.get(["track_embeddings", trackId]);
   return res.value as TrackEmbedding | null;
 }
@@ -387,7 +405,9 @@ export async function saveUserTasteProfile(profile: UserTasteProfile) {
   return updated;
 }
 
-export async function getUserTasteProfile(userLogin: string): Promise<UserTasteProfile | null> {
+export async function getUserTasteProfile(
+  userLogin: string,
+): Promise<UserTasteProfile | null> {
   const res = await kv.get(["taste_profiles", userLogin]);
   return res.value as UserTasteProfile | null;
 }
@@ -398,7 +418,7 @@ export async function updateUserTasteProfile(
 ): Promise<UserTasteProfile | null> {
   const existing = await getUserTasteProfile(userLogin);
   if (!existing) return null;
-  
+
   const updated: UserTasteProfile = {
     ...existing,
     ...updates,
@@ -419,24 +439,32 @@ export async function createAIPlaylist(
     updatedAt: Date.now(),
   };
   const playlistsKey = ["ai_playlists", newPlaylist.id];
-  const playlistsByUserKey = ["ai_playlists_by_user", playlist.userLogin, newPlaylist.id];
-  
+  const playlistsByUserKey = [
+    "ai_playlists_by_user",
+    playlist.userLogin,
+    newPlaylist.id,
+  ];
+
   const res = await kv.atomic()
     .check({ key: playlistsKey, versionstamp: null })
     .set(playlistsKey, newPlaylist)
     .set(playlistsByUserKey, newPlaylist)
     .commit();
-    
+
   if (!res.ok) throw new Error("Failed to create AI playlist");
   return newPlaylist;
 }
 
-export async function getAIPlaylist(playlistId: string): Promise<AIPlaylist | null> {
+export async function getAIPlaylist(
+  playlistId: string,
+): Promise<AIPlaylist | null> {
   const res = await kv.get(["ai_playlists", playlistId]);
   return res.value as AIPlaylist | null;
 }
 
-export async function getAIPlaylistsByUser(userLogin: string): Promise<AIPlaylist[]> {
+export async function getAIPlaylistsByUser(
+  userLogin: string,
+): Promise<AIPlaylist[]> {
   const iter = kv.list({ prefix: ["ai_playlists_by_user", userLogin] });
   const playlists: AIPlaylist[] = [];
   for await (const entry of iter) {
@@ -445,10 +473,13 @@ export async function getAIPlaylistsByUser(userLogin: string): Promise<AIPlaylis
   return playlists;
 }
 
-export async function deleteAIPlaylist(playlistId: string, userLogin: string): Promise<boolean> {
+export async function deleteAIPlaylist(
+  playlistId: string,
+  userLogin: string,
+): Promise<boolean> {
   const playlist = await getAIPlaylist(playlistId);
   if (!playlist || playlist.userLogin !== userLogin) return false;
-  
+
   await kv.atomic()
     .delete(["ai_playlists", playlistId])
     .delete(["ai_playlists_by_user", userLogin, playlistId])
@@ -492,12 +523,12 @@ export async function getListeningStats(userLogin: string): Promise<{
   averageCompletionRate: number;
 }> {
   const history = await getListeningHistory(userLogin, 1000);
-  
+
   const genreCounts: Record<string, number> = {};
   const artistCounts: Record<string, number> = {};
-  const uniqueTracks = new Set(history.map(h => h.videoId));
+  const uniqueTracks = new Set(history.map((h) => h.videoId));
   let totalCompletion = 0;
-  
+
   for (const event of history) {
     if (event.genre) {
       genreCounts[event.genre] = (genreCounts[event.genre] || 0) + 1;
@@ -505,23 +536,25 @@ export async function getListeningStats(userLogin: string): Promise<{
     artistCounts[event.artist] = (artistCounts[event.artist] || 0) + 1;
     totalCompletion += event.completionRate;
   }
-  
+
   const topGenres = Object.entries(genreCounts)
     .map(([genre, count]) => ({ genre, count }))
     .sort((a, b) => b.count - a.count)
     .slice(0, 10);
-    
+
   const topArtists = Object.entries(artistCounts)
     .map(([artist, count]) => ({ artist, count }))
     .sort((a, b) => b.count - a.count)
     .slice(0, 10);
-  
+
   return {
     totalPlays: history.length,
     uniqueTracks: uniqueTracks.size,
     topGenres,
     topArtists,
-    averageCompletionRate: history.length > 0 ? totalCompletion / history.length : 0,
+    averageCompletionRate: history.length > 0
+      ? totalCompletion / history.length
+      : 0,
   };
 }
 
@@ -537,7 +570,9 @@ export async function saveLyricsAnalysis(
   return newAnalysis;
 }
 
-export async function getLyricsAnalysis(trackId: string): Promise<LyricsAnalysis | null> {
+export async function getLyricsAnalysis(
+  trackId: string,
+): Promise<LyricsAnalysis | null> {
   const res = await kv.get(["lyrics_analysis", trackId]);
   return res.value as LyricsAnalysis | null;
 }
@@ -554,12 +589,16 @@ export async function getLyricsByMood(mood: string): Promise<LyricsAnalysis[]> {
   return analyses;
 }
 
-export async function getLyricsByTheme(theme: string): Promise<LyricsAnalysis[]> {
+export async function getLyricsByTheme(
+  theme: string,
+): Promise<LyricsAnalysis[]> {
   const iter = kv.list({ prefix: ["lyrics_analysis"] });
   const analyses: LyricsAnalysis[] = [];
   for await (const entry of iter) {
     const analysis = entry.value as LyricsAnalysis;
-    if (analysis.themes.some(t => t.toLowerCase().includes(theme.toLowerCase()))) {
+    if (
+      analysis.themes.some((t) => t.toLowerCase().includes(theme.toLowerCase()))
+    ) {
       analyses.push(analysis);
     }
   }

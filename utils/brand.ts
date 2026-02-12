@@ -1,20 +1,18 @@
 // Copyright 2023-2025 the Deno authors. All rights reserved. MIT license.
 /**
  * Brand System Utilities
- * 
+ *
  * Centralized brand configuration and helper functions for trendradar
  * Ensures consistent brand application across all pages and components
  */
 
 import {
-  SITE_NAME,
-  SITE_DESCRIPTION,
-  SITE_TAGLINE,
-  SITE_MISSION,
-  SITE_VISION,
   BRAND_COLORS,
-  BRAND_GRADIENTS,
-  BRAND_FONTS,
+  SITE_DESCRIPTION,
+  SITE_MISSION,
+  SITE_NAME,
+  SITE_TAGLINE,
+  SITE_VISION,
 } from "@/utils/constants.ts";
 
 /**
@@ -35,19 +33,23 @@ export const LOGOS = {
   /** Primary gradient wordmark */
   wordmark: {
     text: SITE_NAME,
-    class: "font-heading font-black text-h2 gradient-text lowercase tracking-wide",
+    class:
+      "font-heading font-black text-h2 gradient-text lowercase tracking-wide",
   },
   /** Icon mark (TR abbreviation) */
   icon: {
     text: "TR",
     class: "font-heading font-black text-2xl",
-    containerClass: "w-64 h-64 rounded-xl bg-gradient-logo flex items-center justify-center shadow-glow",
+    containerClass:
+      "w-64 h-64 rounded-xl bg-gradient-logo flex items-center justify-center shadow-glow",
   },
   /** Horizontal layout (icon + wordmark) */
   horizontal: {
     class: "flex items-center gap-16",
-    iconClass: "w-48 h-48 rounded-xl bg-gradient-logo flex items-center justify-center shadow-glow",
-    textClass: "font-heading font-black text-h5 gradient-text lowercase tracking-wide hidden sm:block",
+    iconClass:
+      "w-48 h-48 rounded-xl bg-gradient-logo flex items-center justify-center shadow-glow",
+    textClass:
+      "font-heading font-black text-h5 gradient-text lowercase tracking-wide hidden sm:block",
   },
 } as const;
 
@@ -58,7 +60,8 @@ export const SLOGANS = {
   /** Primary - Hero sections, main messaging */
   primary: {
     text: "Detecting the pulse of music trends",
-    class: "text-h5 font-heading text-primary-300 border-l-4 border-primary pl-20",
+    class:
+      "text-h5 font-heading text-primary-300 border-l-4 border-primary pl-20",
     useCase: "Hero sections, main marketing materials, primary brand messaging",
   },
   /** Technical - Developer-facing pages */
@@ -91,12 +94,27 @@ export const SLOGANS = {
  * Typography Scale
  */
 export const TYPOGRAPHY = {
-  h1: { class: "font-heading font-black text-h1 gradient-text", useCase: "Main page headings" },
-  h2: { class: "font-heading font-black text-h2 gradient-text", useCase: "Section headings" },
-  h3: { class: "font-heading font-bold text-h3 text-foreground", useCase: "Subsections" },
-  h4: { class: "font-heading font-bold text-h4 text-foreground", useCase: "Card titles" },
+  h1: {
+    class: "font-heading font-black text-h1 gradient-text",
+    useCase: "Main page headings",
+  },
+  h2: {
+    class: "font-heading font-black text-h2 gradient-text",
+    useCase: "Section headings",
+  },
+  h3: {
+    class: "font-heading font-bold text-h3 text-foreground",
+    useCase: "Subsections",
+  },
+  h4: {
+    class: "font-heading font-bold text-h4 text-foreground",
+    useCase: "Card titles",
+  },
   body: { class: "text-body text-foreground-muted", useCase: "Body text" },
-  bodyLarge: { class: "text-body-lg text-foreground-muted", useCase: "Lead paragraphs" },
+  bodyLarge: {
+    class: "text-body-lg text-foreground-muted",
+    useCase: "Lead paragraphs",
+  },
 } as const;
 
 /**
@@ -159,7 +177,9 @@ export const PATTERNS = {
 /**
  * Get appropriate slogan for page context
  */
-export function getSloganForContext(context: "hero" | "technical" | "product" | "visionary" | "community"): string {
+export function getSloganForContext(
+  context: "hero" | "technical" | "product" | "visionary" | "community",
+): string {
   return SLOGANS[context].text;
 }
 
@@ -184,7 +204,7 @@ export function validateBrandClasses(classes: string): boolean {
     "gradient-text",
     "text-foreground",
   ];
-  return requiredPatterns.some(pattern => classes.includes(pattern));
+  return requiredPatterns.some((pattern) => classes.includes(pattern));
 }
 
 /**

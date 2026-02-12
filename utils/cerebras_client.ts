@@ -54,7 +54,10 @@ export class CerebrasClient {
     this.embeddingModel = embeddingModel;
   }
 
-  async chat(messages: CerebrasMessage[], temperature = 0.7): Promise<CerebrasResponse> {
+  async chat(
+    messages: CerebrasMessage[],
+    temperature = 0.7,
+  ): Promise<CerebrasResponse> {
     if (!this.apiKey) {
       throw new Error("CEREBRAS_API_KEY not configured");
     }
@@ -115,15 +118,15 @@ export class CerebrasClient {
    */
   async createEmbeddingsBatch(texts: string[]): Promise<number[][]> {
     const embeddings: number[][] = [];
-    
+
     // Process in batches of 10 to avoid rate limits
     for (let i = 0; i < texts.length; i += 10) {
       const batch = texts.slice(i, i + 10);
-      const batchPromises = batch.map(text => this.createEmbedding(text));
+      const batchPromises = batch.map((text) => this.createEmbedding(text));
       const batchResults = await Promise.all(batchPromises);
       embeddings.push(...batchResults);
     }
-    
+
     return embeddings;
   }
 
@@ -132,19 +135,19 @@ export class CerebrasClient {
    */
   cosineSimilarity(a: number[], b: number[]): number {
     if (a.length !== b.length) return 0;
-    
+
     let dotProduct = 0;
     let normA = 0;
     let normB = 0;
-    
+
     for (let i = 0; i < a.length; i++) {
       dotProduct += a[i] * b[i];
       normA += a[i] * a[i];
       normB += b[i] * b[i];
     }
-    
+
     if (normA === 0 || normB === 0) return 0;
-    
+
     return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
   }
 
@@ -153,18 +156,22 @@ export class CerebrasClient {
    */
   findSimilar(
     targetEmbedding: number[],
-    candidates: { id: string; embedding: number[]; metadata?: Record<string, unknown> }[],
+    candidates: {
+      id: string;
+      embedding: number[];
+      metadata?: Record<string, unknown>;
+    }[],
     threshold = 0.7,
     limit = 10,
   ): { id: string; similarity: number; metadata?: Record<string, unknown> }[] {
-    const similarities = candidates.map(candidate => ({
+    const similarities = candidates.map((candidate) => ({
       id: candidate.id,
       similarity: this.cosineSimilarity(targetEmbedding, candidate.embedding),
       metadata: candidate.metadata,
     }));
 
     return similarities
-      .filter(s => s.similarity >= threshold)
+      .filter((s) => s.similarity >= threshold)
       .sort((a, b) => b.similarity - a.similarity)
       .slice(0, limit);
   }
@@ -227,13 +234,14 @@ Estimate audio features (0.0-1.0 scale where applicable) in JSON format:
     const response = await this.chat([
       {
         role: "system",
-        content: "You are an audio analysis expert. Estimate audio features based on track metadata, artist style, and genre characteristics.",
+        content:
+          "You are an audio analysis expert. Estimate audio features based on track metadata, artist style, and genre characteristics.",
       },
       { role: "user", content: prompt },
     ], 0.3);
 
     const content = response.choices[0]?.message?.content || "";
-    
+
     try {
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
@@ -271,11 +279,15 @@ Estimate audio features (0.0-1.0 scale where applicable) in JSON format:
     tracks: { title: string; artist: string; album?: string; genre?: string }[],
   ): Promise<{
     trackId: string;
-    features: ReturnType<typeof CerebrasClient.prototype.extractAudioFeatures> extends Promise<infer T> ? T : never;
+    features:
+      ReturnType<typeof CerebrasClient.prototype.extractAudioFeatures> extends
+        Promise<infer T> ? T : never;
   }[]> {
     const results: {
       trackId: string;
-      features: ReturnType<typeof CerebrasClient.prototype.extractAudioFeatures> extends Promise<infer T> ? T : never;
+      features:
+        ReturnType<typeof CerebrasClient.prototype.extractAudioFeatures> extends
+          Promise<infer T> ? T : never;
     }[] = [];
 
     // Process in batches of 5
@@ -327,13 +339,14 @@ Provide expanded search terms and related concepts in JSON:
     const response = await this.chat([
       {
         role: "system",
-        content: "You are a music search expert. Expand queries with synonyms, related genres, artists, and understand search intent.",
+        content:
+          "You are a music search expert. Expand queries with synonyms, related genres, artists, and understand search intent.",
       },
       { role: "user", content: prompt },
     ], 0.5);
 
     const content = response.choices[0]?.message?.content || "";
-    
+
     try {
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
@@ -356,7 +369,12 @@ Provide expanded search terms and related concepts in JSON:
    * Generate music trend analysis
    */
   async analyzeTrends(
-    tracks: { title: string; artist: string; genre?: string; releaseDate?: string }[],
+    tracks: {
+      title: string;
+      artist: string;
+      genre?: string;
+      releaseDate?: string;
+    }[],
   ): Promise<{
     dominantGenres: { genre: string; percentage: number }[];
     eraDistribution: { era: string; count: number }[];
@@ -364,9 +382,16 @@ Provide expanded search terms and related concepts in JSON:
     recommendations: { type: string; description: string }[];
     summary: string;
   }> {
-    const prompt = `Analyze music trends from this dataset of ${tracks.length} tracks:
+    const prompt =
+      `Analyze music trends from this dataset of ${tracks.length} tracks:
 
-${tracks.slice(0, 50).map((t, i) => `${i + 1}. "${t.title}" by ${t.artist}${t.genre ? ` (${t.genre})` : ""}${t.releaseDate ? ` [${t.releaseDate}]` : ""}`).join("\n")}
+${
+        tracks.slice(0, 50).map((t, i) =>
+          `${i + 1}. "${t.title}" by ${t.artist}${
+            t.genre ? ` (${t.genre})` : ""
+          }${t.releaseDate ? ` [${t.releaseDate}]` : ""}`
+        ).join("\n")
+      }
 
 Provide trend analysis in JSON:
 {
@@ -382,13 +407,14 @@ Provide trend analysis in JSON:
     const response = await this.chat([
       {
         role: "system",
-        content: "You are a music trend analyst. Identify patterns, genre distributions, and emerging trends in music collections.",
+        content:
+          "You are a music trend analyst. Identify patterns, genre distributions, and emerging trends in music collections.",
       },
       { role: "user", content: prompt },
     ], 0.5);
 
     const content = response.choices[0]?.message?.content || "";
-    
+
     try {
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
@@ -412,7 +438,10 @@ Provide trend analysis in JSON:
    */
   async collaborativeFilter(
     userHistory: { title: string; artist: string; rating?: number }[],
-    similarUsers: { userId: string; tracks: { title: string; artist: string }[] }[],
+    similarUsers: {
+      userId: string;
+      tracks: { title: string; artist: string }[];
+    }[],
   ): Promise<{
     recommendations: {
       title: string;
@@ -425,10 +454,21 @@ Provide trend analysis in JSON:
     const prompt = `Generate collaborative filtering recommendations:
 
 User History:
-${userHistory.map(h => `- "${h.title}" by ${h.artist}${h.rating ? ` [${h.rating}/5]` : ""}`).join("\n")}
+${
+      userHistory.map((h) =>
+        `- "${h.title}" by ${h.artist}${h.rating ? ` [${h.rating}/5]` : ""}`
+      ).join("\n")
+    }
 
 Similar Users:
-${similarUsers.slice(0, 5).map((u, i) => `User ${i + 1}:\n${u.tracks.slice(0, 10).map(t => `  - "${t.title}" by ${t.artist}`).join("\n")}`).join("\n\n")}
+${
+      similarUsers.slice(0, 5).map((u, i) =>
+        `User ${i + 1}:\n${
+          u.tracks.slice(0, 10).map((t) => `  - "${t.title}" by ${t.artist}`)
+            .join("\n")
+        }`
+      ).join("\n\n")
+    }
 
 Provide recommendations in JSON:
 {
@@ -448,13 +488,14 @@ Provide recommendations in JSON:
     const response = await this.chat([
       {
         role: "system",
-        content: "You are a collaborative filtering recommendation engine. Find patterns across users and suggest items liked by similar users.",
+        content:
+          "You are a collaborative filtering recommendation engine. Find patterns across users and suggest items liked by similar users.",
       },
       { role: "user", content: prompt },
     ], 0.5);
 
     const content = response.choices[0]?.message?.content || "";
-    
+
     try {
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
@@ -484,7 +525,10 @@ Provide recommendations in JSON:
     const prompt = `Continue this playlist with ${count} more tracks:
 
 Existing Tracks:
-${existingTracks.map((t, i) => `${i + 1}. "${t.title}" by ${t.artist}`).join("\n")}
+${
+      existingTracks.map((t, i) => `${i + 1}. "${t.title}" by ${t.artist}`)
+        .join("\n")
+    }
 
 Provide continuation in JSON:
 {
@@ -502,13 +546,14 @@ Provide continuation in JSON:
     const response = await this.chat([
       {
         role: "system",
-        content: "You are a playlist continuation expert. Analyze existing tracks and suggest songs that maintain and enhance the playlist's flow and coherence.",
+        content:
+          "You are a playlist continuation expert. Analyze existing tracks and suggest songs that maintain and enhance the playlist's flow and coherence.",
       },
       { role: "user", content: prompt },
     ], 0.7);
 
     const content = response.choices[0]?.message?.content || "";
-    
+
     try {
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
